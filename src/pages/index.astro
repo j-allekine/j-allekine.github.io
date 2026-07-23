@@ -1,17 +1,85 @@
 ---
+import FeaturedWorkCard from '../components/FeaturedWorkCard.astro';
+import { projects, siteConfig } from '../data/portfolio';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+const featuredProject = projects[0];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout metadata={siteConfig.homepage.metadata}>
+  <section class="hero shell">
+    <p class="eyebrow provisional">{siteConfig.homepage.roleLabel}</p>
+    <h1>{siteConfig.homepage.statement}</h1>
+    <p class="hero__introduction">{siteConfig.homepage.introduction}</p>
+    <a href="#featured-work">{siteConfig.homepage.workLinkLabel} ↓</a>
+  </section>
+
+  <section
+    class="featured-work shell"
+    id="featured-work"
+    aria-labelledby="featured-work-heading"
+  >
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Selected evidence</p>
+        <h2 id="featured-work-heading">Featured work</h2>
+      </div>
+      <p class="provisional">One provisional record · Facts pending owner input</p>
+    </div>
+
+    <FeaturedWorkCard project={featuredProject} />
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(4rem, 12vw, 10rem);
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+    margin-bottom: 2rem;
+    font-size: clamp(3rem, 8vw, 7rem);
+  }
+
+  .hero__introduction {
+    max-width: 62ch;
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+  }
+
+  .featured-work {
+    padding-block: clamp(3rem, 8vw, 7rem);
+    border-top: 1px solid #111;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading h2 {
+    margin-bottom: 0;
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+
+  .section-heading p:last-child {
+    max-width: 22rem;
+    margin-bottom: 0;
+    text-align: right;
+  }
+
+  @media (max-width: 40rem) {
+    .section-heading {
+      display: block;
+    }
+
+    .section-heading p:last-child {
+      margin-top: 1rem;
+      text-align: left;
+    }
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import type { Project } from '../data/portfolio';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card">
+  <div class="card__topline">
+    <span>Project {project.number}</span>
+    <span>{project.category}</span>
+  </div>
+
+  <p class="provisional">Provisional project record</p>
+  <h3>{project.title}</h3>
+  <p class="summary">{project.summary}</p>
+
+  <dl>
+    <div>
+      <dt>Role</dt>
+      <dd>{project.role}</dd>
+    </div>
+    <div>
+      <dt>System type</dt>
+      <dd>{project.industryOrSystemType}</dd>
+    </div>
+    <div>
+      <dt>Year</dt>
+      <dd>{project.year}</dd>
+    </div>
+    <div>
+      <dt>Tools</dt>
+      <dd>{project.tools.join(', ')}</dd>
+    </div>
+  </dl>
+
+  <a class="card__link" href={`/work/${project.slug}/`}>
+    Open provisional case study: {project.title} <span aria-hidden="true">→</span>
+  </a>
+</article>
+
+<style>
+  .card {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid #111;
+  }
+
+  .card__topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #bbb;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .provisional {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  h3 {
+    margin-block: 0 1rem;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .summary {
+    max-width: 56ch;
+    margin-bottom: 2rem;
+    font-size: 1.1em;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2rem;
+    padding-block: 1.5rem;
+    border-block: 1px solid #bbb;
+  }
+
+  dd {
+    margin-left: 0;
+  }
+
+  .card__link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 35rem) {
+    dl {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

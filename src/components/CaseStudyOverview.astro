@@ -1,0 +1,92 @@
+---
+import type { Project } from '../data/portfolio';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<section class="overview" aria-labelledby="overview-label">
+  <p class="eyebrow" id="overview-label">Overview · Provisional case study</p>
+  <h1>{project.title}</h1>
+  <p class="summary">{project.summary}</p>
+
+  <dl>
+    <div class="overview__title">
+      <dt>Title</dt>
+      <dd>{project.title}</dd>
+    </div>
+    <div>
+      <dt>Role</dt>
+      <dd>{project.role}</dd>
+    </div>
+    <div>
+      <dt>Timeline</dt>
+      <dd>{project.timeline}</dd>
+    </div>
+    <div>
+      <dt>Tools</dt>
+      <dd>{project.tools.join(', ')}</dd>
+    </div>
+    <div>
+      <dt>Industry or system type</dt>
+      <dd>{project.industryOrSystemType}</dd>
+    </div>
+  </dl>
+</section>
+
+<style>
+  .overview {
+    padding-block: clamp(3rem, 9vw, 7rem);
+  }
+
+  .eyebrow {
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    max-width: 16ch;
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.75rem, 8vw, 6.5rem);
+  }
+
+  .summary {
+    max-width: 58ch;
+    margin-bottom: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+    padding-block: 1.5rem;
+    border-block: 1px solid #111;
+  }
+
+  .overview__title {
+    grid-column: span 2;
+  }
+
+  dd {
+    margin-left: 0;
+  }
+
+  @media (max-width: 50rem) {
+    dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 35rem) {
+    dl {
+      grid-template-columns: 1fr;
+    }
+
+    .overview__title {
+      grid-column: auto;
+    }
+  }
+</style>
