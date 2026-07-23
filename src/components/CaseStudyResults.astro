@@ -1,0 +1,119 @@
+---
+import type { Project } from '../data/portfolio';
+import CaseStudySection from './CaseStudySection.astro';
+
+interface Props {
+  project: Project;
+  guiding: boolean;
+}
+
+const { project, guiding } = Astro.props;
+const verifiedResults = project.results.filter(
+  (result) => result.kind === 'verified-measurement',
+);
+const qualitativeResults = project.results.filter(
+  (result) => result.kind === 'qualitative',
+);
+---
+
+<CaseStudySection
+  id="results"
+  eyebrow="04 · Evidence"
+  heading="Results"
+  guidingNote={guiding
+    ? 'Guiding content · Measurements appear only after their source is verified.'
+    : undefined}
+>
+  <div class="results-grid">
+    <div class="result-group">
+      <h3>Verified measurements</h3>
+      {
+        verifiedResults.length > 0 ? (
+          <ul>
+            {verifiedResults.map((result) => <li>{result.after}</li>)}
+          </ul>
+        ) : (
+          <p class="empty-state">None supplied.</p>
+        )
+      }
+    </div>
+    <div class="result-group">
+      <h3>Qualitative observation</h3>
+      <p class="evidence-label">Not a measured metric</p>
+      {
+        qualitativeResults.map((result) => (
+          <dl class="before-after">
+            <div>
+              <dt>Before</dt>
+              <dd>{result.before}</dd>
+            </div>
+            <div>
+              <dt>After</dt>
+              <dd>{result.after}</dd>
+            </div>
+          </dl>
+        ))
+      }
+    </div>
+  </div>
+</CaseStudySection>
+
+<style>
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-block: 1px solid #111;
+  }
+
+  .result-group {
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .result-group + .result-group {
+    border-left: 1px solid #111;
+  }
+
+  h3 {
+    margin-block: 0 1rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+  }
+
+  .empty-state,
+  .evidence-label {
+    color: #555;
+  }
+
+  .evidence-label {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .before-after {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .before-after div {
+    padding-top: 1rem;
+    border-top: 1px solid #bbb;
+  }
+
+  .before-after dd {
+    margin-left: 0;
+  }
+
+  @media (max-width: 48rem) {
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .result-group + .result-group {
+      border-top: 1px solid #111;
+      border-left: 0;
+    }
+  }
+</style>

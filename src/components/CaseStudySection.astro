@@ -1,0 +1,72 @@
+---
+interface Props {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  guidingNote?: string;
+}
+
+const { id, eyebrow, heading, guidingNote } = Astro.props;
+const headingId = `${id}-heading`;
+---
+
+<section class="case-section" aria-labelledby={headingId}>
+  <div class="section-heading">
+    <span class="eyebrow">{eyebrow}</span>
+    <h2 id={headingId}>{heading}</h2>
+  </div>
+  {guidingNote && <p class="guiding-note">{guidingNote}</p>}
+  <div class="section-content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .case-section {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    border-top: 1px solid #111;
+  }
+
+  .section-heading,
+  .guiding-note,
+  .section-content {
+    grid-column: 1 / -1;
+  }
+
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(9rem, 3fr) 9fr;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .section-heading span,
+  .section-heading h2 {
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: clamp(2.4rem, 6vw, 5.5rem);
+  }
+
+  .guiding-note {
+    max-width: 68ch;
+    margin-bottom: 0;
+    color: #555;
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 48rem) {
+    .case-section,
+    .section-heading {
+      grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+      gap: 0.75rem;
+    }
+  }
+</style>

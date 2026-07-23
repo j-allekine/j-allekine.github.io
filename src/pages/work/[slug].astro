@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import CaseStudyDetails from '../../components/CaseStudyDetails.astro';
 import CaseStudyOverview from '../../components/CaseStudyOverview.astro';
 import { projects, type Project } from '../../data/portfolio';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -21,12 +22,14 @@ const { project } = Astro.props;
   <div class="case-study shell">
     <a class="back-link" href="/#featured-work">← Back to work</a>
     <CaseStudyOverview project={project} />
+    <CaseStudyDetails project={project} />
   </div>
 </BaseLayout>
 
 <style>
   .case-study {
     padding-top: clamp(2rem, 5vw, 4rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
   }
 
   .back-link {

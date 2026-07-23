@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#f4f4f1"/>
+  <rect x="80" y="80" width="1440" height="740" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="130" y="155" fill="#111" font-family="monospace" font-size="24" letter-spacing="3">PROVISIONAL WORKFLOW · DETAILS PENDING</text>
+  <g fill="#fff" stroke="#111" stroke-width="3">
+    <rect x="130" y="335" width="330" height="190"/>
+    <rect x="635" y="335" width="330" height="190"/>
+    <rect x="1140" y="335" width="330" height="190"/>
+  </g>
+  <g fill="#111" font-family="Arial, sans-serif" font-size="30" font-weight="600" text-anchor="middle">
+    <text x="295" y="420">CURRENT STATE</text>
+    <text x="800" y="420">DECISION PATH</text>
+    <text x="1305" y="420">IMPROVED HANDOFF</text>
+  </g>
+  <g fill="#555" font-family="monospace" font-size="20" text-anchor="middle">
+    <text x="295" y="468">DETAILS PENDING</text>
+    <text x="800" y="468">DETAILS PENDING</text>
+    <text x="1305" y="468">DETAILS PENDING</text>
+  </g>
+  <g fill="none" stroke="#111" stroke-width="3">
+    <path d="M460 430H615"/>
+    <path d="M590 410L615 430L590 450"/>
+    <path d="M965 430H1120"/>
+    <path d="M1095 410L1120 430L1095 450"/>
+  </g>
+</svg>

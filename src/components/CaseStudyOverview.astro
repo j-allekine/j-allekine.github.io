@@ -9,14 +9,25 @@ const { project } = Astro.props;
 ---
 
 <section class="overview" aria-labelledby="overview-label">
-  <p class="eyebrow" id="overview-label">Overview · Provisional case study</p>
+  <p class="eyebrow provisional">
+    {
+      project.contentStatus === 'guiding'
+        ? 'Guiding content · Project facts pending'
+        : 'Case study'
+    }
+  </p>
   <h1>{project.title}</h1>
   <p class="summary">{project.summary}</p>
 
+  <h2 id="overview-label">Overview</h2>
   <dl>
-    <div class="overview__title">
+    <div>
       <dt>Title</dt>
       <dd>{project.title}</dd>
+    </div>
+    <div>
+      <dt>Summary</dt>
+      <dd>{project.summary}</dd>
     </div>
     <div>
       <dt>Role</dt>
@@ -54,20 +65,21 @@ const { project } = Astro.props;
 
   .summary {
     max-width: 58ch;
-    margin-bottom: clamp(2.5rem, 6vw, 5rem);
+    margin-bottom: clamp(3rem, 7vw, 6rem);
     font-size: clamp(1.15rem, 2vw, 1.4rem);
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(2rem, 5vw, 4rem);
   }
 
   dl {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem 2rem;
     padding-block: 1.5rem;
     border-block: 1px solid #111;
-  }
-
-  .overview__title {
-    grid-column: span 2;
   }
 
   dd {
@@ -83,10 +95,6 @@ const { project } = Astro.props;
   @media (max-width: 35rem) {
     dl {
       grid-template-columns: 1fr;
-    }
-
-    .overview__title {
-      grid-column: auto;
     }
   }
 </style>

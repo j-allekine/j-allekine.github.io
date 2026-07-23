@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#f4f4f1"/>
+  <rect x="80" y="80" width="1440" height="740" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="130" y="155" fill="#111" font-family="monospace" font-size="24" letter-spacing="3">DECISION EVIDENCE · PROVISIONAL</text>
+  <g fill="none" stroke="#111" stroke-width="3">
+    <rect x="130" y="240" width="1340" height="130"/>
+    <rect x="130" y="410" width="640" height="270"/>
+    <rect x="830" y="410" width="640" height="270"/>
+  </g>
+  <g fill="#111" font-family="Arial, sans-serif" font-size="28" font-weight="600">
+    <text x="170" y="315">CONSEQUENTIAL DECISION</text>
+    <text x="170" y="475">REASONING</text>
+    <text x="870" y="475">TRADE-OFF</text>
+  </g>
+  <g fill="#555" font-family="monospace" font-size="20">
+    <text x="170" y="540">ARTIFACT PENDING</text>
+    <text x="870" y="540">ARTIFACT PENDING</text>
+  </g>
+</svg>

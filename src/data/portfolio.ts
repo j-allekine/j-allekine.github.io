@@ -43,6 +43,7 @@ export interface ProjectResult {
 export interface Project {
   slug: string;
   number: string;
+  contentStatus: 'guiding' | 'approved';
   category: string;
   title: string;
   summary: string;
@@ -52,7 +53,11 @@ export interface Project {
   tools: readonly string[];
   industryOrSystemType: string;
   metadata: PageMetadata;
-  problem: readonly string[];
+  problem: {
+    whatWasHappening: string;
+    whoWasAffected: string;
+    whyItMattered: string;
+  };
   solution: {
     description: string;
     workflowSteps: readonly string[];
@@ -91,6 +96,7 @@ export const projects = [
   {
     slug: 'project-details-pending',
     number: '01',
+    contentStatus: 'guiding',
     category: 'Category pending',
     title: 'Project title pending',
     summary: 'Problem, decisions, and outcome pending owner input.',
@@ -104,14 +110,84 @@ export const projects = [
       description:
         'A provisional case-study overview. Project facts are pending owner input.',
     },
-    problem: ['Problem details pending owner input.'],
-    solution: {
-      description: 'Solution details pending owner input.',
-      workflowSteps: [],
+    problem: {
+      whatWasHappening:
+        'Current workflow conditions and reliability concerns pending owner input.',
+      whoWasAffected:
+        'People, teams, or customers affected by the workflow pending owner input.',
+      whyItMattered:
+        'Operational consequence and reason for prioritizing the work pending owner input.',
     },
-    contribution: [],
-    results: [],
-    keyDecisions: [],
-    gallery: [],
+    solution: {
+      description:
+        'Guiding workflow only. Replace each stage with the confirmed sequence used in this project.',
+      workflowSteps: [
+        'Current-state trigger and responsible owner — details pending.',
+        'Decision points and exception path — details pending.',
+        'Improved handoff and operational outcome — details pending.',
+      ],
+      primaryMedia: {
+        src: '/media/workflow-primary-placeholder.svg',
+        alt: 'Provisional workflow diagram placeholder with three ordered stages',
+        caption:
+          'Replace with the primary workflow diagram or main system screenshot.',
+        width: 1600,
+        height: 900,
+        featured: false,
+      },
+    },
+    contribution: [
+      'Document the operational problem J. Allekine personally analyzed.',
+      'Identify the workflow, validation, or automation work J. Allekine personally completed.',
+      'Separate J. Allekine’s decisions from broader project or team activity.',
+    ],
+    results: [
+      {
+        kind: 'qualitative',
+        before: 'Before observation pending owner input.',
+        after: 'After observation pending owner input.',
+      },
+    ],
+    keyDecisions: [
+      {
+        decision: 'Workflow-boundary decision pending owner input.',
+        reasoning: 'Reasoning and evidence pending owner input.',
+        tradeoff: 'Relevant trade-off pending owner input.',
+      },
+      {
+        decision: 'Validation-approach decision pending owner input.',
+        reasoning: 'Reasoning and evidence pending owner input.',
+        tradeoff: 'Relevant trade-off pending owner input.',
+      },
+    ],
+    gallery: [
+      {
+        src: '/media/gallery-system-placeholder.svg',
+        alt: 'Provisional full-width placeholder for the case study’s strongest system evidence',
+        caption:
+          'Replace with the strongest visual that explains the system.',
+        width: 1600,
+        height: 900,
+        featured: true,
+      },
+      {
+        src: '/media/gallery-decision-placeholder.svg',
+        alt: 'Provisional placeholder for a decision-detail artifact',
+        caption:
+          'Replace with evidence for a consequential project decision.',
+        width: 1600,
+        height: 900,
+        featured: false,
+      },
+      {
+        src: '/media/gallery-handoff-placeholder.svg',
+        alt: 'Provisional placeholder for an operational-handoff artifact',
+        caption:
+          'Replace with evidence that clarifies an operational handoff.',
+        width: 1600,
+        height: 900,
+        featured: false,
+      },
+    ],
   },
 ] satisfies readonly Project[];

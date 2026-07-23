@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect x="80" y="80" width="1440" height="740" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="130" y="155" fill="#111" font-family="monospace" font-size="24" letter-spacing="3">HANDOFF EVIDENCE · PROVISIONAL</text>
+  <g fill="#f4f4f1" stroke="#111" stroke-width="3">
+    <circle cx="330" cy="440" r="150"/>
+    <circle cx="800" cy="440" r="150"/>
+    <circle cx="1270" cy="440" r="150"/>
+  </g>
+  <g fill="#111" font-family="Arial, sans-serif" font-size="28" font-weight="600" text-anchor="middle">
+    <text x="330" y="430">INPUT</text>
+    <text x="800" y="430">HANDOFF</text>
+    <text x="1270" y="430">REVIEW</text>
+  </g>
+  <g fill="#555" font-family="monospace" font-size="20" text-anchor="middle">
+    <text x="330" y="475">DETAIL PENDING</text>
+    <text x="800" y="475">DETAIL PENDING</text>
+    <text x="1270" y="475">DETAIL PENDING</text>
+  </g>
+  <g fill="none" stroke="#111" stroke-width="3">
+    <path d="M480 440H630"/>
+    <path d="M605 420L630 440L605 460"/>
+    <path d="M950 440H1120"/>
+    <path d="M1095 420L1120 440L1095 460"/>
+  </g>
+</svg>
