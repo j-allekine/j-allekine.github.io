@@ -1,0 +1,38 @@
+<script is:inline>
+    const menuButton = document.querySelector("[data-menu-button]");
+    const navigation = document.querySelector("[data-navigation]");
+
+    function setMenuState(isOpen) {
+      if (!menuButton || !navigation) return;
+
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute(
+        "aria-label",
+        isOpen ? "Close navigation" : "Open navigation"
+      );
+      navigation.dataset.open = String(isOpen);
+    }
+
+    menuButton?.addEventListener("click", () => {
+      const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+      setMenuState(!isOpen);
+    });
+
+    navigation?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuState(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setMenuState(false);
+        menuButton?.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        setMenuState(false);
+      }
+    });
+</script>
+
