@@ -48,7 +48,7 @@ const guiding = project.contentStatus === 'guiding';
   {
     project.solution.primaryMedia && (
       <div class="primary-media">
-        <ProjectFigure media={project.solution.primaryMedia} />
+        <ProjectFigure media={project.solution.primaryMedia} loading="eager" />
       </div>
     )
   }

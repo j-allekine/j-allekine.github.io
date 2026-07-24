@@ -1,5 +1,12 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
+const homepage = {
+  path: '/',
+  documentTitle: 'Operational Improvement Portfolio | J. Allekine',
+  description:
+    'A provisional portfolio presenting operational improvement case studies by J. Allekine.',
+} as const;
+
 const caseStudies = [
   {
     path: '/work/workflow-improvement-details-pending/',
@@ -28,6 +35,7 @@ const caseStudies = [
 ] as const;
 
 const caseStudyPath = caseStudies[0].path;
+const portfolioPages = [homepage, ...caseStudies] as const;
 
 async function openPage(page: Page, path: string) {
   for (let attempt = 1; attempt <= 3; attempt += 1) {
@@ -156,6 +164,60 @@ test('all three cards open complete case studies with unique metadata', async ({
   }
 });
 
+test('every page shares only metadata backed by centralized values', async ({
+  page,
+}) => {
+  const titles = new Set<string>();
+  const descriptions = new Set<string>();
+
+  for (const portfolioPage of portfolioPages) {
+    await openPage(page, portfolioPage.path);
+
+    await expect(page).toHaveTitle(portfolioPage.documentTitle);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      portfolioPage.description,
+    );
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute(
+      'content',
+      'website',
+    );
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      'content',
+      portfolioPage.documentTitle,
+    );
+    await expect(
+      page.locator('meta[property="og:description"]'),
+    ).toHaveAttribute('content', portfolioPage.description);
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary',
+    );
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute(
+      'content',
+      portfolioPage.documentTitle,
+    );
+    await expect(
+      page.locator('meta[name="twitter:description"]'),
+    ).toHaveAttribute('content', portfolioPage.description);
+
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+    await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
+    await expect(page.locator('meta[property="og:image"]')).toHaveCount(0);
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveCount(0);
+
+    titles.add(await page.title());
+    descriptions.add(
+      (await page
+        .locator('meta[name="description"]')
+        .getAttribute('content')) ?? '',
+    );
+  }
+
+  expect(titles.size).toBe(portfolioPages.length);
+  expect(descriptions.size).toBe(portfolioPages.length);
+});
+
 test('project navigation is predictable and does not wrap around', async ({
   page,
 }) => {
@@ -267,6 +329,78 @@ test('the solution explains an ordered workflow with one distinct primary visual
   const primarySource = await primaryFigure.locator('img').getAttribute('src');
 
   expect(gallerySources).not.toContain(primarySource);
+});
+
+test('project media reserves space and uses intentional loading behavior', async ({
+  page,
+}) => {
+  await openPage(page, '/');
+
+  const cardImages = page.locator('[data-card-artifact] img');
+
+  await expect(cardImages).toHaveCount(3);
+
+  for (const cardImage of await cardImages.all()) {
+    await expect(cardImage).toHaveAttribute('alt', '');
+    await expect(cardImage).toHaveAttribute('width', /^[1-9]\d*$/);
+    await expect(cardImage).toHaveAttribute('height', /^[1-9]\d*$/);
+    await expect(cardImage).toHaveAttribute('loading', 'lazy');
+  }
+
+  for (const caseStudy of caseStudies) {
+    await openPage(page, caseStudy.path);
+
+    const solution = page.getByRole('region', { name: 'Solution' });
+    const primaryFigure = solution.locator('figure');
+    const primaryImage = primaryFigure.locator('img');
+    const gallery = page.getByRole('region', { name: 'Project Gallery' });
+    const galleryFigures = gallery.locator('figure');
+    const galleryImages = galleryFigures.locator('img');
+
+    await expect(primaryImage).toHaveAttribute('alt', /\S+/);
+    await expect(primaryImage).toHaveAttribute('loading', 'eager');
+    await expect(primaryImage).toHaveAttribute('fetchpriority', 'high');
+    await expect(primaryFigure.locator('figcaption')).not.toBeEmpty();
+
+    await expect(galleryImages).toHaveCount(3);
+
+    for (const galleryFigure of await galleryFigures.all()) {
+      await expect(galleryFigure.locator('img')).toHaveAttribute('alt', /\S+/);
+      await expect(galleryFigure.locator('img')).toHaveAttribute(
+        'loading',
+        'lazy',
+      );
+      await expect(galleryFigure.locator('figcaption')).not.toBeEmpty();
+    }
+
+    const images = page.locator('main img');
+    const imageReservations = await images.evaluateAll((elements) =>
+      elements.map((element) => {
+        const image = element as HTMLImageElement;
+
+        return {
+          width: image.getAttribute('width'),
+          height: image.getAttribute('height'),
+          aspectRatio: getComputedStyle(image).aspectRatio,
+        };
+      }),
+    );
+
+    expect(imageReservations).toHaveLength(4);
+
+    for (const reservation of imageReservations) {
+      expect(Number(reservation.width)).toBeGreaterThan(0);
+      expect(Number(reservation.height)).toBeGreaterThan(0);
+      expect(reservation.aspectRatio).not.toBe('auto');
+    }
+
+    const primarySource = await primaryImage.getAttribute('src');
+    const gallerySources = await galleryImages.evaluateAll((images) =>
+      images.map((image) => image.getAttribute('src')),
+    );
+
+    expect(gallerySources).not.toContain(primarySource);
+  }
 });
 
 test('results remain honest and key decisions expose reasoning and trade-offs', async ({
@@ -425,5 +559,14 @@ test('every internal link resolves without a 404 response', async ({
         `${path} links to ${destination}`,
       ).toBeLessThan(400);
     }
+  }
+});
+
+test('static pages do not contain unexpected hydrated components', async ({
+  page,
+}) => {
+  for (const portfolioPage of portfolioPages) {
+    await openPage(page, portfolioPage.path);
+    await expect(page.locator('astro-island')).toHaveCount(0);
   }
 });

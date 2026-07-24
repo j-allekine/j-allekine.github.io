@@ -22,6 +22,7 @@ const { media, loading = 'lazy' } = Astro.props;
       width={media.width}
       height={media.height}
       loading={loading}
+      fetchpriority={loading === 'eager' ? 'high' : undefined}
       decoding="async"
     />
   </div>
