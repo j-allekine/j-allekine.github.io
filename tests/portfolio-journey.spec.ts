@@ -1,4 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 const homepage = {
   path: '/',
@@ -36,6 +38,12 @@ const caseStudies = [
 
 const caseStudyPath = caseStudies[0].path;
 const portfolioPages = [homepage, ...caseStudies] as const;
+const visualReviewOutputDirectory = resolve(
+  '.scratch',
+  'portfolio-v1',
+  'acceptance',
+  'screenshots',
+);
 
 async function openPage(page: Page, path: string) {
   const maximumAttempts = 10;
@@ -1095,5 +1103,52 @@ test('reduced motion removes nonessential movement from elements and pseudo-elem
   ]) {
     expect(Number.parseFloat(target.animation)).toBeCloseTo(0.00001, 8);
     expect(Number.parseFloat(target.transition)).toBeCloseTo(0.00001, 8);
+  }
+});
+
+test('generates screenshots for human visual review at representative widths @unconfigured', async ({
+  page,
+}) => {
+  const viewports = [
+    { name: 'desktop', width: 1280, height: 900 },
+    { name: 'tablet', width: 768, height: 900 },
+    { name: 'mobile', width: 375, height: 812 },
+  ] as const;
+  const pages = [
+    { name: 'homepage', path: '/' },
+    { name: 'case-study', path: caseStudyPath },
+  ] as const;
+
+  await mkdir(visualReviewOutputDirectory, { recursive: true });
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+
+    for (const portfolioPage of pages) {
+      await openPage(page, portfolioPage.path);
+      await expect(page.getByRole('main')).toBeVisible();
+
+      for (const image of await page.locator('img').all()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect
+          .poll(() =>
+            image.evaluate(
+              (element) =>
+                (element as HTMLImageElement).complete &&
+                (element as HTMLImageElement).naturalWidth > 0,
+            ),
+          )
+          .toBe(true);
+      }
+
+      await page.screenshot({
+        path: resolve(
+          visualReviewOutputDirectory,
+          `${portfolioPage.name}-${viewport.name}.png`,
+        ),
+        fullPage: true,
+        animations: 'disabled',
+      });
+    }
   }
 });
