@@ -25,9 +25,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="provisional">Three provisional records · Facts pending owner input</p>
     </div>
 
-    <div class="featured-work__grid">
-      {projects.map((project) => <FeaturedWorkCard project={project} />)}
-    </div>
+    <ul class="featured-work__grid">
+      {
+        projects.map((project) => (
+          <li>
+            <FeaturedWorkCard project={project} />
+          </li>
+        ))
+      }
+    </ul>
   </section>
 </BaseLayout>
 
@@ -76,9 +82,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .featured-work__grid > :global(.card:last-child) {
+  .featured-work__grid > li {
+    display: flex;
+  }
+
+  .featured-work__grid > li :global(.card) {
+    width: 100%;
+  }
+
+  .featured-work__grid > li:last-child {
     grid-column: 1 / -1;
     width: calc((100% - 2rem) / 2);
     justify-self: center;
@@ -89,7 +106,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .featured-work__grid > :global(.card:last-child) {
+    .featured-work__grid > li:last-child {
       grid-column: auto;
       width: auto;
     }
@@ -109,7 +126,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       grid-template-columns: 1fr;
     }
 
-    .featured-work__grid > :global(.card:last-child) {
+    .featured-work__grid > li:last-child {
       grid-column: auto;
       width: auto;
     }

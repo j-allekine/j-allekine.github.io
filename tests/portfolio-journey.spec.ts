@@ -38,7 +38,9 @@ const caseStudyPath = caseStudies[0].path;
 const portfolioPages = [homepage, ...caseStudies] as const;
 
 async function openPage(page: Page, path: string) {
-  for (let attempt = 1; attempt <= 3; attempt += 1) {
+  const maximumAttempts = 10;
+
+  for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
     try {
       await page.goto(path);
       return;
@@ -48,11 +50,11 @@ async function openPage(page: Page, path: string) {
         (error.message.includes('ERR_CONNECTION_REFUSED') ||
           error.message.includes('ERR_SOCKET_NOT_CONNECTED'));
 
-      if (!previewIsStarting || attempt === 3) {
+      if (!previewIsStarting || attempt === maximumAttempts) {
         throw error;
       }
 
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(250);
     }
   }
 }
@@ -66,6 +68,179 @@ async function readElementBoxes(locator: Locator) {
 async function readBoundingBoxes(...locators: Locator[]) {
   return Promise.all(locators.map((locator) => locator.boundingBox()));
 }
+
+test('every page exposes shared landmarks and a working skip link first', async ({
+  page,
+}) => {
+  for (const path of ['/', ...caseStudies.map(({ path }) => path)]) {
+    await openPage(page, path);
+
+    const skipLink = page.getByRole('link', { name: 'Skip to main content' });
+    const main = page.getByRole('main');
+
+    await expect(page.getByRole('banner')).toHaveCount(1);
+    await expect(page.getByRole('navigation', { name: 'Primary' })).toHaveCount(
+      1,
+    );
+    await expect(main).toHaveAttribute('id', 'main-content');
+    await expect(page.getByRole('contentinfo')).toHaveCount(1);
+    await expect(
+      page.locator(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ).first(),
+    ).toHaveAccessibleName('Skip to main content');
+
+    await page.keyboard.press('Tab');
+    await expect(skipLink).toBeFocused();
+    await expect(skipLink).toBeVisible();
+    await page.keyboard.press('Enter');
+    await expect(main).toBeFocused();
+
+    await expect(
+      page.locator('.site-identity svg[aria-hidden="true"]'),
+    ).toHaveCount(1);
+  }
+});
+
+test('desktop navigation stays visible while the header scrolls in document flow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 700 });
+  await openPage(page, '/');
+
+  const header = page.getByRole('banner');
+  const navigation = page.getByRole('navigation', { name: 'Primary' });
+
+  await expect(navigation).toBeVisible();
+  await expect(navigation.getByRole('link', { name: 'Work' })).toHaveAttribute(
+    'href',
+    '/#featured-work',
+  );
+  await expect(navigation).toContainText(
+    'CapabilitiesUnavailableResumeUnavailableGitHubUnavailableContactUnavailable',
+  );
+  const mobileMenuButton = page.getByRole('button', {
+    name: /navigation/i,
+    includeHidden: true,
+  });
+
+  await expect(mobileMenuButton).toHaveCount(1);
+  await expect(mobileMenuButton).toBeHidden();
+  await expect(header).toHaveCSS('position', 'static');
+
+  const initialHeaderBox = await header.boundingBox();
+
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 900);
+  });
+
+  const scrolledHeaderBox = await header.boundingBox();
+
+  expect(initialHeaderBox).not.toBeNull();
+  expect(scrolledHeaderBox).not.toBeNull();
+  expect(initialHeaderBox!.y).toBe(0);
+  expect(scrolledHeaderBox!.y).toBeLessThan(-100);
+});
+
+test('mobile navigation expands in flow and closes by button or Escape', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await openPage(page, '/');
+
+  const header = page.getByRole('banner');
+  const main = page.getByRole('main');
+  const navigation = page.getByRole('navigation', {
+    name: 'Primary',
+    includeHidden: true,
+  });
+  const menuButton = page.locator('[data-menu-button]');
+
+  await expect(menuButton).toHaveAccessibleName('Open navigation');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(menuButton).toHaveAttribute('aria-controls', 'site-navigation');
+  await expect(navigation).toBeHidden();
+
+  const collapsedHeaderBox = await header.boundingBox();
+  const collapsedMainBox = await main.boundingBox();
+  const menuButtonBox = await menuButton.boundingBox();
+
+  expect(collapsedHeaderBox).not.toBeNull();
+  expect(collapsedMainBox).not.toBeNull();
+  expect(menuButtonBox).not.toBeNull();
+  expect(menuButtonBox!.width).toBeGreaterThanOrEqual(44);
+  expect(menuButtonBox!.height).toBeGreaterThanOrEqual(44);
+
+  await menuButton.click();
+
+  await expect(menuButton).toHaveAccessibleName('Close navigation');
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(navigation).toBeVisible();
+
+  const expandedHeaderBox = await header.boundingBox();
+  const expandedMainBox = await main.boundingBox();
+
+  expect(expandedHeaderBox).not.toBeNull();
+  expect(expandedMainBox).not.toBeNull();
+  expect(expandedHeaderBox!.height).toBeGreaterThan(collapsedHeaderBox!.height);
+  expect(expandedMainBox!.y).toBeGreaterThan(collapsedMainBox!.y);
+
+  await menuButton.click();
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+
+  await menuButton.click();
+  await page.keyboard.press('Escape');
+
+  await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+  await expect(menuButton).toBeFocused();
+});
+
+test('identity controls stay readable, focused, and lightweight', async ({
+  page,
+  request,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 700 });
+  await openPage(page, '/');
+
+  const identityLink = page.getByRole('link', { name: 'J. Allekine' });
+  const workLink = page
+    .getByRole('navigation', { name: 'Primary' })
+    .getByRole('link', { name: 'Work' });
+
+  for (const link of [identityLink, workLink]) {
+    const box = await link.boundingBox();
+
+    expect(box).not.toBeNull();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+  }
+
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Tab');
+  await expect(identityLink).toBeFocused();
+  await expect(identityLink).toHaveCSS('outline-style', 'solid');
+
+  await expect(page.locator('astro-island')).toHaveCount(0);
+  await expect(page.locator('script[type="module"]')).toHaveCount(1);
+
+  const faviconLinks = page.locator('link[rel="icon"]');
+
+  await expect(faviconLinks).toHaveCount(2);
+  await expect(faviconLinks.nth(0)).toHaveAttribute('href', '/favicon.svg');
+  await expect(faviconLinks.nth(1)).toHaveAttribute('href', '/favicon.ico');
+
+  const svgFavicon = await request.get('/favicon.svg');
+  const icoFavicon = await request.get('/favicon.ico');
+
+  expect(svgFavicon.ok()).toBe(true);
+  expect(await svgFavicon.text()).toContain('data-faith-signal="cross"');
+  expect(icoFavicon.ok()).toBe(true);
+  expect(Array.from((await icoFavicon.body()).subarray(0, 4))).toEqual([
+    0, 0, 1, 0,
+  ]);
+});
 
 test('a hiring manager can open a featured case study and review its overview', async ({
   page,
@@ -84,6 +259,8 @@ test('a hiring manager can open a featured case study and review its overview', 
   const cards = featuredWork.getByRole('article');
   const firstCard = cards.first();
 
+  await expect(featuredWork.getByRole('list')).toHaveCount(1);
+  await expect(featuredWork.getByRole('listitem')).toHaveCount(3);
   await expect(cards).toHaveCount(3);
   await expect(firstCard).toContainText('Project 01');
   await expect(firstCard).toContainText('Category');
