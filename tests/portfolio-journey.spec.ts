@@ -117,7 +117,7 @@ test('desktop navigation stays visible while the header scrolls in document flow
     '/#featured-work',
   );
   await expect(navigation).toContainText(
-    'CapabilitiesUnavailableResumeUnavailableGitHubUnavailableContactUnavailable',
+    'WorkCapabilitiesResumeGitHubContact',
   );
   const mobileMenuButton = page.getByRole('button', {
     name: /navigation/i,
