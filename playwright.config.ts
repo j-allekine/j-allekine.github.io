@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const acceptanceHost = '127.0.0.1';
+const acceptancePort = 4322;
+const acceptanceUrl = `http://${acceptanceHost}:${acceptancePort}`;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -7,7 +11,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4321',
+    baseURL: acceptanceUrl,
     trace: 'on-first-retry',
   },
   projects: [
@@ -17,7 +21,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview -- --host 127.0.0.1 --port 4321',
+    command: `npm run preview -- --host ${acceptanceHost} --port ${acceptancePort}`,
+    url: acceptanceUrl,
     reuseExistingServer: false,
     timeout: 120_000,
   },

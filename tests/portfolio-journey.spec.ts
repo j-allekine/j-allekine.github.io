@@ -1,6 +1,33 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
-const caseStudyPath = '/work/project-details-pending/';
+const caseStudies = [
+  {
+    path: '/work/workflow-improvement-details-pending/',
+    title: 'Workflow improvement case study — details pending',
+    documentTitle:
+      'Workflow Improvement Case Study — Details Pending | J. Allekine',
+    description:
+      'A provisional case-study record for a workflow improvement project. Confirmed project facts are pending owner input.',
+  },
+  {
+    path: '/work/spreadsheet-operations-details-pending/',
+    title: 'Spreadsheet operations case study — details pending',
+    documentTitle:
+      'Spreadsheet Operations Case Study — Details Pending | J. Allekine',
+    description:
+      'A provisional case-study record for a spreadsheet operations project. Confirmed project facts are pending owner input.',
+  },
+  {
+    path: '/work/data-handoff-details-pending/',
+    title: 'Data handoff case study — details pending',
+    documentTitle:
+      'Data Handoff Case Study — Details Pending | J. Allekine',
+    description:
+      'A provisional case-study record for a data handoff project. Confirmed project facts are pending owner input.',
+  },
+] as const;
+
+const caseStudyPath = caseStudies[0].path;
 
 async function openPage(page: Page, path: string) {
   for (let attempt = 1; attempt <= 3; attempt += 1) {
@@ -10,7 +37,8 @@ async function openPage(page: Page, path: string) {
     } catch (error) {
       const previewIsStarting =
         error instanceof Error &&
-        error.message.includes('ERR_CONNECTION_REFUSED');
+        (error.message.includes('ERR_CONNECTION_REFUSED') ||
+          error.message.includes('ERR_SOCKET_NOT_CONNECTED'));
 
       if (!previewIsStarting || attempt === 3) {
         throw error;
@@ -21,7 +49,17 @@ async function openPage(page: Page, path: string) {
   }
 }
 
-test('a hiring manager can open one featured case study and review its overview', async ({
+async function readElementBoxes(locator: Locator) {
+  return locator.evaluateAll((elements) =>
+    elements.map((element) => element.getBoundingClientRect().toJSON()),
+  );
+}
+
+async function readBoundingBoxes(...locators: Locator[]) {
+  return Promise.all(locators.map((locator) => locator.boundingBox()));
+}
+
+test('a hiring manager can open a featured case study and review its overview', async ({
   page,
 }) => {
   await openPage(page, '/');
@@ -35,27 +73,30 @@ test('a hiring manager can open one featured case study and review its overview'
   ).toBeVisible();
 
   const featuredWork = page.getByRole('region', { name: 'Featured work' });
-  const card = featuredWork.getByRole('article');
+  const cards = featuredWork.getByRole('article');
+  const firstCard = cards.first();
 
-  await expect(card).toHaveCount(1);
-  await expect(card).toContainText('Project 01');
-  await expect(card).toContainText('Category');
-  await expect(card).toContainText('Role');
-  await expect(card).toContainText('System type');
-  await expect(card).toContainText('Year');
-  await expect(card).toContainText('Tools');
+  await expect(cards).toHaveCount(3);
+  await expect(firstCard).toContainText('Project 01');
+  await expect(firstCard).toContainText('Category');
+  await expect(firstCard).toContainText('Role');
+  await expect(firstCard).toContainText('System type');
+  await expect(firstCard).toContainText('Year');
+  await expect(firstCard).toContainText('Tools');
 
-  await card.getByRole('link', { name: /open provisional case study/i }).click();
+  await firstCard
+    .getByRole('link', { name: /open provisional case study/i })
+    .click();
 
-  await expect(page).toHaveURL(/\/work\/project-details-pending\/$/);
-  await expect(page).toHaveTitle(/Case Study Pending/);
+  await expect(page).toHaveURL(caseStudies[0].path);
+  await expect(page).toHaveTitle(caseStudies[0].documentTitle);
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Project title pending' }),
+    page.getByRole('heading', { level: 1, name: caseStudies[0].title }),
   ).toBeVisible();
 
   const overview = page.getByRole('region', { name: 'Overview' });
 
-  await expect(overview).toContainText('Project title pending');
+  await expect(overview).toContainText(caseStudies[0].title);
   await expect(overview).toContainText(
     'Problem, decisions, and outcome pending owner input.',
   );
@@ -66,6 +107,99 @@ test('a hiring manager can open one featured case study and review its overview'
 
   await page.getByRole('link', { name: 'Back to work' }).click();
   await expect(page).toHaveURL(/\/#featured-work$/);
+});
+
+test('all three cards open complete case studies with unique metadata', async ({
+  page,
+}) => {
+  await openPage(page, '/');
+
+  const featuredWork = page.getByRole('region', { name: 'Featured work' });
+  const cards = featuredWork.getByRole('article');
+
+  await expect(cards).toHaveCount(3);
+  await expect(featuredWork.locator('[data-card-artifact]')).toHaveCount(3);
+
+  for (const [index, caseStudy] of caseStudies.entries()) {
+    await openPage(page, '/');
+
+    const card = cards.nth(index);
+    const link = card.getByRole('link', {
+      name: /open provisional case study/i,
+    });
+
+    await expect(card).toContainText(`Project 0${index + 1}`);
+    await expect(link).toHaveAttribute('href', caseStudy.path);
+    await expect(card.locator('[data-card-artifact] img')).toHaveAttribute(
+      'alt',
+      '',
+    );
+
+    await openPage(page, caseStudy.path);
+    await expect(page).toHaveTitle(caseStudy.documentTitle);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      caseStudy.description,
+    );
+    await expect(
+      page.getByRole('heading', { level: 1, name: caseStudy.title }),
+    ).toBeVisible();
+    await expect(page.locator('main h2')).toHaveText([
+      'Overview',
+      'Problem',
+      'Solution',
+      'My Contribution',
+      'Results',
+      'Key Decisions',
+      'Project Gallery',
+    ]);
+  }
+});
+
+test('project navigation is predictable and does not wrap around', async ({
+  page,
+}) => {
+  const expectedEdges = [
+    {
+      previous: undefined,
+      next: caseStudies[1],
+    },
+    {
+      previous: caseStudies[0],
+      next: caseStudies[2],
+    },
+    {
+      previous: caseStudies[1],
+      next: undefined,
+    },
+  ] as const;
+
+  for (const [index, caseStudy] of caseStudies.entries()) {
+    await openPage(page, caseStudy.path);
+
+    const navigation = page.getByRole('navigation', {
+      name: 'Case study projects',
+    });
+    const previousLink = navigation.getByRole('link', {
+      name: /previous project/i,
+    });
+    const nextLink = navigation.getByRole('link', { name: /next project/i });
+    const edge = expectedEdges[index];
+
+    if (edge.previous) {
+      await expect(previousLink).toHaveAttribute('href', edge.previous.path);
+      await expect(previousLink).toContainText(edge.previous.title);
+    } else {
+      await expect(previousLink).toHaveCount(0);
+    }
+
+    if (edge.next) {
+      await expect(nextLink).toHaveAttribute('href', edge.next.path);
+      await expect(nextLink).toContainText(edge.next.title);
+    } else {
+      await expect(nextLink).toHaveCount(0);
+    }
+  }
 });
 
 test('a hiring manager can follow the complete case study in evidence order', async ({
@@ -179,8 +313,10 @@ test('the project gallery gives every visual context and adapts its hierarchy', 
     await expect(figure.locator('figcaption')).not.toBeEmpty();
   }
 
-  const desktopFeaturedBox = await featuredFigure.boundingBox();
-  const desktopSupportingBox = await figures.nth(1).boundingBox();
+  const [desktopFeaturedBox, desktopSupportingBox] = await readBoundingBoxes(
+    featuredFigure,
+    figures.nth(1),
+  );
 
   expect(desktopFeaturedBox).not.toBeNull();
   expect(desktopSupportingBox).not.toBeNull();
@@ -188,14 +324,106 @@ test('the project gallery gives every visual context and adapts its hierarchy', 
     desktopSupportingBox!.width * 1.8,
   );
 
+  await page.setViewportSize({ width: 768, height: 900 });
+
+  const [tabletFeaturedBox, tabletSupportingBox] = await readBoundingBoxes(
+    featuredFigure,
+    figures.nth(1),
+  );
+
+  expect(tabletFeaturedBox).not.toBeNull();
+  expect(tabletSupportingBox).not.toBeNull();
+  expect(tabletFeaturedBox!.width).toBeGreaterThan(
+    tabletSupportingBox!.width * 1.8,
+  );
+
   await page.setViewportSize({ width: 375, height: 812 });
 
-  const mobileFeaturedBox = await featuredFigure.boundingBox();
-  const mobileSupportingBox = await figures.nth(1).boundingBox();
+  const [mobileFeaturedBox, mobileSupportingBox] = await readBoundingBoxes(
+    featuredFigure,
+    figures.nth(1),
+  );
 
   expect(mobileFeaturedBox).not.toBeNull();
   expect(mobileSupportingBox).not.toBeNull();
   expect(Math.abs(mobileFeaturedBox!.width - mobileSupportingBox!.width)).toBeLessThan(
     2,
   );
+});
+
+test('featured work keeps equal prominence at desktop, tablet, and mobile widths', async ({
+  page,
+}) => {
+  const cards = page
+    .getByRole('region', { name: 'Featured work' })
+    .getByRole('article');
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openPage(page, '/');
+
+  const desktopBoxes = await readElementBoxes(cards);
+
+  expect(desktopBoxes).toHaveLength(3);
+  expect(new Set(desktopBoxes.map(({ y }) => Math.round(y))).size).toBe(1);
+  expect(Math.max(...desktopBoxes.map(({ width }) => width))).toBeLessThan(
+    Math.min(...desktopBoxes.map(({ width }) => width)) + 2,
+  );
+
+  await page.setViewportSize({ width: 768, height: 900 });
+
+  const tabletBoxes = await readElementBoxes(cards);
+
+  expect(Math.abs(tabletBoxes[0].width - tabletBoxes[2].width)).toBeLessThan(2);
+  expect(Math.round(tabletBoxes[0].y)).toBe(Math.round(tabletBoxes[1].y));
+  expect(tabletBoxes[2].y).toBeGreaterThan(tabletBoxes[0].y);
+
+  const tabletGrid = await page
+    .locator('.featured-work__grid')
+    .evaluate((element) => element.getBoundingClientRect().toJSON());
+  const finalCardCenter = tabletBoxes[2].x + tabletBoxes[2].width / 2;
+  const gridCenter = tabletGrid.x + tabletGrid.width / 2;
+
+  expect(Math.abs(finalCardCenter - gridCenter)).toBeLessThan(2);
+
+  await page.setViewportSize({ width: 375, height: 812 });
+
+  const mobileBoxes = await readElementBoxes(cards);
+
+  expect(new Set(mobileBoxes.map(({ x }) => Math.round(x))).size).toBe(1);
+  expect(mobileBoxes[1].y).toBeGreaterThan(mobileBoxes[0].y);
+  expect(mobileBoxes[2].y).toBeGreaterThan(mobileBoxes[1].y);
+  expect(Math.max(...mobileBoxes.map(({ width }) => width))).toBeLessThan(
+    Math.min(...mobileBoxes.map(({ width }) => width)) + 2,
+  );
+});
+
+test('every internal link resolves without a 404 response', async ({
+  page,
+  request,
+}) => {
+  const paths = ['/', ...caseStudies.map(({ path }) => path)];
+
+  for (const path of paths) {
+    await openPage(page, path);
+
+    const destinations = await page.locator('a[href]').evaluateAll((links) =>
+      links
+        .map((link) => link.getAttribute('href'))
+        .filter(
+          (href): href is string =>
+            href !== null && (href.startsWith('/') || href.startsWith('#')),
+        ),
+    );
+
+    for (const destination of destinations) {
+      const response = await request.get(
+        destination.startsWith('#') ? `/${destination}` : destination,
+      );
+
+      expect(
+        response.status(),
+        `${path} links to ${destination}`,
+      ).toBeLessThan(400);
+    }
+  }
 });

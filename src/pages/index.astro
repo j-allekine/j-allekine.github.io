@@ -2,8 +2,6 @@
 import FeaturedWorkCard from '../components/FeaturedWorkCard.astro';
 import { projects, siteConfig } from '../data/portfolio';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const featuredProject = projects[0];
 ---
 
 <BaseLayout metadata={siteConfig.homepage.metadata}>
@@ -24,10 +22,12 @@ const featuredProject = projects[0];
         <p class="eyebrow">Selected evidence</p>
         <h2 id="featured-work-heading">Featured work</h2>
       </div>
-      <p class="provisional">One provisional record · Facts pending owner input</p>
+      <p class="provisional">Three provisional records · Facts pending owner input</p>
     </div>
 
-    <FeaturedWorkCard project={featuredProject} />
+    <div class="featured-work__grid">
+      {projects.map((project) => <FeaturedWorkCard project={project} />)}
+    </div>
   </section>
 </BaseLayout>
 
@@ -72,6 +72,29 @@ const featuredProject = projects[0];
     text-align: right;
   }
 
+  .featured-work__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .featured-work__grid > :global(.card:last-child) {
+    grid-column: 1 / -1;
+    width: calc((100% - 2rem) / 2);
+    justify-self: center;
+  }
+
+  @media (min-width: 64rem) {
+    .featured-work__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .featured-work__grid > :global(.card:last-child) {
+      grid-column: auto;
+      width: auto;
+    }
+  }
+
   @media (max-width: 40rem) {
     .section-heading {
       display: block;
@@ -80,6 +103,15 @@ const featuredProject = projects[0];
     .section-heading p:last-child {
       margin-top: 1rem;
       text-align: left;
+    }
+
+    .featured-work__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-work__grid > :global(.card:last-child) {
+      grid-column: auto;
+      width: auto;
     }
   }
 </style>

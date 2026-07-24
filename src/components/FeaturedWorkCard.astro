@@ -6,12 +6,30 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const artifact = project.solution.primaryMedia;
 ---
 
 <article class="card">
   <div class="card__topline">
     <span>Project {project.number}</span>
     <span>{project.category}</span>
+  </div>
+
+  <div class="card__artifact" data-card-artifact>
+    {
+      artifact ? (
+        <img
+          src={artifact.src}
+          alt=""
+          width={artifact.width}
+          height={artifact.height}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <span>Artifact pending owner input</span>
+      )
+    }
   </div>
 
   <p class="provisional">Provisional project record</p>
@@ -44,6 +62,9 @@ const { project } = Astro.props;
 
 <style>
   .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: clamp(1.5rem, 3vw, 2.5rem);
     border: 1px solid #111;
   }
@@ -61,15 +82,38 @@ const { project } = Astro.props;
     text-transform: uppercase;
   }
 
+  .card__artifact {
+    display: grid;
+    min-height: 8rem;
+    margin-top: 1.5rem;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid #bbb;
+    background: #f4f4f1;
+    color: #555;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card__artifact img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
   .provisional {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     margin-bottom: 0.5rem;
     font-size: 0.85rem;
   }
 
   h3 {
     margin-block: 0 1rem;
-    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
     line-height: 1.05;
   }
 
@@ -93,7 +137,8 @@ const { project } = Astro.props;
 
   .card__link {
     display: inline-block;
-    margin-top: 1.5rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
     font-weight: 700;
   }
 

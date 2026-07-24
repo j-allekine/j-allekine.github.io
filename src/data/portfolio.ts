@@ -92,24 +92,32 @@ export const siteConfig = {
   footerText: 'Provisional portfolio',
 } satisfies SiteConfig;
 
-export const projects = [
-  {
-    slug: 'project-details-pending',
-    number: '01',
+interface GuidingProjectIdentity {
+  slug: string;
+  number: string;
+  title: string;
+  metadata: PageMetadata;
+}
+
+function createGuidingProject({
+  slug,
+  number,
+  title,
+  metadata,
+}: GuidingProjectIdentity): Project {
+  return {
+    slug,
+    number,
     contentStatus: 'guiding',
     category: 'Category pending',
-    title: 'Project title pending',
+    title,
     summary: 'Problem, decisions, and outcome pending owner input.',
     role: 'Role pending',
     timeline: 'Timeline pending',
     year: 'Year pending',
     tools: ['Tools pending'],
     industryOrSystemType: 'System type pending',
-    metadata: {
-      title: 'Case Study Pending | J. Allekine',
-      description:
-        'A provisional case-study overview. Project facts are pending owner input.',
-    },
+    metadata,
     problem: {
       whatWasHappening:
         'Current workflow conditions and reliability concerns pending owner input.',
@@ -189,5 +197,39 @@ export const projects = [
         featured: false,
       },
     ],
-  },
+  };
+}
+
+export const projects = [
+  createGuidingProject({
+    slug: 'workflow-improvement-details-pending',
+    number: '01',
+    title: 'Workflow improvement case study — details pending',
+    metadata: {
+      title: 'Workflow Improvement Case Study — Details Pending | J. Allekine',
+      description:
+        'A provisional case-study record for a workflow improvement project. Confirmed project facts are pending owner input.',
+    },
+  }),
+  createGuidingProject({
+    slug: 'spreadsheet-operations-details-pending',
+    number: '02',
+    title: 'Spreadsheet operations case study — details pending',
+    metadata: {
+      title:
+        'Spreadsheet Operations Case Study — Details Pending | J. Allekine',
+      description:
+        'A provisional case-study record for a spreadsheet operations project. Confirmed project facts are pending owner input.',
+    },
+  }),
+  createGuidingProject({
+    slug: 'data-handoff-details-pending',
+    number: '03',
+    title: 'Data handoff case study — details pending',
+    metadata: {
+      title: 'Data Handoff Case Study — Details Pending | J. Allekine',
+      description:
+        'A provisional case-study record for a data handoff project. Confirmed project facts are pending owner input.',
+    },
+  }),
 ] satisfies readonly Project[];
