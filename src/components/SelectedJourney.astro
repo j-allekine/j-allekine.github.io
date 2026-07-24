@@ -1,0 +1,217 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import type { JourneyMilestone } from '../data/portfolio';
+
+interface Props {
+  milestones: readonly JourneyMilestone[];
+  eyebrow?: string;
+  heading?: string;
+}
+
+const {
+  milestones,
+  eyebrow = 'Professional path',
+  heading = 'Selected journey',
+} = Astro.props;
+---
+
+<section class="selected-journey shell" aria-labelledby="journey-heading">
+  <header class="selected-journey__header">
+    <p class="selected-journey__eyebrow">{eyebrow}</p>
+    <h2 id="journey-heading">{heading}</h2>
+  </header>
+
+  <ol class="timeline">
+    {
+      milestones.map((milestone) => (
+        <li class="timeline__milestone">
+          <div class="timeline__period">
+            <p class="timeline__number">{milestone.number}</p>
+            <p>{milestone.period}</p>
+          </div>
+          <div class="timeline__content">
+            <h3>{milestone.title}</h3>
+            <p class="timeline__description">{milestone.description}</p>
+            <p class="timeline__significance">{milestone.significance}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .selected-journey {
+    padding-block: clamp(4rem, 8vw, 7rem);
+    font-family: 'Geist Variable', Arial, Helvetica, sans-serif;
+  }
+
+  .selected-journey__header {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .selected-journey__eyebrow,
+  .timeline__period,
+  .timeline__number,
+  .timeline__significance {
+    font-family: 'Geist Mono Variable', 'Courier New', monospace;
+  }
+
+  .selected-journey__eyebrow {
+    grid-column: 1 / span 3;
+    margin: 0;
+    color: #555;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .selected-journey__header h2 {
+    grid-column: 4 / -1;
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 550;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .timeline {
+    position: relative;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 11rem;
+    width: 1px;
+    background: #111;
+    content: '';
+  }
+
+  .timeline__milestone {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 4rem;
+    min-height: 15rem;
+  }
+
+  .timeline__period {
+    padding-top: 1.5rem;
+    font-size: 0.78rem;
+    text-align: right;
+  }
+
+  .timeline__period p {
+    margin: 0;
+  }
+
+  .timeline__period p:last-child {
+    margin-top: 0.75rem;
+  }
+
+  .timeline__number {
+    color: #555;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .timeline__content {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.3fr);
+    gap: 1.5rem 2rem;
+    align-content: start;
+    padding: 1.5rem 0 3rem;
+    border-top: 1px solid #bbb;
+  }
+
+  .timeline__content h3 {
+    grid-column: 1;
+    margin: 0;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-weight: 550;
+    line-height: 1.15;
+  }
+
+  .timeline__description,
+  .timeline__significance {
+    grid-column: 2;
+    margin: 0;
+  }
+
+  .timeline__description {
+    color: #222;
+  }
+
+  .timeline__significance {
+    color: #555;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 48rem) {
+    .selected-journey__header {
+      display: block;
+      margin-bottom: 2.5rem;
+    }
+
+    .selected-journey__eyebrow {
+      margin-bottom: 0.75rem;
+    }
+
+    .selected-journey__header h2 {
+      font-size: clamp(2rem, 10vw, 2.75rem);
+    }
+
+    .timeline {
+      padding-left: 1.5rem;
+    }
+
+    .timeline::before {
+      left: 0;
+    }
+
+    .timeline__milestone {
+      display: block;
+      min-height: 0;
+      padding-bottom: 3rem;
+    }
+
+    .timeline__period {
+      padding: 0 0 1rem;
+      text-align: left;
+    }
+
+    .timeline__period p {
+      display: inline;
+    }
+
+    .timeline__period p:last-child {
+      margin: 0 0 0 0.75rem;
+    }
+
+    .timeline__content {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.25rem 0 0;
+    }
+
+    .timeline__content h3,
+    .timeline__description,
+    .timeline__significance {
+      grid-column: 1;
+    }
+  }
+</style>

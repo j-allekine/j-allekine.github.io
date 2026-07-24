@@ -5,6 +5,21 @@ export interface PageMetadata {
   socialImageUrl?: string;
 }
 
+export interface HowIWorkStage {
+  number: string;
+  title: string;
+  description: string;
+  principle: string;
+}
+
+export interface JourneyMilestone {
+  number: string;
+  period: string;
+  title: string;
+  description: string;
+  significance: string;
+}
+
 export interface SiteConfig {
   ownerName: string;
   homepage: {
@@ -124,6 +139,83 @@ export const siteConfig = {
   location: undefined,
   footerText: 'Provisional portfolio',
 } satisfies SiteConfig;
+
+export const howIWorkStages = [
+  {
+    number: '01',
+    title: 'Understand',
+    description:
+      'Map the current workflow, the people involved, and the points where work becomes slow, unclear, or unreliable.',
+    principle: 'Start with the work, not the tool.',
+  },
+  {
+    number: '02',
+    title: 'Design',
+    description:
+      'Define the simplest workable future state, including ownership, handoffs, decisions, and exception paths.',
+    principle: 'Make responsibilities and trade-offs visible.',
+  },
+  {
+    number: '03',
+    title: 'Build',
+    description:
+      'Turn the agreed workflow into a practical system that fits the way the operation actually needs to run.',
+    principle: 'Use only as much technology as the problem needs.',
+  },
+  {
+    number: '04',
+    title: 'Validate',
+    description:
+      'Test the system against realistic scenarios, expected failures, and the needs of the people who will use it.',
+    principle: 'Evidence matters more than assumption.',
+  },
+  {
+    number: '05',
+    title: 'Improve',
+    description:
+      'Observe the system in use, remove new friction, and refine it as the operation and its constraints change.',
+    principle: 'Treat improvement as an ongoing loop.',
+  },
+] satisfies readonly HowIWorkStage[];
+
+export const selectedJourneyMilestones = [
+  {
+    number: '01',
+    period: 'Date pending',
+    title: 'Starting point',
+    description:
+      'Add the earliest experience that shaped how you understand operational work and the people affected by it.',
+    significance:
+      'Explain the change in perspective that still influences your work.',
+  },
+  {
+    number: '02',
+    period: 'Date pending',
+    title: 'Expanding responsibility',
+    description:
+      'Add a concise milestone where the scope, complexity, or consequences of the work became more substantial.',
+    significance:
+      'Connect added responsibility to a stronger working principle.',
+  },
+  {
+    number: '03',
+    period: 'Date pending',
+    title: 'Building practical systems',
+    description:
+      'Add a milestone that demonstrates the shift from handling isolated tasks to improving an entire workflow.',
+    significance:
+      'Show why systems thinking became part of your professional approach.',
+  },
+  {
+    number: '04',
+    period: 'Present',
+    title: 'Current direction',
+    description:
+      'Describe the operational problems and working environments you want to contribute to next.',
+    significance:
+      'End with direction and relevance rather than a complete biography.',
+  },
+] satisfies readonly JourneyMilestone[];
 
 interface GuidingProjectIdentity {
   slug: string;
