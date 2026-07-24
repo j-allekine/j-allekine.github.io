@@ -51,7 +51,7 @@ const artifact = project.solution.primaryMedia;
     </div>
     <div>
       <dt>Tools</dt>
-      <dd>{project.tools.join(', ')}</dd>
+      <dd class="metadata-value">{project.tools.join(', ')}</dd>
     </div>
   </dl>
 
@@ -67,6 +67,14 @@ const artifact = project.solution.primaryMedia;
     height: 100%;
     padding: clamp(1.5rem, 3vw, 2.5rem);
     border: 1px solid #111;
+    transition:
+      background-color var(--motion-duration) var(--motion-easing),
+      border-color var(--motion-duration) var(--motion-easing);
+  }
+
+  .card:hover {
+    border-color: #555;
+    background: #fafafa;
   }
 
   .card__topline {
@@ -75,7 +83,7 @@ const artifact = project.solution.primaryMedia;
     gap: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #bbb;
-    font-family: "Courier New", Courier, monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -91,7 +99,7 @@ const artifact = project.solution.primaryMedia;
     border: 1px solid #bbb;
     background: #f4f4f1;
     color: #555;
-    font-family: "Courier New", Courier, monospace;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;

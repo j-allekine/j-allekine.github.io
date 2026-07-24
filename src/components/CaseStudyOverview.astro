@@ -39,7 +39,7 @@ const { project } = Astro.props;
     </div>
     <div>
       <dt>Tools</dt>
-      <dd>{project.tools.join(', ')}</dd>
+      <dd class="metadata-value">{project.tools.join(', ')}</dd>
     </div>
     <div>
       <dt>Industry or system type</dt>
@@ -64,7 +64,7 @@ const { project } = Astro.props;
   }
 
   .summary {
-    max-width: 58ch;
+    max-width: 60ch;
     margin-bottom: clamp(3rem, 7vw, 6rem);
     font-size: clamp(1.15rem, 2vw, 1.4rem);
   }

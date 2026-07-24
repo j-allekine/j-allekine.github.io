@@ -73,7 +73,7 @@ const guiding = project.contentStatus === 'guiding';
 
 <style>
   .reading-column {
-    max-width: 68ch;
+    max-width: var(--reading-width);
   }
 
   .problem-list,
@@ -102,7 +102,7 @@ const guiding = project.contentStatus === 'guiding';
 
   .problem-list strong,
   .workflow li::before {
-    font-family: "Courier New", Courier, monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;

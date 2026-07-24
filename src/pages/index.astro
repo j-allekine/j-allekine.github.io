@@ -137,11 +137,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   @media (min-width: 64rem) {
     .featured-work__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .featured-work__grid > li {
+      grid-column: span 4;
     }
 
     .featured-work__grid > li:last-child {
-      grid-column: auto;
+      grid-column: span 4;
       width: auto;
     }
   }

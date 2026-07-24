@@ -872,3 +872,228 @@ test('the footer back-to-top link returns a reader to the page start', async ({
   await expect(page).toHaveURL(/#top$/);
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });
+
+test('typography keeps reading copy calm and metadata secondary', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openPage(page, caseStudyPath);
+  await page.evaluate(() => document.fonts.ready);
+
+  const bodyTypography = await page.locator('body').evaluate((element) => {
+    const style = getComputedStyle(element);
+
+    return {
+      family: style.fontFamily,
+      size: Number.parseFloat(style.fontSize),
+      lineHeight: Number.parseFloat(style.lineHeight),
+      weight: style.fontWeight,
+    };
+  });
+
+  expect(bodyTypography.family).toContain('Geist Variable');
+  expect(bodyTypography.size).toBeGreaterThanOrEqual(17);
+  expect(bodyTypography.size).toBeLessThanOrEqual(18);
+  expect(bodyTypography.lineHeight / bodyTypography.size).toBeCloseTo(1.6, 2);
+  expect(bodyTypography.weight).toBe('400');
+
+  const fontResources = await page.evaluate(() =>
+    performance
+      .getEntriesByType('resource')
+      .map((entry) => new URL(entry.name))
+      .filter((url) => url.pathname.includes('geist'))
+      .map(({ origin, pathname }) => ({ origin, pathname })),
+  );
+
+  expect(fontResources.length).toBeGreaterThanOrEqual(2);
+  expect(fontResources.every((url) => url.origin === 'http://127.0.0.1:4322')).toBe(
+    true,
+  );
+  expect(
+    fontResources.some((url) => url.pathname.includes('geist-mono')),
+  ).toBe(true);
+
+  const headings = await page.locator('h1, h2, h3').evaluateAll((elements) =>
+    elements.map((element) => {
+      const style = getComputedStyle(element);
+
+      return {
+        family: style.fontFamily,
+        weight: style.fontWeight,
+        letterSpacing: style.letterSpacing,
+      };
+    }),
+  );
+
+  expect(headings.length).toBeGreaterThan(0);
+  for (const heading of headings) {
+    expect(heading.family).toContain('Geist Variable');
+    expect(['500', '600']).toContain(heading.weight);
+    expect(
+      heading.letterSpacing === 'normal' ||
+        Number.parseFloat(heading.letterSpacing) >= 0,
+    ).toBe(true);
+  }
+
+  const metadataFamilies = await page
+    .locator(
+      '.eyebrow, dt, .metadata-value, .problem-list strong, .evidence-label',
+    )
+    .evaluateAll((elements) =>
+      elements.map((element) => getComputedStyle(element).fontFamily),
+    );
+  metadataFamilies.push(
+    await page
+      .locator('.workflow li')
+      .first()
+      .evaluate((element) => getComputedStyle(element, '::before').fontFamily),
+  );
+
+  expect(metadataFamilies.length).toBeGreaterThan(0);
+  for (const family of metadataFamilies) {
+    expect(family).toContain('Geist Mono Variable');
+  }
+
+  const paragraphFamilies = await page
+    .locator(
+      'p:not(.eyebrow):not(.evidence-label):not(.capability-ledger__number):not(.contact__label)',
+    )
+    .evaluateAll((elements) =>
+      elements.map((element) => getComputedStyle(element).fontFamily),
+    );
+
+  for (const family of paragraphFamilies) {
+    expect(family).not.toContain('Geist Mono Variable');
+  }
+
+  const readingParagraph = page.locator('.reading-column > p');
+  const readingMeasure = await readingParagraph.evaluate((element) => {
+    const paragraphBox = element.getBoundingClientRect();
+    const measure = document.createElement('div');
+
+    measure.style.position = 'fixed';
+    measure.style.visibility = 'hidden';
+    measure.style.width = '68ch';
+    measure.style.font = getComputedStyle(element).font;
+    document.body.append(measure);
+
+    const maximumReadingWidth = measure.getBoundingClientRect().width;
+    measure.remove();
+
+    return {
+      paragraphWidth: paragraphBox.width,
+      maximumReadingWidth,
+    };
+  });
+
+  expect(readingMeasure.paragraphWidth).toBeLessThanOrEqual(
+    readingMeasure.maximumReadingWidth + 1,
+  );
+  expect(readingMeasure.paragraphWidth).toBeGreaterThanOrEqual(
+    readingMeasure.maximumReadingWidth * (60 / 68) - 1,
+  );
+});
+
+test('interaction feedback stays within the restrained motion system', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await openPage(page, '/');
+
+  const transitionStyles = await page.locator('body *').evaluateAll((elements) =>
+    elements.flatMap((element) => {
+      const style = getComputedStyle(element);
+      const durations = style.transitionDuration
+        .split(',')
+        .map((duration) => Number.parseFloat(duration) * 1000);
+
+      return durations
+        .filter((duration) => duration > 0)
+        .map((duration) => ({
+          duration,
+          timings: style.transitionTimingFunction
+            .split(',')
+            .map((timing) => timing.trim()),
+        }));
+    }),
+  );
+
+  expect(transitionStyles.length).toBeGreaterThan(0);
+  for (const transition of transitionStyles) {
+    expect(transition.duration).toBeGreaterThanOrEqual(160);
+    expect(transition.duration).toBeLessThanOrEqual(200);
+    expect(transition.timings.every((timing) => timing === 'ease-out')).toBe(
+      true,
+    );
+  }
+
+  const card = page.locator('.card').first();
+  const cardLink = card.locator('.card__link');
+  const arrow = cardLink.locator('[aria-hidden="true"]');
+
+  await expect(card).toHaveCSS('transform', 'none');
+  await cardLink.hover();
+  await expect(card).toHaveCSS('transform', 'none');
+
+  await expect
+    .poll(() =>
+      arrow.evaluate((element) => {
+        const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+        return matrix.m41;
+      }),
+    )
+    .toBeGreaterThanOrEqual(3);
+  const arrowMovement = await arrow.evaluate((element) => {
+    const matrix = new DOMMatrixReadOnly(getComputedStyle(element).transform);
+    return matrix.m41;
+  });
+  expect(arrowMovement).toBeLessThanOrEqual(4);
+
+  const animatedElements = await page.locator('body *').evaluateAll((elements) =>
+    elements.filter(
+      (element) => getComputedStyle(element).animationName !== 'none',
+    ).length,
+  );
+
+  expect(animatedElements).toBe(0);
+});
+
+test('reduced motion removes nonessential movement from elements and pseudo-elements', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await openPage(page, '/');
+
+  const reducedMotionStyles = await page
+    .locator('.card__link')
+    .first()
+    .evaluate((element) => {
+      const readDurations = (pseudo?: '::before' | '::after') => {
+        const style = getComputedStyle(element, pseudo);
+
+        return {
+          animation: style.animationDuration,
+          transition: style.transitionDuration,
+        };
+      };
+
+      return {
+        scrollBehavior: getComputedStyle(
+          document.documentElement,
+        ).scrollBehavior,
+        element: readDurations(),
+        before: readDurations('::before'),
+        after: readDurations('::after'),
+      };
+    });
+
+  expect(reducedMotionStyles.scrollBehavior).toBe('auto');
+  for (const target of [
+    reducedMotionStyles.element,
+    reducedMotionStyles.before,
+    reducedMotionStyles.after,
+  ]) {
+    expect(Number.parseFloat(target.animation)).toBeCloseTo(0.00001, 8);
+    expect(Number.parseFloat(target.transition)).toBeCloseTo(0.00001, 8);
+  }
+});
