@@ -1,4 +1,6 @@
 ---
+import ContactCta from '../components/ContactCta.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import type { PageMetadata } from '../data/portfolio';
 import { siteConfig } from '../data/portfolio';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -50,25 +52,11 @@ const { metadata } = Astro.props;
     <main id="main-content" tabindex="-1">
       <slot />
     </main>
-    <footer class="site-footer">
-      <div class="shell">
-        <p>{siteConfig.ownerName} · {siteConfig.footerText}</p>
-      </div>
-    </footer>
+    <ContactCta contact={siteConfig.contact} />
+    <SiteFooter
+      ownerName={siteConfig.ownerName}
+      footerText={siteConfig.footerText}
+      location={siteConfig.location}
+    />
   </body>
 </html>
-
-<style>
-  .site-footer {
-    font-size: 0.85rem;
-  }
-
-  .site-footer {
-    padding-block: 2rem;
-    border-top: 1px solid #bbb;
-  }
-
-  .site-footer p {
-    margin-bottom: 0;
-  }
-</style>

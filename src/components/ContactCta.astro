@@ -1,0 +1,149 @@
+---
+import type { SiteConfig } from '../data/portfolio';
+
+interface Props {
+  contact: SiteConfig['contact'];
+}
+
+const { contact } = Astro.props;
+
+const usableDestination = (value?: string) => {
+  const destination = value?.trim();
+  return destination && destination !== '#' ? destination : undefined;
+};
+
+const email = usableDestination(contact.email);
+
+const actions = [
+  {
+    label: 'Email',
+    href: email ? `mailto:${email}` : undefined,
+    linkText: email,
+    primary: true,
+  },
+  {
+    label: 'Resume',
+    href: usableDestination(contact.resumeUrl),
+    linkText: 'View resume',
+    primary: false,
+  },
+  {
+    label: 'GitHub',
+    href: usableDestination(contact.githubUrl),
+    linkText: 'View GitHub',
+    primary: false,
+  },
+] as const;
+---
+
+<section class="contact" aria-label="Contact">
+  <div class="shell contact__inner">
+    <div class="contact__introduction">
+      <p class="eyebrow">Contact</p>
+      <h2>{contact.heading}</h2>
+      <p>{contact.introduction}</p>
+    </div>
+
+    <ul class="contact__actions">
+      {
+        actions.map((action) => (
+          <li class:list={{ 'contact__action--primary': action.primary }}>
+            <p class="contact__label">{action.label}</p>
+            {action.href ? (
+              <a href={action.href}>
+                {action.linkText} <span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <span class="contact__unavailable">
+                <span>Not configured</span>
+                <span class="contact__provisional">Provisional action</span>
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact {
+    color: #fff;
+    background: #111;
+  }
+
+  .contact__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
+    gap: clamp(3rem, 8vw, 8rem);
+    padding-block: clamp(4rem, 9vw, 8rem);
+  }
+
+  .contact__introduction h2 {
+    max-width: 13ch;
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .contact__introduction > p:last-child {
+    max-width: 58ch;
+    margin-bottom: 0;
+  }
+
+  .contact__actions {
+    align-self: end;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #777;
+    list-style: none;
+  }
+
+  .contact__actions li {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid #777;
+  }
+
+  .contact__label {
+    margin-bottom: 0.35rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact__actions a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .contact__action--primary a {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .contact__action--primary .contact__unavailable {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 700;
+  }
+
+  .contact__unavailable {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .contact__provisional {
+    color: #aaa;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 48rem) {
+    .contact__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

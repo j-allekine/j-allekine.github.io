@@ -242,6 +242,11 @@ test('identity controls stay readable, focused, and lightweight', async ({
   ]);
 });
 
+async function openHomepageContact(page: Page) {
+  await openPage(page, '/');
+  return page.getByRole('region', { name: 'Contact' });
+}
+
 test('a hiring manager can open a featured case study and review its overview', async ({
   page,
 }) => {
@@ -746,4 +751,124 @@ test('static pages do not contain unexpected hydrated components', async ({
     await openPage(page, portfolioPage.path);
     await expect(page.locator('astro-island')).toHaveCount(0);
   }
+});
+
+test('the homepage leads from positioning through work and capabilities to contact', async ({
+  page,
+}) => {
+  await openPage(page, '/');
+
+  const homepageSections = page.locator('main > section');
+
+  await expect(homepageSections).toHaveCount(3);
+  expect(
+    await homepageSections.evaluateAll((sections) =>
+      sections.map((section) =>
+        section.querySelector('h1, h2')?.textContent?.trim(),
+      ),
+    ),
+  ).toEqual([
+    'Operational improvement work, documented clearly.',
+    'Featured work',
+    'What I do',
+  ]);
+
+  const capabilities = page.getByRole('region', { name: 'What I do' });
+
+  await expect(capabilities.getByRole('listitem')).toHaveCount(3);
+  await expect(capabilities).toContainText('Provisional capability guide');
+
+  const contact = page.getByRole('region', { name: 'Contact' });
+
+  await expect(contact).toBeVisible();
+  await expect(contact.evaluate((element) => getComputedStyle(element).backgroundColor))
+    .resolves.toBe('rgb(17, 17, 17)');
+});
+
+test('shared contact and footer follow the main content on every page', async ({
+  page,
+}) => {
+  for (const path of ['/', caseStudyPath]) {
+    await openPage(page, path);
+
+    const bodyChildren = page.locator('body > header, body > main, body > section, body > footer');
+
+    await expect(bodyChildren).toHaveCount(4);
+    await expect(bodyChildren.nth(0)).toHaveAttribute('class', /site-header/);
+    await expect(bodyChildren.nth(1)).toHaveJSProperty('tagName', 'MAIN');
+    await expect(bodyChildren.nth(2)).toHaveAttribute('aria-label', 'Contact');
+    await expect(bodyChildren.nth(3)).toHaveAttribute('class', /site-footer/);
+
+    const footer = page.getByRole('contentinfo');
+
+    await expect(footer).toContainText('J. Allekine');
+    await expect(footer).toContainText(new Date().getFullYear().toString());
+    await expect(footer.getByRole('link', { name: 'Back to top' })).toHaveAttribute(
+      'href',
+      '#top',
+    );
+  }
+});
+
+test('unconfigured contact actions stay visible without fake destinations @unconfigured', async ({
+  page,
+}) => {
+  const contact = await openHomepageContact(page);
+
+  await expect(contact.getByText('Email', { exact: true })).toBeVisible();
+  await expect(contact.getByText('Resume', { exact: true })).toBeVisible();
+  await expect(contact.getByText('GitHub', { exact: true })).toBeVisible();
+  await expect(contact.getByText('Not configured', { exact: true })).toHaveCount(3);
+  await expect(contact.getByRole('link')).toHaveCount(0);
+  await expect(contact.locator('a[href="#"]')).toHaveCount(0);
+
+  const unavailableActions = contact.locator('.contact__unavailable');
+  const emailFontSize = await unavailableActions
+    .nth(0)
+    .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  const resumeFontSize = await unavailableActions
+    .nth(1)
+    .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+
+  expect(emailFontSize).toBeGreaterThan(resumeFontSize);
+});
+
+test('configured contact actions become real destinations', async ({
+  page,
+}) => {
+  const contact = await openHomepageContact(page);
+  const email = contact.getByRole('link', {
+    name: /portfolio-owner@example\.test/,
+  });
+
+  await expect(email).toHaveAttribute(
+    'href',
+    'mailto:portfolio-owner@example.test',
+  );
+  await expect(contact.getByRole('link', { name: 'View resume' })).toHaveAttribute(
+    'href',
+    'https://example.test/resume',
+  );
+  await expect(contact.getByRole('link', { name: 'View GitHub' })).toHaveAttribute(
+    'href',
+    'https://example.test/github',
+  );
+  await expect(contact.getByText('Not configured', { exact: true })).toHaveCount(0);
+  await expect(contact.locator('a[href="#"]')).toHaveCount(0);
+});
+
+test('the footer back-to-top link returns a reader to the page start', async ({
+  page,
+}) => {
+  await openPage(page, caseStudyPath);
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(0);
+
+  await page.getByRole('link', { name: 'Back to top' }).click();
+
+  await expect(page).toHaveURL(/#top$/);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });

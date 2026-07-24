@@ -1,15 +1,25 @@
 ---
+import CapabilityLedger from '../components/CapabilityLedger.astro';
 import FeaturedWorkCard from '../components/FeaturedWorkCard.astro';
 import { projects, siteConfig } from '../data/portfolio';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout metadata={siteConfig.homepage.metadata}>
-  <section class="hero shell">
+  <section class="hero shell" aria-labelledby="hero-heading">
     <p class="eyebrow provisional">{siteConfig.homepage.roleLabel}</p>
-    <h1>{siteConfig.homepage.statement}</h1>
+    <h1 id="hero-heading">{siteConfig.homepage.statement}</h1>
     <p class="hero__introduction">{siteConfig.homepage.introduction}</p>
     <a href="#featured-work">{siteConfig.homepage.workLinkLabel} ↓</a>
+    {
+      (siteConfig.homepage.availability || siteConfig.location) && (
+        <p class="hero__metadata provisional">
+          {[siteConfig.homepage.availability, siteConfig.location]
+            .filter(Boolean)
+            .join(' · ')}
+        </p>
+      )
+    }
   </section>
 
   <section
@@ -35,6 +45,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     </ul>
   </section>
+
+  <section
+    class="capabilities shell"
+    aria-labelledby="capabilities-heading"
+  >
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow provisional">Provisional capability guide</p>
+        <h2 id="capabilities-heading">What I do</h2>
+      </div>
+      <p class="provisional">
+        Guiding content · Replace with approved capability language
+      </p>
+    </div>
+
+    <CapabilityLedger capabilities={siteConfig.capabilities} />
+  </section>
 </BaseLayout>
 
 <style>
@@ -54,7 +81,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: clamp(1.1rem, 2vw, 1.35rem);
   }
 
-  .featured-work {
+  .hero__metadata {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+
+  .featured-work,
+  .capabilities {
     padding-block: clamp(3rem, 8vw, 7rem);
     border-top: 1px solid #111;
   }

@@ -13,12 +13,15 @@ export interface SiteConfig {
     statement: string;
     introduction: string;
     workLinkLabel: string;
+    availability?: string;
   };
   capabilities: readonly {
-    title: string;
-    summary: string;
+    problem: string;
+    improvement: string;
   }[];
   contact: {
+    heading: string;
+    introduction: string;
     email?: string;
     resumeUrl?: string;
     githubUrl?: string;
@@ -88,9 +91,37 @@ export const siteConfig = {
     introduction:
       'This provisional portfolio will show how inefficient or unreliable work is understood and improved through practical systems.',
     workLinkLabel: 'Review featured work',
+    availability: undefined,
   },
-  capabilities: [],
-  contact: {},
+  capabilities: [
+    {
+      problem:
+        'Repeated work consumes attention and makes avoidable errors more likely.',
+      improvement:
+        'Clarify the workflow, then automate the stable steps that benefit from consistent handling.',
+    },
+    {
+      problem:
+        'Scattered information and fragile handoffs make the current state difficult to trust.',
+      improvement:
+        'Structure the data and checks so people can see what needs attention and act with confidence.',
+    },
+    {
+      problem:
+        'Unclear ownership and exception paths leave work dependent on memory.',
+      improvement:
+        'Design practical steps, validation, and handoffs that make the process easier to run and maintain.',
+    },
+  ],
+  contact: {
+    heading: 'Bring the operational problem into focus.',
+    introduction:
+      'Share what is slowing the work down, where reliability breaks, and who the process needs to support.',
+    email: import.meta.env.PUBLIC_CONTACT_EMAIL || undefined,
+    resumeUrl: import.meta.env.PUBLIC_RESUME_URL || undefined,
+    githubUrl: import.meta.env.PUBLIC_GITHUB_URL || undefined,
+  },
+  location: undefined,
   footerText: 'Provisional portfolio',
 } satisfies SiteConfig;
 

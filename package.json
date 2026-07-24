@@ -12,7 +12,7 @@
     "astro": "astro",
     "typecheck": "astro check",
     "test": "npm run test:acceptance",
-    "test:acceptance": "npm run build && playwright test"
+    "test:acceptance": "npm run build && playwright test --grep @unconfigured --workers=1 && astro build --mode test && playwright test --grep-invert @unconfigured --workers=1"
   },
   "dependencies": {
     "astro": "^7.1.3"
