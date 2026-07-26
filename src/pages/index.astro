@@ -1,24 +1,22 @@
 ---
-import HomepageLayout from "../layouts/HomepageLayout.astro";
-import HomepageHeader from "../components/homepage/Header.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/homepage.css";
 import HomepageHero from "../components/homepage/Hero.astro";
 import HomepageWork from "../components/homepage/Work.astro";
 import HomepageStack from "../components/homepage/Stack.astro";
 import HomepageProcess from "../components/homepage/Process.astro";
-import HomepageAbout from "../components/homepage/About.astro";
 import HomepageContact from "../components/homepage/Contact.astro";
-import HomepageFooter from "../components/homepage/Footer.astro";
 ---
 
-<HomepageLayout>
-  <HomepageHeader />
+<BaseLayout
+  title="J. Allekine | Systems, Automation & Software"
+  description="Jihm Allekine Almedilla builds spreadsheet systems, automations, data tools, and practical software."
+>
   <main id="top">
     <HomepageHero />
     <HomepageWork />
     <HomepageStack />
     <HomepageProcess />
-    <HomepageAbout />
     <HomepageContact />
   </main>
-  <HomepageFooter />
-</HomepageLayout>
+</BaseLayout>

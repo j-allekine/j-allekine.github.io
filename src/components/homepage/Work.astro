@@ -1,111 +1,235 @@
-    <section class="section" id="work">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="section-label">Featured systems</p>
-            <h2>Selected work.</h2>
-          </div>
-
-          <a class="see-all" href="/work">
-            See all work <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <div class="work-grid">
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
-              <div class="mock-window">
-                <div class="mock-window__top"><i></i><i></i><i></i></div>
-                <div class="mock-dashboard">
-                  <div class="mock-sidebar"></div>
-                  <div class="mock-main">
-                    <div class="mock-metrics">
-                      <div class="mock-box"></div>
-                      <div class="mock-box"></div>
-                      <div class="mock-box"></div>
-                    </div>
-                    <div class="mock-box mock-chart"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="work-body">
-              <div class="work-type" aria-label="Project stack and industry">
-                <span>Excel</span>
-                <span>Inventory</span>
-                <span>Healthcare</span>
-              </div>
-              <h3>Pharmacy Inventory System</h3>
-              <p>
-                A practical system for medicine movement, expiry monitoring, FIFO handling, reorder visibility, sales, and reporting.
-              </p>
-              <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
-              <div class="mock-window">
-                <div class="mock-window__top"><i></i><i></i><i></i></div>
-                <div class="mock-flow">
-                  <div class="flow-diagram">
-                    <div class="flow-block">Upload forms</div>
-                    <div class="flow-line"></div>
-                    <div class="flow-block">Extract data</div>
-                    <div class="flow-block">Validate</div>
-                    <div class="flow-line"></div>
-                    <div class="flow-block">Generate output</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="work-body">
-              <div class="work-type" aria-label="Project stack and industry">
-                <span>Apps Script</span>
-                <span>OCR</span>
-                <span>Google APIs</span>
-              </div>
-              <h3>Hospital OCR Automation Pipeline</h3>
-              <p>
-                A document workflow that converts uploaded forms into structured records while keeping human review inside the process.
-              </p>
-              <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
-              <div class="mock-window">
-                <div class="mock-window__top"><i></i><i></i><i></i></div>
-                <div class="mock-table">
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                  <div class="mock-row"><span></span><span></span><span></span></div>
-                </div>
-              </div>
-            </div>
-            <div class="work-body">
-              <div class="work-type" aria-label="Project stack and industry">
-                <span>Web App</span>
-                <span>Government</span>
-                <span>Assets</span>
-              </div>
-              <h3>LGU Inventory & Asset System</h3>
-              <p>
-                A single source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt to disposal.
-              </p>
-              <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-        </div>
+<section class="section" id="work">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Featured systems</p>
+        <h2>Selected work.</h2>
       </div>
-    </section>
+
+      <a class="see-all" href="/work">
+        See all work <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div
+      class="work-carousel"
+      data-work-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured projects"
+    >
+      <button
+        class="work-carousel__control work-carousel__control--prev"
+        type="button"
+        aria-label="Previous project"
+        data-work-prev
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m14.5 6-6 6 6 6"></path>
+        </svg>
+      </button>
+
+      <div class="work-grid" data-work-track tabindex="0">
+        <article class="work-card" role="group" aria-roledescription="slide" aria-label="1 of 3: Pharmacy Inventory System">
+          <div class="work-visual" aria-hidden="true">
+            <div class="mock-window">
+              <div class="mock-window__top"><i></i><i></i><i></i></div>
+              <div class="mock-dashboard">
+                <div class="mock-sidebar"></div>
+                <div class="mock-main">
+                  <div class="mock-metrics">
+                    <div class="mock-box"></div>
+                    <div class="mock-box"></div>
+                    <div class="mock-box"></div>
+                  </div>
+                  <div class="mock-box mock-chart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="work-body">
+            <h3>Pharmacy Inventory System</h3>
+            <p>Centralizes medicine movement, expiry monitoring, FIFO handling, reordering, sales, and reporting in one operational system.</p>
+
+            <div class="work-type" aria-label="Project stack and industry">
+              <span>Excel</span>
+              <span>Inventory</span>
+              <span>Healthcare</span>
+            </div>
+
+            <a class="work-link" href="#">
+              View case study <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" role="group" aria-roledescription="slide" aria-label="2 of 3: Hospital OCR Automation Pipeline">
+          <div class="work-visual" aria-hidden="true">
+            <div class="mock-window">
+              <div class="mock-window__top"><i></i><i></i><i></i></div>
+              <div class="mock-flow">
+                <div class="flow-diagram">
+                  <div class="flow-block">Upload forms</div>
+                  <div class="flow-line"></div>
+                  <div class="flow-block">Extract data</div>
+                  <div class="flow-block">Validate</div>
+                  <div class="flow-line"></div>
+                  <div class="flow-block">Generate output</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="work-body">
+            <h3>Hospital OCR Automation Pipeline</h3>
+            <p>Turns uploaded hospital forms into structured records while keeping human review inside the workflow for faster, cleaner processing.</p>
+
+            <div class="work-type" aria-label="Project stack and industry">
+              <span>Apps Script</span>
+              <span>OCR</span>
+              <span>Google APIs</span>
+            </div>
+
+            <a class="work-link" href="#">
+              View case study <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="work-card" role="group" aria-roledescription="slide" aria-label="3 of 3: LGU Inventory & Asset System">
+          <div class="work-visual" aria-hidden="true">
+            <div class="mock-window">
+              <div class="mock-window__top"><i></i><i></i><i></i></div>
+              <div class="mock-table">
+                <div class="mock-row"><span></span><span></span><span></span></div>
+                <div class="mock-row"><span></span><span></span><span></span></div>
+                <div class="mock-row"><span></span><span></span><span></span></div>
+                <div class="mock-row"><span></span><span></span><span></span></div>
+                <div class="mock-row"><span></span><span></span><span></span></div>
+                <div class="mock-row"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="work-body">
+            <h3>LGU Inventory &amp; Asset System</h3>
+            <p>Creates one source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt through disposal.</p>
+
+            <div class="work-type" aria-label="Project stack and industry">
+              <span>Web App</span>
+              <span>Government</span>
+              <span>Assets</span>
+            </div>
+
+            <a class="work-link" href="#">
+              View case study <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <button
+        class="work-carousel__control work-carousel__control--next"
+        type="button"
+        aria-label="Next project"
+        data-work-next
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m9.5 6 6 6-6 6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const cards = Array.from(document.querySelectorAll(".work-card"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!cards.length || reduceMotion || !("IntersectionObserver" in window)) {
+      return;
+    }
+
+    cards.forEach((card, index) => {
+      card.classList.add("is-pending");
+      card.style.setProperty("--reveal-delay", `${index * 80}ms`);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.remove("is-pending");
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -6% 0px",
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    const carousel = document.querySelector("[data-work-carousel]");
+    const track = carousel?.querySelector("[data-work-track]");
+    const prev = carousel?.querySelector("[data-work-prev]");
+    const next = carousel?.querySelector("[data-work-next]");
+    const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+
+    if (!carousel || !track || !prev || !next || cards.length < 2) {
+      return;
+    }
+
+    const getCurrentIndex = () => {
+      const current = track.scrollLeft;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.offsetLeft - current);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      return closestIndex;
+    };
+
+    const goTo = (index) => {
+      const target = cards[(index + cards.length) % cards.length];
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      track.scrollTo({
+        left: target.offsetLeft,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    };
+
+    prev.addEventListener("click", () => goTo(getCurrentIndex() - 1));
+    next.addEventListener("click", () => goTo(getCurrentIndex() + 1));
+
+    track.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goTo(getCurrentIndex() - 1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goTo(getCurrentIndex() + 1);
+      }
+    });
+
+    track.setAttribute(
+      "aria-label",
+      "Featured projects. Swipe horizontally or use the previous and next project buttons."
+    );
+  })();
+</script>

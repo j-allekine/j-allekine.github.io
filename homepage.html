@@ -342,10 +342,25 @@
     .hero {
       display: grid;
       min-height: calc(100svh - 73px);
-      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+      grid-template-columns: minmax(0, 1.38fr) minmax(320px, 0.82fr);
+      grid-template-areas:
+        "intro portrait"
+        "details portrait";
       align-items: center;
-      gap: clamp(52px, 7vw, 100px);
+      column-gap: clamp(52px, 7vw, 104px);
+      row-gap: 28px;
       padding-block: clamp(76px, 9vw, 126px);
+    }
+
+    .hero-intro {
+      grid-area: intro;
+      align-self: end;
+    }
+
+    .hero-details {
+      grid-area: details;
+      align-self: start;
+      max-width: 42rem;
     }
 
     .hero-label {
@@ -368,256 +383,174 @@
     }
 
     .hero h1 {
-      max-width: 10ch;
-      margin: 0 0 28px;
-      font-size: clamp(3.5rem, 7.1vw, 7.5rem);
+      max-width: 11ch;
+      margin: 0;
+      font-size: clamp(3.35rem, 6.4vw, 6.9rem);
       font-weight: 600;
       line-height: 0.91;
       letter-spacing: -0.072em;
     }
 
-    .hero h1 span {
-      color: #888891;
+    .hero-name-line {
+      display: block;
     }
 
     .hero-copy {
-      max-width: 39rem;
+      max-width: 62ch;
       margin: 0;
-      color: #aaaab3;
-      font-size: clamp(1rem, 1.35vw, 1.18rem);
+      color: #b9b9c1;
+      font-size: clamp(1rem, 1.25vw, 1.13rem);
+      line-height: 1.72;
     }
 
-    .faith-line {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin: 18px 0 0;
-      color: #85858e;
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .faith-line__cross {
-      position: relative;
-      width: 12px;
-      height: 14px;
-      flex: 0 0 auto;
-    }
-
-    .faith-line__cross::before,
-    .faith-line__cross::after {
-      content: "";
-      position: absolute;
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    .faith-line__cross::before {
-      top: 0;
-      left: 5px;
-      width: 1px;
-      height: 14px;
-    }
-
-    .faith-line__cross::after {
-      top: 4px;
-      left: 1px;
-      width: 9px;
-      height: 1px;
+    .hero-copy + .hero-copy {
+      margin-top: 16px;
+      color: #92929c;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .system-visual {
-      position: relative;
-      min-height: 520px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background:
-        radial-gradient(circle at 52% 42%, rgba(255, 255, 255, 0.065), transparent 14rem),
-        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        #08080a;
-      background-size: auto, 30px 30px, 30px 30px, auto;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45);
-      isolation: isolate;
-    }
-
-    .system-visual::before {
-      content: "";
-      position: absolute;
-      inset: 10%;
-      border: 1px solid rgba(255, 255, 255, 0.055);
-      border-radius: 50%;
-      filter: blur(0.2px);
-    }
-
-    .system-visual::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      top: -30%;
-      right: -15%;
-      width: 70%;
-      height: 70%;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      filter: blur(80px);
-    }
-
-    .visual-frame {
-      position: absolute;
-      inset: 13% 10%;
-      transform: perspective(1100px) rotateX(7deg) rotateY(-10deg);
-      transform-style: preserve-3d;
-    }
-
-    .visual-card {
-      position: absolute;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)), #0b0b0d;
-      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.36);
-    }
-
-    .visual-card__header {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #a8a8b0;
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      gap: 12px;
+      margin-top: 32px;
     }
 
-    .visual-card__body {
-      padding: 16px;
+    .hero-actions .button--primary {
+      min-width: 224px;
     }
 
-    .visual-main {
-      inset: 8% 8% 16% 18%;
-      transform: translateZ(22px);
+    .button-icon {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .visual-main .visual-card__body {
-      display: grid;
-      gap: 16px;
+    .hero-socials {
+      margin-top: 18px;
     }
 
-    .mini-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
-    .metric {
-      padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 7px;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .metric span {
-      display: block;
-      margin-bottom: 10px;
-      color: #72727a;
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      text-transform: uppercase;
-    }
-
-    .metric strong {
-      font-size: 1.05rem;
-      font-weight: 500;
-    }
-
-    .chart {
-      position: relative;
-      height: 160px;
-      overflow: hidden;
+    .social-link {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
       border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 8px;
+      color: #c9c9d0;
+      background: rgba(255,255,255,0.014);
+      transition:
+        transform var(--ease),
+        border-color var(--ease),
+        background-color var(--ease),
+        color var(--ease);
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.28);
+      color: #fff;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .social-link svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .hero-portrait-wrap {
+      grid-area: portrait;
+      width: min(100%, 400px);
+      justify-self: end;
+    }
+
+    .hero-portrait {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
       background:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 24px 24px;
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px),
+        radial-gradient(circle at 52% 30%, rgba(255,255,255,0.08), transparent 8rem),
+        #09090b;
+      background-size: 28px 28px, 28px 28px, auto, auto;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.42);
+      isolation: isolate;
     }
 
-    .chart svg {
+    .hero-portrait::before {
+      content: "";
       position: absolute;
-      inset: 14px;
-      width: calc(100% - 28px);
-      height: calc(100% - 28px);
+      top: 21%;
+      left: 50%;
+      width: 31%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #151519, #0c0c0f);
+      transform: translateX(-50%);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
     }
 
-    .visual-small {
-      width: 160px;
-    }
-
-    .visual-small--one {
-      top: 0;
-      left: 0;
-      transform: translateZ(58px);
-    }
-
-    .visual-small--two {
-      right: 0;
-      bottom: 0;
-      transform: translateZ(72px);
-    }
-
-    .small-stat {
-      padding: 14px;
-    }
-
-    .small-stat span {
-      display: block;
-      color: #777780;
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      text-transform: uppercase;
-    }
-
-    .small-stat strong {
-      display: block;
-      margin-top: 8px;
-      font-size: 1.65rem;
-      font-weight: 500;
-    }
-
-    .node-map {
+    .hero-portrait::after {
+      content: "";
       position: absolute;
-      inset: 0;
+      right: 12%;
+      bottom: -12%;
+      left: 12%;
+      height: 58%;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 48% 48% 14% 14%;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255,255,255,0.045), transparent 45%),
+        linear-gradient(180deg, #131317, #08080a);
+      box-shadow: 0 -24px 60px rgba(0,0,0,0.22);
+    }
+
+    .hero-portrait-corner {
+      position: absolute;
+      z-index: 2;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(255,255,255,0.28);
+      border-style: solid;
       pointer-events: none;
     }
 
-    .node {
-      position: absolute;
-      width: 9px;
-      height: 9px;
-      border: 1px solid rgba(255, 255, 255, 0.72);
-      border-radius: 50%;
-      background: #09090b;
-      box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.025);
+    .hero-portrait-corner--top {
+      top: 16px;
+      left: 16px;
+      border-width: 1px 0 0 1px;
     }
 
-    .node:nth-child(1) { top: 20%; left: 12%; }
-    .node:nth-child(2) { top: 42%; left: 35%; }
-    .node:nth-child(3) { top: 66%; left: 57%; }
-    .node:nth-child(4) { top: 30%; right: 12%; }
+    .hero-portrait-corner--bottom {
+      right: 16px;
+      bottom: 16px;
+      border-width: 0 1px 1px 0;
+    }
 
     /* Work */
+
+    .work-carousel {
+      position: relative;
+    }
 
     .work-grid {
       display: grid;
@@ -625,7 +558,72 @@
       gap: 18px;
     }
 
+    .work-carousel__control {
+      position: absolute;
+      z-index: 8;
+      top: 50%;
+      display: none;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 50%;
+      color: var(--text);
+      background: rgba(8, 8, 10, 0.92);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition:
+        transform var(--ease),
+        border-color var(--ease),
+        background-color var(--ease);
+    }
+
+    .work-carousel__control svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform var(--ease);
+    }
+
+    .work-carousel__control--prev {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    .work-carousel__control--next {
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    .work-carousel__control:hover {
+      border-color: rgba(255, 255, 255, 0.34);
+      background: rgba(22, 22, 26, 0.98);
+    }
+
+    .work-carousel__control--prev:hover svg {
+      transform: translateX(-2px);
+    }
+
+    .work-carousel__control--next:hover svg {
+      transform: translateX(2px);
+    }
+
+    .work-carousel__control--prev:active {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    .work-carousel__control--next:active {
+      transform: translate(50%, -50%) scale(0.95);
+    }
+
+
     .work-card {
+      position: relative;
       display: flex;
       min-height: 100%;
       flex-direction: column;
@@ -640,9 +638,29 @@
     }
 
     .work-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       border-color: rgba(255, 255, 255, 0.25);
       background-color: #111114;
+    }
+
+    .work-card.is-pending {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .work-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 520ms ease,
+        transform 520ms ease,
+        border-color var(--ease),
+        background-color var(--ease);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .work-card.is-visible:hover {
+      transform: translateY(-4px);
     }
 
     .work-visual {
@@ -655,6 +673,15 @@
         linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
         #08080a;
       background-size: 24px 24px;
+    }
+
+    .work-card .mock-window {
+      transition: transform 320ms ease;
+      transform-origin: center;
+    }
+
+    .work-card:hover .mock-window {
+      transform: translateY(-3px) scale(1.02);
     }
 
     .mock-window {
@@ -801,7 +828,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin: 0 0 14px;
+      margin: 18px 0 0;
     }
 
     .work-type span {
@@ -1054,11 +1081,6 @@
       animation: stack-marquee-right 34s linear infinite;
       will-change: transform;
     }
-
-    .stack-marquee:hover .stack-track {
-      animation-play-state: paused;
-    }
-
     .stack-item {
       display: inline-flex;
       min-height: 46px;
@@ -1073,13 +1095,38 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.025);
     }
 
-    .stack-item img {
+    .stack-item img,
+    .stack-item .stack-icon {
       display: block;
       width: 17px;
       height: 17px;
       flex: 0 0 auto;
       object-fit: contain;
       opacity: 0.92;
+    }
+
+    .stack-item .stack-icon {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .stack-badge {
+      display: grid;
+      width: 20px;
+      height: 18px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 4px;
+      color: #f3f3f6;
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
     }
 
     .stack-item--apps-script img,
@@ -1104,154 +1151,6 @@
       to { transform: translateX(0); }
     }
 
-
-    /* About */
-
-    .about-card {
-      display: grid;
-      grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.25fr);
-      gap: clamp(38px, 6vw, 76px);
-      padding: clamp(24px, 4vw, 42px);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.028), transparent 38%), var(--surface);
-    }
-
-    .portrait-placeholder {
-      position: relative;
-      min-height: 420px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px),
-        radial-gradient(circle at 50% 30%, rgba(255,255,255,0.075), transparent 7rem),
-        #09090b;
-      background-size: 24px 24px, 24px 24px, auto, auto;
-    }
-
-    .portrait-placeholder::before {
-      content: "";
-      position: absolute;
-      top: 22%;
-      left: 50%;
-      width: 110px;
-      height: 110px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 50%;
-      background: #0f0f12;
-      transform: translateX(-50%);
-    }
-
-    .portrait-placeholder::after {
-      content: "";
-      position: absolute;
-      bottom: -12%;
-      left: 50%;
-      width: 70%;
-      height: 58%;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      border-radius: 48% 48% 12% 12%;
-      background: linear-gradient(180deg, #111115, #08080a);
-      transform: translateX(-50%);
-    }
-
-    .portrait-label {
-      position: absolute;
-      z-index: 2;
-      bottom: 16px;
-      left: 16px;
-      padding: 7px 10px;
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      color: #898991;
-      background: rgba(5,5,5,0.72);
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      text-transform: uppercase;
-    }
-
-    .about-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .about-content h2 {
-      max-width: 18ch;
-      margin: 0 0 24px;
-      font-size: clamp(2.1rem, 4.4vw, 4.25rem);
-      line-height: 1.01;
-      letter-spacing: -0.05em;
-    }
-
-    .about-content p {
-      max-width: 52rem;
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .about-content p + p {
-      margin-top: 16px;
-    }
-
-    .about-bottom {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      margin-top: 30px;
-    }
-
-    .socials {
-      display: flex;
-      gap: 10px;
-    }
-
-    .social-link {
-      display: grid;
-      width: 40px;
-      height: 40px;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 8px;
-      color: #c9c9d0;
-      background: rgba(255,255,255,0.014);
-      transition:
-        transform var(--ease),
-        border-color var(--ease),
-        background-color var(--ease),
-        color var(--ease);
-    }
-
-    .social-link:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.28);
-      color: #fff;
-      background: rgba(255,255,255,0.035);
-    }
-
-    .social-link svg {
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.35;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .read-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-    }
 
     /* CTA */
 
@@ -1354,23 +1253,55 @@
     @media (max-width: 1040px) {
       .hero {
         min-height: auto;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+        column-gap: clamp(36px, 5vw, 64px);
       }
 
       .hero h1 {
-        max-width: 11ch;
+        font-size: clamp(3.2rem, 7vw, 5.8rem);
       }
 
-      .system-visual {
-        min-height: 480px;
+      .hero-portrait-wrap {
+        max-width: 360px;
+      }
+
+      .work-carousel {
+        width: min(calc(100% - 64px), 720px);
+        margin-inline: auto;
       }
 
       .work-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: flex;
+        width: 100%;
+        gap: 18px;
+        margin: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-inline: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-block: 10px 12px;
+        touch-action: pan-x pan-y;
+      }
+
+      .work-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      .work-card {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
       }
 
       .work-card:last-child {
-        grid-column: 1 / -1;
+        grid-column: auto;
+      }
+
+      .work-carousel__control {
+        display: grid;
       }
 
       .process-layout {
@@ -1415,12 +1346,24 @@
         display: none;
       }
 
-      .about-card {
+      .hero {
         grid-template-columns: 1fr;
+        grid-template-areas:
+          "intro"
+          "portrait"
+          "details";
+        row-gap: 30px;
       }
 
-      .portrait-placeholder {
-        min-height: 360px;
+      .hero-intro,
+      .hero-details {
+        align-self: auto;
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 360px);
+        max-width: none;
+        justify-self: start;
       }
     }
 
@@ -1453,13 +1396,26 @@
         margin-top: 18px;
       }
 
-      .work-grid {
-        grid-template-columns: 1fr;
+      .work-carousel {
+        width: min(calc(100% - 56px), 380px);
       }
 
-      .work-card:last-child {
-        grid-column: auto;
+      .work-grid {
+        width: 100%;
+        gap: 16px;
+        padding-block: 10px 12px;
+        scroll-padding-inline: 0;
       }
+
+      .work-card {
+        flex-basis: 100%;
+      }
+
+      .work-carousel__control {
+        width: 46px;
+        height: 46px;
+      }
+
 
       .process-track::before {
         top: 54px;
@@ -1518,46 +1474,45 @@
       }
 
       .hero {
-        padding-block: 64px 82px;
+        padding-block: 58px 80px;
+        row-gap: 26px;
       }
 
       .hero h1 {
-        font-size: clamp(3rem, 15vw, 4.8rem);
+        font-size: clamp(3rem, 14.5vw, 4.55rem);
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 340px);
       }
 
       .hero-actions {
         display: grid;
       }
 
-      .system-visual {
-        min-height: 400px;
+      .hero-actions .button {
+        width: 100%;
       }
 
-      .visual-frame {
-        inset: 12% 4%;
-        transform: none;
+      .work-carousel {
+        width: min(calc(100% - 52px), 360px);
       }
 
-      .visual-main {
-        inset: 12% 0 14% 10%;
+      .work-grid {
+        width: 100%;
+        padding-inline: 0;
+        scroll-padding-inline: 0;
       }
 
-      .visual-small {
-        width: 126px;
+      .work-card {
+        flex-basis: 100%;
       }
 
-      .mini-metrics {
-        grid-template-columns: 1fr;
+      .work-carousel__control {
+        width: 44px;
+        height: 44px;
       }
 
-      .metric:nth-child(n+2) {
-        display: none;
-      }
-
-      .about-bottom {
-        align-items: flex-start;
-        flex-direction: column;
-      }
 
       .footer-links {
         flex-wrap: wrap;
@@ -1574,6 +1529,17 @@
         transform: none;
       }
 
+      .work-card,
+      .work-card.is-pending,
+      .work-card.is-visible,
+      .work-card.is-visible:hover,
+      .work-card:hover,
+      .work-card .mock-window,
+      .work-card:hover .mock-window {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
       *,
       *::before,
       *::after {
@@ -1586,7 +1552,7 @@
 <body>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="brand" href="#top" aria-label="J. Allekine homepage">
+      <a class="brand" href="/" aria-label="J. Allekine homepage">
         <span class="brand-mark" aria-hidden="true"><span></span></span>
         <span>J. ALLEKINE</span>
       </a>
@@ -1603,105 +1569,89 @@
       </button>
 
       <nav class="nav" id="primary-navigation" aria-label="Primary" data-navigation>
-        <a href="#work">Work</a>
-        <a href="#process">How I Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="/work">Work</a>
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
     <section class="hero shell" aria-labelledby="hero-title">
-      <div>
-        <p class="hero-label">Systems, automation, and software</p>
-        <h1 id="hero-title">Build systems that make <span>work easier.</span></h1>
-        <p class="hero-copy">
-          I design spreadsheet systems, automation workflows, data tools, and practical software that reduce busywork, improve visibility, and help organizations operate with clarity.
-        </p>
+      <div class="hero-intro">
+        <p class="hero-label">Systems &amp; Automation Developer</p>
+        <h1 id="hero-title">
+          <span class="hero-name-line">Jihm Allekine</span>
+          <span class="hero-name-line">Almedilla</span>
+        </h1>
+      </div>
 
-        <p class="faith-line">
-          <span class="faith-line__cross" aria-hidden="true"></span>
-          Built with clarity, stewardship, and care.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button button--primary" href="#work">
-            View Work <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="button button--ghost" href="#about">
-            About Me <span class="arrow" aria-hidden="true">→</span>
-          </a>
+      <div class="hero-portrait-wrap">
+        <div
+          class="hero-portrait"
+          role="img"
+          aria-label="Temporary portrait area for Jihm Allekine Almedilla"
+        >
+          <span class="hero-portrait-corner hero-portrait-corner--top" aria-hidden="true"></span>
+          <span class="hero-portrait-corner hero-portrait-corner--bottom" aria-hidden="true"></span>
         </div>
       </div>
 
-      <aside class="system-visual" aria-label="Abstract connected system visualization">
-        <div class="node-map" aria-hidden="true">
-          <span class="node"></span>
-          <span class="node"></span>
-          <span class="node"></span>
-          <span class="node"></span>
+      <div class="hero-details">
+        <p class="hero-copy">
+          I build spreadsheet systems, workflow automations, data tools, and practical software that turn manual processes into clearer, more reliable operations. I enjoy mapping workflows, understanding the details, and building useful tools that people can rely on.
+        </p>
+        <p class="hero-copy">
+          My Christian faith shapes how I approach my work. I see building as an act of stewardship: serving people well, pursuing excellence, and creating work that honors God.
+        </p>
+
+        <div class="hero-actions">
+          <!-- Replace #contact with the real 30-minute scheduling URL when available. -->
+          <a class="button button--primary" href="#contact" data-booking-placeholder>
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="5.5" width="17" height="15" rx="2"></rect>
+              <path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"></path>
+            </svg>
+            Book a 30-minute call <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="button button--ghost" href="#work">
+            View Work <span class="arrow" aria-hidden="true">→</span>
+          </a>
         </div>
 
-        <div class="visual-frame">
-          <article class="visual-card visual-main">
-            <div class="visual-card__header">
-              <span>Operations overview</span>
-              <span>System online</span>
-            </div>
-            <div class="visual-card__body">
-              <div class="mini-metrics">
-                <div class="metric">
-                  <span>Tasks automated</span>
-                  <strong>3,842</strong>
-                </div>
-                <div class="metric">
-                  <span>Process accuracy</span>
-                  <strong>98%</strong>
-                </div>
-                <div class="metric">
-                  <span>Time recovered</span>
-                  <strong>127h</strong>
-                </div>
-              </div>
-
-              <div class="chart" aria-hidden="true">
-                <svg viewBox="0 0 500 180" preserveAspectRatio="none">
-                  <path
-                    d="M0,145 C45,137 56,118 92,123 C133,130 151,93 192,101 C236,110 249,63 290,76 C332,88 359,39 400,53 C438,66 458,28 500,17"
-                    fill="none"
-                    stroke="rgba(255,255,255,.78)"
-                    stroke-width="2"
-                  />
-                  <path
-                    d="M0,162 C65,155 96,148 145,150 C201,152 226,129 278,131 C330,132 373,104 418,109 C453,113 471,92 500,87"
-                    fill="none"
-                    stroke="rgba(255,255,255,.18)"
-                    stroke-width="1.5"
-                    stroke-dasharray="7 8"
-                  />
-                </svg>
-              </div>
-            </div>
-          </article>
-
-          <article class="visual-card visual-small visual-small--one">
-            <div class="visual-card__header">Workflows</div>
-            <div class="small-stat">
-              <span>Active</span>
-              <strong>24</strong>
-            </div>
-          </article>
-
-          <article class="visual-card visual-small visual-small--two">
-            <div class="visual-card__header">System health</div>
-            <div class="small-stat">
-              <span>Reliable</span>
-              <strong>98%</strong>
-            </div>
-          </article>
+        <div class="hero-socials">
+<div class="socials" aria-label="Social links">
+          <a
+            class="social-link"
+            href="https://github.com/j-allekine"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" stroke="none" d="M12 .7A11.3 11.3 0 0 0 8.4 22.7c.6.1.8-.2.8-.6v-2.2c-3.4.7-4.1-1.4-4.1-1.4-.5-1.4-1.3-1.7-1.3-1.7-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6A4.7 4.7 0 0 1 5.8 7.4a4.4 4.4 0 0 1 .1-3.2s1-.3 3.4 1.2a11.8 11.8 0 0 1 6.1 0c2.4-1.5 3.4-1.2 3.4-1.2a4.4 4.4 0 0 1 .1 3.2 4.7 4.7 0 0 1 1.3 3.3c0 4.7-2.9 5.7-5.6 6 .4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"/>
+            </svg>
+          </a>
+           <a class="social-link" href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" stroke="none" d="M20.5 3H3.5A.5.5 0 0 0 3 3.5v17c0 .3.2.5.5.5h17a.5.5 0 0 0 .5-.5v-17a.5.5 0 0 0-.5-.5ZM8.3 18H5.7V9.6h2.6V18ZM7 8.5A1.5 1.5 0 1 1 7 5.5a1.5 1.5 0 0 1 0 3Zm11 9.5h-2.6v-4.1c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2V18H9.8V9.6h2.5v1.1h.1c.3-.7 1.2-1.4 2.5-1.4 2.7 0 3.1 1.8 3.1 4.1V18Z"/>
+            </svg>
+          </a>
+           <a class="social-link" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" stroke="none" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.5.6.2 1 .6 1.5 1 .5.5.8.9 1 1.5.2.5.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.5 2.4-.2.6-.6 1-1 1.5-.5.5-.9.8-1.5 1-.5.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.5-.6-.2-1-.6-1.5-1-.5-.5-.8-.9-1-1.5-.2-.5-.4-1.2-.5-2.4-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.9.5-2.4.2-.6.6-1 1-1.5.5-.5.9-.8 1.5-1 .5-.2 1.2-.4 2.4-.5C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.4.2-.7.4-1.1.7-.3.3-.5.7-.7 1.1-.2.4-.3.9-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.4.4.7.7 1.1.3.3.7.5 1.1.7.4.2.9.3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.4-.2.7-.4 1.1-.7.3-.3.5-.7.7-1.1.2-.4.3-.9.4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.4-.4-.7-.7-1.1-.3-.3-.7-.5-1.1-.7-.4-.2-.9-.3-2-.4C15.5 4 15.1 4 12 4Zm0 3.1a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 1.9a3.6 3.6 0 1 0 0 7.2A3.6 3.6 0 0 0 12 9Zm5.7-3.3a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/>
+            </svg>
+          </a>
+           <a class="social-link" href="mailto:hello@example.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.5 5.5h17v13h-17z" />
+              <path d="m4 6 8 6.3L20 6" />
+            </svg>
+          </a>
         </div>
-      </aside>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="work">
@@ -1717,9 +1667,27 @@
           </a>
         </div>
 
-        <div class="work-grid">
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
+        <div
+          class="work-carousel"
+          data-work-carousel
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Featured projects"
+        >
+          <button
+            class="work-carousel__control work-carousel__control--prev"
+            type="button"
+            aria-label="Previous project"
+            data-work-prev
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m14.5 6-6 6 6 6"></path>
+            </svg>
+          </button>
+
+          <div class="work-grid" data-work-track tabindex="0">
+          <article class="work-card" role="group" aria-roledescription="slide" aria-label="1 of 3: Pharmacy Inventory System">
+            <div class="work-visual">
               <div class="mock-window">
                 <div class="mock-window__top"><i></i><i></i><i></i></div>
                 <div class="mock-dashboard">
@@ -1736,23 +1704,23 @@
               </div>
             </div>
             <div class="work-body">
+              <h3>Pharmacy Inventory System</h3>
+              <p>Centralizes medicine movement, expiry monitoring, FIFO handling, reordering, sales, and reporting in one operational system.</p>
+
               <div class="work-type" aria-label="Project stack and industry">
                 <span>Excel</span>
                 <span>Inventory</span>
                 <span>Healthcare</span>
               </div>
-              <h3>Pharmacy Inventory System</h3>
-              <p>
-                A practical system for medicine movement, expiry monitoring, FIFO handling, reorder visibility, sales, and reporting.
-              </p>
+
               <a class="work-link" href="#">
                 View case study <span class="arrow" aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
+          <article class="work-card" role="group" aria-roledescription="slide" aria-label="2 of 3: Hospital OCR Automation Pipeline">
+            <div class="work-visual">
               <div class="mock-window">
                 <div class="mock-window__top"><i></i><i></i><i></i></div>
                 <div class="mock-flow">
@@ -1768,23 +1736,23 @@
               </div>
             </div>
             <div class="work-body">
+              <h3>Hospital OCR Automation Pipeline</h3>
+              <p>Turns uploaded hospital forms into structured records while keeping human review inside the workflow for faster, cleaner processing.</p>
+
               <div class="work-type" aria-label="Project stack and industry">
                 <span>Apps Script</span>
                 <span>OCR</span>
                 <span>Google APIs</span>
               </div>
-              <h3>Hospital OCR Automation Pipeline</h3>
-              <p>
-                A document workflow that converts uploaded forms into structured records while keeping human review inside the process.
-              </p>
+
               <a class="work-link" href="#">
                 View case study <span class="arrow" aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <article class="work-card">
-            <div class="work-visual" aria-hidden="true">
+          <article class="work-card" role="group" aria-roledescription="slide" aria-label="3 of 3: LGU Inventory & Asset System">
+            <div class="work-visual">
               <div class="mock-window">
                 <div class="mock-window__top"><i></i><i></i><i></i></div>
                 <div class="mock-table">
@@ -1798,21 +1766,34 @@
               </div>
             </div>
             <div class="work-body">
+              <h3>LGU Inventory & Asset System</h3>
+              <p>Creates one source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt through disposal.</p>
+
               <div class="work-type" aria-label="Project stack and industry">
                 <span>Web App</span>
                 <span>Government</span>
                 <span>Assets</span>
               </div>
-              <h3>LGU Inventory & Asset System</h3>
-              <p>
-                A single source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt to disposal.
-              </p>
+
               <a class="work-link" href="#">
                 View case study <span class="arrow" aria-hidden="true">→</span>
               </a>
             </div>
           </article>
-        </div>
+          </div>
+
+          <button
+            class="work-carousel__control work-carousel__control--next"
+            type="button"
+            aria-label="Next project"
+            data-work-next
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9.5 6 6 6-6 6"></path>
+            </svg>
+          </button>
+
+</div>
       </div>
     </section>
 
@@ -1828,15 +1809,11 @@
 
         <div class="stack-marquee" aria-label="Scrolling technology and tool list">
           <div class="stack-track">
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/microsoftexcel/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
+            <div class="stack-item stack-item--excel">
+              <svg class="stack-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4.5 4.5h9v15h-9z"></path>
+                <path d="M13.5 7h6v10h-6M7.2 9l3.5 6M10.7 9l-3.5 6"></path>
+              </svg>
               <span>Excel</span>
             </div>
             <div class="stack-item">
@@ -1861,15 +1838,8 @@
               />
               <span>Apps Script</span>
             </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/microsoftexcel/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
+            <div class="stack-item stack-item--vba">
+              <span class="stack-badge" aria-hidden="true">VB</span>
               <span>VBA</span>
             </div>
             <div class="stack-item">
@@ -1960,15 +1930,11 @@
               />
               <span>Make</span>
             </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/microsoftexcel/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
+            <div class="stack-item stack-item--excel">
+              <svg class="stack-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4.5 4.5h9v15h-9z"></path>
+                <path d="M13.5 7h6v10h-6M7.2 9l3.5 6M10.7 9l-3.5 6"></path>
+              </svg>
               <span>Excel</span>
             </div>
             <div class="stack-item">
@@ -1993,15 +1959,8 @@
               />
               <span>Apps Script</span>
             </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/microsoftexcel/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
+            <div class="stack-item stack-item--vba">
+              <span class="stack-badge" aria-hidden="true">VB</span>
               <span>VBA</span>
             </div>
             <div class="stack-item">
@@ -2101,9 +2060,9 @@
       <div class="shell process-layout">
         <div class="process-copy">
           <p class="section-label">How I work</p>
-          <h2>Build, prove, hand off.</h2>
+          <h2>Discover, build, launch.</h2>
           <p class="process-lead">
-            I do not build and disappear. I map the messy parts, clarify what matters, wire up the automation, and test the system against real work before handoff.
+            I do not build and disappear. I map the messy parts, clarify what matters, build around the real workflow, and launch only after the system has been tested against real work.
           </p>
           <p>
             My approach connects operations, data, and software. The tool can be Excel, Google Sheets, Apps Script, APIs, or a custom application. The goal stays the same: less friction, clearer decisions, and a system people can maintain.
@@ -2126,9 +2085,25 @@
             </div>
             <div class="process-title">
               <span class="process-number">01</span>
-              <h3>Map</h3>
+              <h3>Discovery</h3>
             </div>
-            <p>I study the current workflow, people, handoffs, bottlenecks, and exceptions.</p>
+            <p>We start with a focused call to understand your current process, pain points, tools involved, and the outcome you want to achieve.</p>
+          </article>
+
+          <article class="process-step">
+            <div class="process-circle" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="M6 8h7M19 8h7M9.5 8v8h13V8M16 16v8" />
+                <circle cx="9.5" cy="8" r="2" />
+                <circle cx="22.5" cy="8" r="2" />
+                <circle cx="16" cy="24" r="2" />
+              </svg>
+            </div>
+            <div class="process-title">
+              <span class="process-number">02</span>
+              <h3>Plan</h3>
+            </div>
+            <p>I turn your process into a clear roadmap — what happens, who's responsible, what to do when things don't go as expected. You'll see the whole system before I build a single line, so there are no surprises later.</p>
           </article>
 
           <article class="process-step">
@@ -2141,27 +2116,10 @@
               </svg>
             </div>
             <div class="process-title">
-              <span class="process-number">02</span>
+              <span class="process-number">03</span>
               <h3>Build</h3>
             </div>
-            <p>I design and automate the smallest dependable system that solves the real problem.</p>
-          </article>
-
-          <article class="process-step">
-            <div class="process-circle" aria-hidden="true">
-              <svg viewBox="0 0 32 32">
-                <path d="M5 24h22M7 20l5-5 4 3 8-9" />
-                <circle cx="12" cy="15" r="1.8" />
-                <circle cx="16" cy="18" r="1.8" />
-                <circle cx="24" cy="9" r="1.8" />
-                <path d="m20.5 22.5 2.3 2.3 4.7-5.1" />
-              </svg>
-            </div>
-            <div class="process-title">
-              <span class="process-number">03</span>
-              <h3>Prove</h3>
-            </div>
-            <p>I test the workflow, validate the data, and make sure the numbers actually move.</p>
+            <p>Built around how you actually work, not a generic template. Tested on real scenarios, refined with your feedback, so what launches is something your team already trusts.</p>
           </article>
 
           <article class="process-step">
@@ -2176,73 +2134,10 @@
             </div>
             <div class="process-title">
               <span class="process-number">04</span>
-              <h3>Hand off</h3>
+              <h3>Launch</h3>
             </div>
-            <p>I document, train, and hand over a system that can keep running without me.</p>
+            <p>You're not left to figure it out alone. I hand it over with clear documentation and hands-on support, so the transition feels steady, not stressful.</p>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="shell">
-        <div class="about-card">
-          <div class="portrait-placeholder" role="img" aria-label="Portrait image placeholder">
-            <span class="portrait-label">Portrait placeholder</span>
-          </div>
-
-          <div class="about-content">
-            <p class="section-label">About me</p>
-            <h2>Hi, I’m Jihm Allekine Almedilla.</h2>
-            <p>
-              I work at the intersection of spreadsheets, automation, and software to help organizations solve real problems.
-            </p>
-            <p>
-              My background spans business operations, process improvement, and system development. I build practical solutions that are reliable, maintainable, and designed to scale with the business.
-            </p>
-            <p>
-              My Christian faith shapes how I approach that work: serve people well, steward resources carefully, tell the truth in the data, and build with care.
-            </p>
-
-            <div class="about-bottom">
-              <div class="socials" aria-label="Social links">
-                <a
-                  class="social-link"
-                  href="https://github.com/j-allekine"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="GitHub"
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" stroke="none" d="M12 .7A11.3 11.3 0 0 0 8.4 22.7c.6.1.8-.2.8-.6v-2.2c-3.4.7-4.1-1.4-4.1-1.4-.5-1.4-1.3-1.7-1.3-1.7-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6A4.7 4.7 0 0 1 5.8 7.4a4.4 4.4 0 0 1 .1-3.2s1-.3 3.4 1.2a11.8 11.8 0 0 1 6.1 0c2.4-1.5 3.4-1.2 3.4-1.2a4.4 4.4 0 0 1 .1 3.2 4.7 4.7 0 0 1 1.3 3.3c0 4.7-2.9 5.7-5.6 6 .4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"/>
-                  </svg>
-                </a>
-
-                <a class="social-link" href="#" aria-label="LinkedIn">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" stroke="none" d="M20.5 3H3.5A.5.5 0 0 0 3 3.5v17c0 .3.2.5.5.5h17a.5.5 0 0 0 .5-.5v-17a.5.5 0 0 0-.5-.5ZM8.3 18H5.7V9.6h2.6V18ZM7 8.5A1.5 1.5 0 1 1 7 5.5a1.5 1.5 0 0 1 0 3Zm11 9.5h-2.6v-4.1c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2V18H9.8V9.6h2.5v1.1h.1c.3-.7 1.2-1.4 2.5-1.4 2.7 0 3.1 1.8 3.1 4.1V18Z"/>
-                  </svg>
-                </a>
-
-                <a class="social-link" href="#" aria-label="Instagram">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" stroke="none" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.5.6.2 1 .6 1.5 1 .5.5.8.9 1 1.5.2.5.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.5 2.4-.2.6-.6 1-1 1.5-.5.5-.9.8-1.5 1-.5.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.5-.6-.2-1-.6-1.5-1-.5-.5-.8-.9-1-1.5-.2-.5-.4-1.2-.5-2.4-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.9.5-2.4.2-.6.6-1 1-1.5.5-.5.9-.8 1.5-1 .5-.2 1.2-.4 2.4-.5C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.4.2-.7.4-1.1.7-.3.3-.5.7-.7 1.1-.2.4-.3.9-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.4.4.7.7 1.1.3.3.7.5 1.1.7.4.2.9.3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.4-.2.7-.4 1.1-.7.3-.3.5-.7.7-1.1.2-.4.3-.9.4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.4-.4-.7-.7-1.1-.3-.3-.7-.5-1.1-.7-.4-.2-.9-.3-2-.4C15.5 4 15.1 4 12 4Zm0 3.1a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 1.9a3.6 3.6 0 1 0 0 7.2A3.6 3.6 0 0 0 12 9Zm5.7-3.3a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/>
-                  </svg>
-                </a>
-
-                <a class="social-link" href="mailto:hello@example.com" aria-label="Email">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3.5 5.5h17v13h-17z" />
-                    <path d="m4 6 8 6.3L20 6" />
-                  </svg>
-                </a>
-              </div>
-
-              <a class="read-more" href="/about">
-                Read more <span class="arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -2311,5 +2206,101 @@
       }
     });
   </script>
+
+  <script>
+    (() => {
+      const cards = Array.from(document.querySelectorAll(".work-card"));
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!cards.length || reduceMotion || !("IntersectionObserver" in window)) {
+        return;
+      }
+
+      cards.forEach((card, index) => {
+        card.classList.add("is-pending");
+        card.style.setProperty("--reveal-delay", `${index * 80}ms`);
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            entry.target.classList.remove("is-pending");
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.18,
+          rootMargin: "0px 0px -6% 0px",
+        }
+      );
+
+      cards.forEach((card) => observer.observe(card));
+    })();
+  </script>
+
+
+  <script>
+    (() => {
+      const carousel = document.querySelector("[data-work-carousel]");
+      const track = carousel?.querySelector("[data-work-track]");
+      const prev = carousel?.querySelector("[data-work-prev]");
+      const next = carousel?.querySelector("[data-work-next]");
+      const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+
+      if (!carousel || !track || !prev || !next || cards.length < 2) {
+        return;
+      }
+
+      const getCurrentIndex = () => {
+        const current = track.scrollLeft;
+        let closestIndex = 0;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        cards.forEach((card, index) => {
+          const distance = Math.abs(card.offsetLeft - current);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+          }
+        });
+
+        return closestIndex;
+      };
+
+      const goTo = (index) => {
+        const target = cards[(index + cards.length) % cards.length];
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        track.scrollTo({
+          left: target.offsetLeft,
+          behavior: reduceMotion ? "auto" : "smooth",
+        });
+      };
+
+      prev.addEventListener("click", () => goTo(getCurrentIndex() - 1));
+      next.addEventListener("click", () => goTo(getCurrentIndex() + 1));
+
+      track.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          goTo(getCurrentIndex() - 1);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          goTo(getCurrentIndex() + 1);
+        }
+      });
+
+      track.setAttribute(
+        "aria-label",
+        "Featured projects. Swipe horizontally or use the previous and next project buttons."
+      );
+    })();
+  </script>
+
 </body>
 </html>

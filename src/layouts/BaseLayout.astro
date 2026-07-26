@@ -1,6 +1,16 @@
 ---
-import "../styles/homepage.css";
-import HomepageNavigation from "../components/homepage/Navigation.astro";
+import SiteHeader from "../components/site/Header.astro";
+import SiteFooter from "../components/site/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "J. Allekine | Systems, Automation & Software",
+  description = "Jihm Allekine Almedilla builds spreadsheet systems, automations, data tools, and practical software.",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -10,9 +20,9 @@ import HomepageNavigation from "../components/homepage/Navigation.astro";
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="Jihm Allekine Almedilla builds spreadsheet systems, automations, data tools, and practical software."
+    content={description}
   />
-  <title>J. Allekine | Systems, Automation & Software</title>
+  <title>{title}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,8 +32,8 @@ import HomepageNavigation from "../components/homepage/Navigation.astro";
   />
 </head>
 <body>
+  <SiteHeader />
   <slot />
-  <HomepageNavigation />
+  <SiteFooter />
 </body>
 </html>
-
