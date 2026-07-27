@@ -36,6 +36,15 @@ Use the project glossary's canonical vocabulary and report conflicts with existi
 - Run relevant validation commands after editing.
 - Do not invent content, metrics, links, or project details.
 
+## Testing
+Three-pass definition of done.
+
+- Shell: The structure, layout, states, and navigation are complete.
+
+- Function: The workflows, logic, components, states, and navigation are complete.
+
+- Usability: A real user can understand the system, complete the primary task, recover from mistakes, and receive clear feedback.
+
 ## Development
 
 When starting the dev server, use background mode:
