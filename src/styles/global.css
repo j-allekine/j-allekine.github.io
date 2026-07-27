@@ -49,19 +49,21 @@
       display: block;
     }
 
-    .shell {
-      width: min(calc(100% - var(--gutter) * 2), var(--page));
+    .content-shell {
+      width: min(calc(100% - (var(--content-gutter) * 2)), var(--content-max-width));
       margin-inline: auto;
     }
 
-    .reading-shell {
-      width: min(calc(100% - var(--gutter) * 2), var(--reading-width));
-      margin-inline: auto;
+    @media (min-width: 721px) {
+      :root {
+        --content-gutter: var(--content-tablet-gutter);
+      }
     }
 
-    .visual-shell {
-      width: min(calc(100% - var(--gutter) * 2), var(--visual-width));
-      margin-inline: auto;
+    @media (min-width: 1041px) {
+      :root {
+        --content-max-width: var(--content-desktop-max-width);
+      }
     }
 
     /* Header, hero, sections, CTA, and footer share this outer column.

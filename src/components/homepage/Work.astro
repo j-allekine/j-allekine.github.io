@@ -5,7 +5,7 @@ import { projects } from "../../data/projects";
 ---
 
 <section class="section" id="work">
-  <div class="visual-shell">
+  <div class="content-shell">
     <SectionHeader label="Featured systems" title="Selected work." href="/work" linkLabel="See all work" />
 
     <div class="work-carousel" data-work-carousel role="region" aria-roledescription="carousel" aria-label="Featured projects">
@@ -61,7 +61,7 @@ import { projects } from "../../data/projects";
 
       const wrap = (index) => (index + cards.length) % cards.length;
       const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
-      const isDeckMode = () => window.innerWidth <= 1040;
+      const isDeckMode = () => true;
 
       const setCardLinkState = (card, isActive) => {
         const actionable = !isDeckMode() || isActive;
@@ -177,8 +177,16 @@ import { projects } from "../../data/projects";
       render();
     };
 
-    moveSectionsIntoStoryOrder();
-    initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
-    initDeck({ carouselSelector: "[data-services-carousel]", trackSelector: "[data-services-track]", cardSelector: ".service-card", prevSelector: "[data-services-prev]", nextSelector: "[data-services-next]", dotsSelector: "[data-services-dots]", itemName: "Service" });
+    const initializeHomepageDecks = () => {
+      moveSectionsIntoStoryOrder();
+      initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
+      initDeck({ carouselSelector: "[data-services-carousel]", trackSelector: "[data-services-track]", cardSelector: ".service-card", prevSelector: "[data-services-prev]", nextSelector: "[data-services-next]", dotsSelector: "[data-services-dots]", itemName: "Service" });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initializeHomepageDecks, { once: true });
+    } else {
+      initializeHomepageDecks();
+    }
   })();
 </script>

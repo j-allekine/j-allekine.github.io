@@ -12,12 +12,13 @@
       --glow: rgba(255, 255, 255, 0.07);
       --page: 1240px;
       --gutter: clamp(20px, 4vw, 56px);
+      --content-max-width: 640px;
+      --content-gutter: 16px;
+      --content-tablet-gutter: 24px;
+      --content-desktop-max-width: 768px;
       --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       --ease: 180ms ease;
-
-      --reading-width: 920px;
-      --visual-width: 1120px;
 
       --display-size: clamp(4rem, 6vw, 4.75rem);
       --section-size: clamp(2.25rem, 3.5vw, 2.625rem);
