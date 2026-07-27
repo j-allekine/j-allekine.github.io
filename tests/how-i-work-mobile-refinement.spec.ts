@@ -153,14 +153,18 @@ test.describe("standalone How I Work mobile refinement", () => {
     }
   });
 
-  test("uses the outlined speech bubble only for Discovery", async ({ page }) => {
+  test("uses the lighter Lucide line icons for each process step", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
 
     const tabs = processTabs(page);
+    await expect(tabs.nth(0).locator("svg")).toHaveAttribute("viewBox", "0 0 24 24");
     await expect(tabs.nth(0).locator("svg path")).toHaveCount(1);
     await expect(tabs.nth(0).locator("svg circle")).toHaveCount(0);
-    await expect(tabs.nth(1).locator("svg circle")).toHaveCount(4);
+    await expect(tabs.nth(1).locator("svg path")).toHaveCount(1);
+    await expect(tabs.nth(1).locator("svg circle")).toHaveCount(2);
     await expect(tabs.nth(2).locator("svg rect")).toHaveCount(4);
-    await expect(tabs.nth(3).locator("svg path")).toHaveCount(2);
+    await expect(tabs.nth(3).locator("svg path")).toHaveCount(4);
+
+    await expect(tabs.nth(0).locator("svg")).toHaveCSS("stroke-width", "1.5px");
   });
 });
