@@ -14,13 +14,15 @@ test("Astro preview is available @unconfigured", async ({ page }) => {
   await expect(page).toHaveTitle(/J\. Allekine/);
 });
 
-test.describe("standalone How I Work mobile refinement", () => {
+test.describe("standalone How I Work Process tabs", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(standaloneHomepageUrl, { waitUntil: "domcontentloaded" });
   });
 
-  test("shows the connected four-step control on phones without overflow", async ({ page }) => {
+  test("shows four labeled circular controls without overflow", async ({ page }) => {
     for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 1024, height: 768 },
       { width: 390, height: 844 },
       { width: 320, height: 568 },
     ]) {
@@ -35,87 +37,54 @@ test.describe("standalone How I Work mobile refinement", () => {
 
       const layout = await page.locator("[data-process]").evaluate((process) => {
         const nav = process.querySelector("[role='tablist']");
+        const processRect = process.getBoundingClientRect();
+        const tabs = [...process.querySelectorAll("[role='tab']")];
         const iconRects = [...process.querySelectorAll("[role='tab'] .process-tab__icon")]
           .map((icon) => icon.getBoundingClientRect());
         const labelRects = [...process.querySelectorAll("[role='tab'] .process-tab__label")]
           .map((label) => label.getBoundingClientRect());
         const connector = nav ? getComputedStyle(nav, "::before") : null;
-        const connectorY = nav && connector
-          ? nav.getBoundingClientRect().top + Number.parseFloat(connector.top)
-          : Number.NaN;
 
         return {
           iconSizes: iconRects.map((rect) => [rect.width, rect.height]),
           labelsBelowIcons: labelRects.every((label, index) => label.top >= iconRects[index].bottom),
-          connectorThroughCenters: iconRects.every(
-            (rect) => Math.abs(rect.top + rect.height / 2 - connectorY) < 1
-          ),
+          circles: [...process.querySelectorAll("[role='tab'] .process-tab__icon")]
+            .every((icon) => getComputedStyle(icon).borderRadius === "50%"),
+          controlsContained: tabs.every((tab) => {
+            const rect = tab.getBoundingClientRect();
+            return rect.left >= processRect.left && rect.right <= processRect.right;
+          }),
           connectorVisible: connector?.display !== "none",
           noOverflow: document.documentElement.scrollWidth <= window.innerWidth,
         };
       });
 
       expect(layout.iconSizes).toHaveLength(4);
-      expect(layout.iconSizes.every(([width, height]) => width >= 44 && height >= 44)).toBe(true);
+      expect(layout.iconSizes.every(([width, height]) => width >= 48 && height >= 48)).toBe(true);
       expect(layout.labelsBelowIcons).toBe(true);
-      expect(layout.connectorThroughCenters).toBe(true);
+      expect(layout.circles).toBe(true);
+      expect(layout.controlsContained).toBe(true);
       expect(layout.connectorVisible).toBe(true);
       expect(layout.noOverflow).toBe(true);
     }
   });
 
-  test("keeps the restored presentation at and above 720px", async ({ page }) => {
-    for (const width of [720, 1024, 1440]) {
-      await page.setViewportSize({ width, height: 900 });
-
-      const desktopState = await page.locator("[data-process]").evaluate((process) => {
-        const tab = process.querySelector("[role='tab']");
-        const nav = process.querySelector("[role='tablist']");
-        const dot = tab?.querySelector(".process-tab__dot");
-        const icon = tab?.querySelector(".process-tab__icon")?.getBoundingClientRect();
-        const label = tab?.querySelector(".process-tab__label")?.getBoundingClientRect();
-        const dotRect = dot?.getBoundingClientRect();
-        const connector = nav ? getComputedStyle(nav, "::before") : null;
-        const connectorY = nav && connector
-          ? nav.getBoundingClientRect().top + Number.parseFloat(connector.top)
-          : Number.NaN;
-
-        return {
-          iconVisible: Boolean(tab?.querySelector("svg")),
-          iconSize: icon ? [icon.width, icon.height] : [0, 0],
-          dotVisible: dot ? getComputedStyle(dot).display !== "none" : false,
-          dotSize: dotRect ? [dotRect.width, dotRect.height] : [0, 0],
-          connectorVisible: connector?.display !== "none",
-          connectorThroughDots: dotRect
-            ? Math.abs(dotRect.top + dotRect.height / 2 - connectorY) < 1
-            : false,
-          labelsClearOfConnector: label
-            ? connectorY < label.top || connectorY > label.bottom
-            : false,
-        };
-      });
-
-      expect(desktopState.iconVisible).toBe(true);
-      expect(desktopState.iconSize).toEqual([34, 34]);
-      expect(desktopState.dotVisible).toBe(true);
-      expect(desktopState.dotSize.every((size) => size >= 13 && size <= 16)).toBe(true);
-      expect(desktopState.connectorVisible).toBe(true);
-      expect(desktopState.connectorThroughDots).toBe(true);
-      expect(desktopState.labelsClearOfConnector).toBe(true);
-    }
-  });
-
-  test("preserves selection, panel association, and keyboard navigation", async ({ page }) => {
+  test("exposes tab semantics and preserves selection in one shared panel", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
 
     const tabs = processTabs(page);
+    const tablist = page.getByRole("tablist");
     const panel = page.getByRole("tabpanel");
     const discovery = tabs.nth(0);
     const plan = tabs.nth(1);
     const build = tabs.nth(2);
     const launch = tabs.nth(3);
 
+    await expect(tablist).toHaveAttribute("aria-orientation", "horizontal");
     await expect(discovery).toHaveAttribute("aria-selected", "true");
+    await expect(discovery).toHaveAttribute("tabindex", "0");
+    await expect(plan).toHaveAttribute("tabindex", "-1");
+    await expect(discovery).toHaveAttribute("aria-controls", "process-panel");
     await expect(page.locator("[data-process-title]")).toHaveText("Discovery");
     await expect(panel).toHaveAttribute("aria-labelledby", "process-tab-discovery");
 
@@ -123,8 +92,9 @@ test.describe("standalone How I Work mobile refinement", () => {
     await expect(plan).toHaveAttribute("aria-selected", "true");
     await expect(plan.locator(".process-tab__icon")).toHaveCSS(
       "background-color",
-      "rgb(5, 5, 5)"
+      "rgb(245, 245, 247)"
     );
+    await expect(plan.locator(".process-tab__icon")).toHaveCSS("border-radius", "50%");
     await expect(page.locator("[data-process-title]")).toHaveText("Plan");
     await expect(page.locator("[data-process-description]")).toContainText("roadmap");
     await expect(panel).toHaveAttribute("aria-labelledby", "process-tab-plan");
@@ -138,6 +108,14 @@ test.describe("standalone How I Work mobile refinement", () => {
     await expect(build).toHaveAttribute("aria-selected", "true");
     await expect(build).toBeFocused();
 
+    await page.keyboard.press("ArrowRight");
+    await expect(launch).toHaveAttribute("aria-selected", "true");
+    await expect(launch).toBeFocused();
+
+    await page.keyboard.press("ArrowRight");
+    await expect(discovery).toHaveAttribute("aria-selected", "true");
+    await expect(discovery).toBeFocused();
+
     await page.keyboard.press("Home");
     await expect(discovery).toHaveAttribute("aria-selected", "true");
     await expect(discovery).toBeFocused();
@@ -149,6 +127,56 @@ test.describe("standalone How I Work mobile refinement", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await plan.click();
     await expect(page.locator("[data-process-title]")).toHaveText("Plan");
+  });
+
+  test("supports pointer and touch selection", async ({ page, browser }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    await processTabs(page).nth(2).click();
+    await expect(page.locator("[data-process-title]")).toHaveText("Build");
+    await expect(processTabs(page).nth(2)).toHaveAttribute("aria-selected", "true");
+
+    const touchContext = await browser.newContext({
+      hasTouch: true,
+      isMobile: true,
+      viewport: { width: 390, height: 844 },
+    });
+    const touchPage = await touchContext.newPage();
+
+    try {
+      await touchPage.goto(standaloneHomepageUrl, { waitUntil: "domcontentloaded" });
+      await touchPage.locator("[data-process] [role='tab']").nth(3).tap();
+      await expect(touchPage.locator("[data-process-title]")).toHaveText("Launch");
+      await expect(touchPage.locator("[data-process] [role='tab']").nth(3))
+        .toHaveAttribute("aria-selected", "true");
+    } finally {
+      await touchContext.close();
+    }
+  });
+
+  test("keeps the shared panel height stable and honors reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+
+    const process = page.locator("[data-process]");
+    const heights = [];
+
+    for (const tab of await processTabs(page).all()) {
+      await tab.click();
+      heights.push(await process.locator("[role='tabpanel']").evaluate((panel) => panel.getBoundingClientRect().height));
+    }
+
+    expect(new Set(heights.map((height) => Math.round(height))).size).toBe(1);
+
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const transitionDuration = await process.locator(".process-tab__icon").first().evaluate(
+      (icon) => Number.parseFloat(getComputedStyle(icon).transitionDuration)
+    );
+    expect(transitionDuration).toBeLessThanOrEqual(0.01);
+
+    const processHeight = await process.evaluate((element) => element.getBoundingClientRect().height);
+    await processTabs(page).nth(1).click();
+    await expect(page.locator("[data-process-title]")).toHaveText("Plan");
+    expect(await process.evaluate((element) => element.getBoundingClientRect().height)).toBe(processHeight);
   });
 
   test("captures the required visual checkpoints", async ({ page }, testInfo) => {
