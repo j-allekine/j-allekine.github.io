@@ -2265,7 +2265,7 @@
       }
 
       .hero-portrait-wrap {
-        width: min(100%, 300px);
+        width: min(100%, 340px);
         justify-self: center;
       }
 
@@ -3155,7 +3155,7 @@
 
       .work-card,
       .service-card {
-        width: 82%;
+        width: 84%;
         height: 404px;
       }
 
@@ -3735,6 +3735,265 @@
 
     @media (prefers-reduced-motion: reduce) {
       .work-card {
+        transition-duration: 0.01ms;
+      }
+    }
+
+    /* Ticket 04: Services spotlight deck */
+
+    .services-carousel {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .services-grid {
+      position: relative;
+      display: block;
+      height: 350px;
+      padding: 0;
+      overflow: visible;
+      isolation: isolate;
+      outline: none;
+      touch-action: pan-y;
+    }
+
+    .services-grid:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 8px;
+    }
+
+    .service-card {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      display: flex;
+      width: 42%;
+      height: 350px;
+      min-height: 0;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) scale(0.92);
+      transform-origin: center;
+      transition:
+        transform 250ms ease,
+        opacity 250ms ease,
+        border-color var(--ease),
+        background-color var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .service-card.is-active {
+      z-index: 3;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%);
+    }
+
+    .service-card.is-prev,
+    .service-card.is-next {
+      z-index: 2;
+      opacity: 0.66;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .service-card.is-prev {
+      transform: translateX(calc(-50% - 28%)) rotate(-7deg) scale(0.92);
+    }
+
+    .service-card.is-next {
+      transform: translateX(calc(-50% + 28%)) rotate(7deg) scale(0.92);
+    }
+
+    .service-card.is-hidden {
+      visibility: hidden;
+    }
+
+    .service-card.is-active:hover {
+      transform: translateX(-50%);
+    }
+
+    .service-card.is-prev:hover {
+      transform: translateX(calc(-50% - 28%)) rotate(-7deg) scale(0.92);
+    }
+
+    .service-card.is-next:hover {
+      transform: translateX(calc(-50% + 28%)) rotate(7deg) scale(0.92);
+    }
+
+    .service-card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background-color: #111114;
+    }
+
+    .service-card:not(.is-active):hover {
+      filter: brightness(1.12);
+    }
+
+    .service-card__body {
+      min-height: 0;
+      padding: 22px;
+    }
+
+    .service-card__heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 48px;
+    }
+
+    .service-card__heading h3 {
+      margin: 0;
+    }
+
+    .service-card__icon {
+      display: grid;
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+    }
+
+    .service-card__icon svg,
+    .service-card:hover .service-card__icon svg {
+      width: 40px;
+      height: 40px;
+      fill: none;
+      stroke: #d8d8de;
+      stroke-width: 1.15;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: none;
+      opacity: 0.88;
+    }
+
+    .service-card__body p {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    .service-card__meta {
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+    .services-carousel .deck-dots {
+      display: none;
+      pointer-events: none;
+    }
+
+    .services-carousel .deck-dot {
+      display: block;
+      width: 6px;
+      height: 6px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.44);
+      border-radius: 50%;
+      background: transparent;
+      cursor: default;
+    }
+
+    .services-carousel .deck-dot::before {
+      display: none;
+    }
+
+    .services-carousel .deck-dot[aria-current="true"] {
+      border-color: #fff;
+      background: #fff;
+      transform: scale(1.25);
+    }
+
+    @media (min-width: 721px) and (max-width: 1040px) {
+      .services-carousel {
+        width: 100%;
+        margin-inline: 0;
+      }
+
+      .services-grid {
+        height: 400px;
+      }
+
+      .service-card {
+        width: 57%;
+        height: 400px;
+      }
+
+      .service-card.is-prev {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .service-card.is-next {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+
+      .service-card.is-prev:hover {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .service-card.is-next:hover {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .services-carousel {
+        width: 100%;
+        margin-inline: 0;
+      }
+
+      .services-grid {
+        height: 340px;
+      }
+
+      .service-card {
+        width: min(84%, 360px);
+        height: 340px;
+      }
+
+      .service-card.is-prev {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .service-card.is-next {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+
+      .service-card.is-prev:hover {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .service-card.is-next:hover {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+
+      .services-carousel .deck-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .services-grid {
+        height: 332px;
+      }
+
+      .service-card {
+        width: 84%;
+        height: 332px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .service-card {
         transition-duration: 0.01ms;
       }
     }
@@ -4493,38 +4752,38 @@
           class="services-carousel"
           data-services-carousel
           role="region"
-          aria-roledescription="carousel"
-          aria-label="Services"
+          aria-roledescription="spotlight deck"
+          aria-label="Services spotlight deck"
+          aria-describedby="services-deck-status"
         >
-          <button
-            class="services-carousel__control services-carousel__control--prev"
-            type="button"
-            aria-label="Previous service"
-            data-services-prev
+          <div
+            class="services-grid"
+            data-services-track
+            tabindex="0"
+            role="group"
+            aria-label="Services cards. Use Left Arrow or Right Arrow to change the centered service."
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m14.5 6-6 6 6 6"></path>
-            </svg>
-          </button>
-
-          <div class="services-grid" data-services-track tabindex="0">
             <article
-              class="service-card"
+              class="service-card is-active"
               role="group"
               aria-roledescription="slide"
-              aria-label="1 of 3: Spreadsheet and Data Systems"
+              aria-label="1 of 3: Spreadsheet and Data Systems, selected"
+              aria-current="true"
+              aria-posinset="1"
+              aria-setsize="3"
             >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="24" y="25" width="72" height="70" rx="7"></rect>
-                  <path d="M24 47h72M48 25v70M72 25v70"></path>
-                  <path d="M31 35h10M55 35h10M79 35h10"></path>
-                  <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
-                </svg>
-              </div>
-
               <div class="service-card__body">
-                <h3>Spreadsheet &amp; Data Systems</h3>
+                <div class="service-card__heading">
+                  <span class="service-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <rect x="24" y="25" width="72" height="70" rx="7"></rect>
+                      <path d="M24 47h72M48 25v70M72 25v70"></path>
+                      <path d="M31 35h10M55 35h10M79 35h10"></path>
+                      <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
+                    </svg>
+                  </span>
+                  <h3>Spreadsheet &amp; Data Systems</h3>
+                </div>
                 <p>
                   Turn operational spreadsheets into reliable systems for tracking, reporting, inventory, finance, and day-to-day data.
                 </p>
@@ -4537,24 +4796,25 @@
             </article>
 
             <article
-              class="service-card"
+              class="service-card is-next"
               role="group"
               aria-roledescription="slide"
               aria-label="2 of 3: Workflow Automation"
             >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="18" y="48" width="26" height="24" rx="5"></rect>
-                  <rect x="76" y="24" width="26" height="24" rx="5"></rect>
-                  <rect x="76" y="72" width="26" height="24" rx="5"></rect>
-                  <circle cx="60" cy="60" r="10"></circle>
-                  <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
-                  <path d="M84 36h10M84 84h10"></path>
-                </svg>
-              </div>
-
               <div class="service-card__body">
-                <h3>Workflow Automation</h3>
+                <div class="service-card__heading">
+                  <span class="service-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <rect x="18" y="48" width="26" height="24" rx="5"></rect>
+                      <rect x="76" y="24" width="26" height="24" rx="5"></rect>
+                      <rect x="76" y="72" width="26" height="24" rx="5"></rect>
+                      <circle cx="60" cy="60" r="10"></circle>
+                      <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
+                      <path d="M84 36h10M84 84h10"></path>
+                    </svg>
+                  </span>
+                  <h3>Workflow Automation</h3>
+                </div>
                 <p>
                   Connect repetitive work across your tools, data, documents, and notifications so less time is spent moving things manually.
                 </p>
@@ -4567,24 +4827,28 @@
             </article>
 
             <article
-              class="service-card"
+              class="service-card is-prev"
               role="group"
               aria-roledescription="slide"
               aria-label="3 of 3: Internal Tools and Web Apps"
+              aria-current="false"
+              aria-posinset="3"
+              aria-setsize="3"
             >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="18" y="24" width="84" height="72" rx="8"></rect>
-                  <path d="M18 43h84"></path>
-                  <circle cx="29" cy="34" r="2"></circle>
-                  <circle cx="37" cy="34" r="2"></circle>
-                  <circle cx="45" cy="34" r="2"></circle>
-                  <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
-                </svg>
-              </div>
-
               <div class="service-card__body">
-                <h3>Internal Tools &amp; Web Apps</h3>
+                <div class="service-card__heading">
+                  <span class="service-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <rect x="18" y="24" width="84" height="72" rx="8"></rect>
+                      <path d="M18 43h84"></path>
+                      <circle cx="29" cy="34" r="2"></circle>
+                      <circle cx="37" cy="34" r="2"></circle>
+                      <circle cx="45" cy="34" r="2"></circle>
+                      <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
+                    </svg>
+                  </span>
+                  <h3>Internal Tools &amp; Web Apps</h3>
+                </div>
                 <p>
                   Build lightweight tools for workflows that need more structure, clearer roles, or a better interface than a spreadsheet can provide.
                 </p>
@@ -4597,23 +4861,12 @@
             </article>
           </div>
 
-          <div class="deck-dots" data-services-dots aria-label="Service position">
-            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show service 1 of 3" aria-current="true"></button>
-            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show service 2 of 3" aria-current="false"></button>
-            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show service 3 of 3" aria-current="false"></button>
+          <div class="deck-dots" data-services-dots aria-label="Service position" aria-hidden="true">
+            <span class="deck-dot" data-deck-index="0" aria-current="true"></span>
+            <span class="deck-dot" data-deck-index="1" aria-current="false"></span>
+            <span class="deck-dot" data-deck-index="2" aria-current="false"></span>
           </div>
-          <p class="deck-status" data-deck-status aria-live="polite"></p>
-
-          <button
-            class="services-carousel__control services-carousel__control--next"
-            type="button"
-            aria-label="Next service"
-            data-services-next
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9.5 6 6 6-6 6"></path>
-            </svg>
-          </button>
+          <p class="deck-status" id="services-deck-status" data-deck-status role="status" aria-live="polite"></p>
         </div>
       </div>
     </section>
@@ -4818,174 +5071,19 @@
         main.insertBefore(process, services);
       };
 
-      const initDeck = ({
-        carouselSelector,
-        trackSelector,
-        cardSelector,
-        prevSelector,
-        nextSelector,
-        dotsSelector,
-        itemName,
-        deckMode = () => window.innerWidth <= 1040,
-      }) => {
+      const initSpotlightDeck = ({
+        carouselSelector = "[data-work-carousel]",
+        trackSelector = "[data-work-track]",
+        cardSelector = ".work-card",
+        dotsSelector = "[data-work-dots]",
+        itemName = "Featured work",
+        ariaLabel = "Featured work. Select a side card or use Left Arrow and Right Arrow to change the centered item.",
+      } = {}) => {
         const carousel = document.querySelector(carouselSelector);
         const track = carousel?.querySelector(trackSelector);
-        const prev = carousel?.querySelector(prevSelector);
-        const next = carousel?.querySelector(nextSelector);
         const cards = track ? Array.from(track.querySelectorAll(cardSelector)) : [];
-        const dots = carousel ? Array.from(carousel.querySelectorAll(`${dotsSelector} [data-deck-index]`)) : [];
-
-        if (!carousel || !track || cards.length < 2) return;
-
-        let activeIndex = 0;
-        let pointerStart = null;
-        let pointerGesture = false;
-
-        const wrap = (index) => (index + cards.length) % cards.length;
-        const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
-        const isDeckMode = deckMode;
-
-        const setCardLinkState = (card, isActive) => {
-          const actionable = isActive || !isDeckMode();
-          card.querySelectorAll("a").forEach((link) => {
-            link.tabIndex = actionable ? 0 : -1;
-            link.setAttribute("aria-disabled", String(!actionable));
-          });
-        };
-
-        const render = () => {
-          cards.forEach((card, index) => {
-            const offset = (index - activeIndex + cards.length) % cards.length;
-            const isActive = offset === 0;
-            const isPrevious = offset === cards.length - 1;
-            const isNext = offset === 1;
-
-            card.classList.toggle("is-active", isActive);
-            card.classList.toggle("is-prev", isPrevious);
-            card.classList.toggle("is-next", isNext);
-            card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
-            card.setAttribute(
-              "aria-label",
-              `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`
-            );
-            card.setAttribute("aria-current", String(isActive));
-            card.setAttribute("aria-posinset", String(index + 1));
-            card.setAttribute("aria-setsize", String(cards.length));
-            setCardLinkState(card, isActive);
-          });
-
-          dots.forEach((dot, index) => {
-            dot.setAttribute("aria-current", String(index === activeIndex));
-          });
-
-          const status = carousel.querySelector("[data-deck-status]");
-          if (status) {
-            status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
-          }
-        };
-
-        const select = (index, moveFocus = false) => {
-          activeIndex = wrap(index);
-          render();
-          if (moveFocus) track.focus({ preventScroll: true });
-        };
-
-        const completeSwipe = (endX, endY) => {
-          if (!pointerStart) return;
-
-          const deltaX = endX - pointerStart.x;
-          const deltaY = endY - pointerStart.y;
-          pointerStart = null;
-
-          if (Math.abs(deltaX) < 44 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
-          select(activeIndex + (deltaX < 0 ? 1 : -1));
-        };
-
-        prev?.addEventListener("click", () => select(activeIndex - 1));
-        next?.addEventListener("click", () => select(activeIndex + 1));
-
-        dots.forEach((dot) => {
-          dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex)));
-        });
-
-        cards.forEach((card, index) => {
-          card.addEventListener("click", (event) => {
-            if (!isDeckMode()) return;
-            const link = event.target.closest("a");
-            if (link && index === activeIndex) return;
-            if (index !== activeIndex) {
-              event.preventDefault();
-              select(index, true);
-            }
-          });
-        });
-
-        track.addEventListener("keydown", (event) => {
-          if (!isDeckMode()) return;
-          if (event.key === "ArrowLeft") {
-            event.preventDefault();
-            select(activeIndex - 1);
-            track.focus();
-          } else if (event.key === "ArrowRight") {
-            event.preventDefault();
-            select(activeIndex + 1);
-            track.focus();
-          }
-        });
-
-        track.addEventListener("pointerdown", (event) => {
-          if (!isDeckMode()) return;
-          if (!event.isPrimary) return;
-          pointerGesture = true;
-          pointerStart = { x: event.clientX, y: event.clientY };
-          track.setPointerCapture?.(event.pointerId);
-        });
-
-        track.addEventListener("pointerup", (event) => {
-          if (!isDeckMode()) return;
-          pointerGesture = false;
-          track.releasePointerCapture?.(event.pointerId);
-          completeSwipe(event.clientX, event.clientY);
-        });
-
-        track.addEventListener("pointercancel", () => {
-          pointerGesture = false;
-          pointerStart = null;
-        });
-
-        if (!window.PointerEvent) {
-          track.addEventListener("touchstart", (event) => {
-            if (!isDeckMode() || pointerStart) return;
-            const touch = event.changedTouches[0];
-            pointerStart = { x: touch.clientX, y: touch.clientY };
-          }, { passive: true });
-
-          track.addEventListener("touchend", (event) => {
-            if (!isDeckMode() || pointerGesture) return;
-            const touch = event.changedTouches[0];
-            completeSwipe(touch.clientX, touch.clientY);
-          }, { passive: true });
-
-          track.addEventListener("touchcancel", () => {
-            pointerStart = null;
-          }, { passive: true });
-        }
-
-        window.addEventListener("resize", render);
-
-        track.setAttribute(
-          "aria-label",
-          `${itemName}. Select a side card or use Left Arrow and Right Arrow to change the centered item.`
-        );
-        render();
-      };
-
-      const initFeaturedWorkDeck = () => {
-        const carousel = document.querySelector("[data-work-carousel]");
-        const track = carousel?.querySelector("[data-work-track]");
-        const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
         const dots = carousel
-          ? Array.from(carousel.querySelectorAll("[data-work-dots] [data-deck-index]"))
+          ? Array.from(carousel.querySelectorAll(`${dotsSelector} [data-deck-index]`))
           : [];
 
         if (!carousel || !track || cards.length < 2) return;
@@ -4998,7 +5096,7 @@
         let suppressClick = false;
 
         const wrap = (index) => (index + cards.length) % cards.length;
-        const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || "Featured work";
+        const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
 
         const setCardLinkState = (card, isActive) => {
           card.querySelectorAll("a").forEach((link) => {
@@ -5036,7 +5134,7 @@
 
           const status = carousel.querySelector("[data-deck-status]");
           if (status) {
-            status.textContent = `Featured work ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
+            status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
           }
         };
 
@@ -5161,23 +5259,22 @@
 
         track.setAttribute(
           "aria-label",
-          "Featured work. Select a side card or use Left Arrow and Right Arrow to change the centered item."
+          ariaLabel
         );
         render();
       };
 
       moveSectionsIntoStoryOrder();
 
-      initFeaturedWorkDeck();
+      initSpotlightDeck();
 
-      initDeck({
+      initSpotlightDeck({
         carouselSelector: "[data-services-carousel]",
         trackSelector: "[data-services-track]",
         cardSelector: ".service-card",
-        prevSelector: "[data-services-prev]",
-        nextSelector: "[data-services-next]",
         dotsSelector: "[data-services-dots]",
-        itemName: "Service",
+        itemName: "Services",
+        ariaLabel: "Services. Select a side card or use Left Arrow and Right Arrow to change the centered service.",
       });
     })();
   </script>
