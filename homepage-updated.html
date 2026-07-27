@@ -528,9 +528,9 @@
     .hero-portrait::before {
       content: "";
       position: absolute;
-      top: 21%;
+      top: 16%;
       left: 50%;
-      width: 31%;
+      width: 36%;
       aspect-ratio: 1;
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 50%;
@@ -542,10 +542,10 @@
     .hero-portrait::after {
       content: "";
       position: absolute;
-      right: 12%;
-      bottom: -12%;
-      left: 12%;
-      height: 58%;
+      right: 8%;
+      bottom: -8%;
+      left: 8%;
+      height: 64%;
       border: 1px solid rgba(255, 255, 255, 0.13);
       border-radius: 48% 48% 14% 14%;
       background:
@@ -891,6 +891,9 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      align-self: flex-end;
+      flex: 0 0 auto;
+      white-space: nowrap;
       color: #d9d9df;
       font-family: var(--mono);
       font-size: 0.72rem;
@@ -1759,15 +1762,30 @@
       }
 
       .footer-inner {
-        grid-template-columns: 1fr;
-        justify-items: start;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        justify-items: stretch;
         min-height: 0;
+        gap: 8px;
         padding-block: 20px;
+        font-size: clamp(0.56rem, 2.3vw, 0.66rem);
       }
 
+      .footer-inner > span:first-child,
       .footer-verse,
       .footer-back {
+        white-space: nowrap;
+      }
+
+      .footer-inner > span:first-child {
         justify-self: start;
+      }
+
+      .footer-verse {
+        justify-self: center;
+      }
+
+      .footer-back {
+        justify-self: end;
       }
     }
 
@@ -2272,7 +2290,7 @@
       }
 
       .hero-portrait-wrap {
-        width: min(100%, 170px);
+        width: min(100%, 300px);
         justify-self: center;
       }
 
@@ -2350,7 +2368,10 @@
       }
 
       .section-heading {
-        display: block;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        column-gap: 1rem;
         margin-bottom: 18px;
       }
 
@@ -2362,6 +2383,12 @@
       .section-heading p {
         max-width: 62ch;
         font-size: 0.8125rem;
+      }
+
+      .see-all {
+        display: inline-flex;
+        width: auto;
+        margin-top: 0;
       }
 
       .work-carousel,
@@ -2546,16 +2573,558 @@
       }
 
       .footer-inner {
-        grid-template-columns: 1fr;
-        justify-items: start;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        justify-items: stretch;
         min-height: 0;
-        gap: 10px;
+        gap: 8px;
         padding-block: 18px;
+        font-size: clamp(0.56rem, 2.3vw, 0.66rem);
+      }
+
+      .footer-inner > span:first-child,
+      .footer-verse,
+      .footer-back {
+        white-space: nowrap;
+      }
+
+      .footer-inner > span:first-child {
+        justify-self: start;
       }
 
       .footer-verse,
       .footer-back {
-        justify-self: start;
+        justify-self: center;
+      }
+
+      .footer-back {
+        justify-self: end;
+      }
+    }
+
+    /* Compact responsive homepage system */
+
+    .brand {
+      font-family: var(--mono);
+    }
+
+    .section,
+    #process,
+    .contact-cta {
+      border-top: 0;
+    }
+
+    .section {
+      padding-block: clamp(64px, 7vw, 96px);
+    }
+
+    .hero {
+      padding-block: clamp(72px, 8vw, 108px);
+    }
+
+    .menu-button {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .menu-lines,
+    .menu-lines::before,
+    .menu-lines::after {
+      width: 22px;
+    }
+
+    .stack-section {
+      padding-block: 34px 42px;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .stack-marquee {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .work-grid,
+    .services-grid {
+      grid-auto-rows: 460px;
+    }
+
+    .work-card,
+    .service-card {
+      height: 460px;
+      min-height: 0;
+    }
+
+    .work-visual,
+    .service-card__visual {
+      height: 180px;
+      min-height: 180px;
+      aspect-ratio: auto;
+    }
+
+    .work-body,
+    .service-card__body {
+      min-height: 0;
+      padding: 22px;
+    }
+
+    .work-body p,
+    .service-card__body p {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    .work-link {
+      margin-top: 18px;
+      padding-top: 18px;
+    }
+
+    .work-type {
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+    .work-card:not(.is-active) .work-link,
+    .service-card:not(.is-active) a {
+      pointer-events: none;
+    }
+
+    @media (min-width: 1041px) {
+      .work-card:not(.is-active) .work-link,
+      .service-card:not(.is-active) a {
+        pointer-events: auto;
+      }
+    }
+
+    .process-nav::before {
+      display: none;
+    }
+
+    .process-nav {
+      gap: 8px;
+      padding: 0;
+    }
+
+    .process-tab {
+      gap: 10px;
+      padding: 0 8px 14px;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .process-nav {
+      border: 0;
+      background: transparent;
+    }
+
+    .process-tab[aria-selected="true"] {
+      border: 0;
+      background: transparent;
+    }
+
+    .process-tab:focus-visible {
+      outline: 0;
+    }
+
+    .process-tab:focus-visible .process-tab__icon {
+      outline: 2px solid #fff;
+      outline-offset: 4px;
+    }
+
+    .process-tab:hover {
+      transform: none;
+    }
+
+    .process-tab__icon {
+      display: grid;
+      width: 64px;
+      height: 64px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.018);
+      transition: border-color var(--ease), background-color var(--ease), transform var(--ease);
+    }
+
+    .process-tab__icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .process-tab[aria-selected="true"] .process-tab__icon {
+      border-color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.045);
+      transform: translateY(-2px);
+    }
+
+    .process-tab__label {
+      font-weight: 600;
+    }
+
+    .process-tab__dot {
+      display: none;
+    }
+
+    .contact-cta {
+      padding-block: clamp(64px, 7vw, 92px) clamp(96px, 11vw, 140px);
+    }
+
+    .deck-dots {
+      display: none;
+    }
+
+    .deck-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 721px) and (max-width: 1040px) {
+      .work-carousel,
+      .services-carousel {
+        width: min(calc(100% - 32px), 900px);
+        margin-inline: auto;
+        overflow: hidden;
+      }
+
+      .work-grid,
+      .services-grid {
+        position: relative;
+        display: block;
+        height: 460px;
+        overflow: visible;
+        padding: 0;
+        isolation: isolate;
+        touch-action: pan-y;
+      }
+
+      .work-card,
+      .service-card {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        display: flex;
+        width: 64%;
+        height: 460px;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-50%) scale(0.92);
+        transition: transform 220ms ease, opacity 220ms ease, border-color var(--ease);
+      }
+
+      .work-card.is-active,
+      .service-card.is-active {
+        z-index: 3;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) scale(1);
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev,
+      .work-card.is-next,
+      .service-card.is-next {
+        z-index: 2;
+        opacity: 0.62;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .work-card.is-next,
+      .service-card.is-next {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+
+      .work-carousel__control,
+      .services-carousel__control {
+        display: grid;
+      }
+
+      .work-carousel__control--prev,
+      .services-carousel__control--prev {
+        left: 28px;
+      }
+
+      .work-carousel__control--next,
+      .services-carousel__control--next {
+        right: 28px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-block: 44px 58px;
+      }
+
+      .section {
+        padding-block: 48px 56px;
+      }
+
+      .stack-section {
+        padding-block: 26px 32px;
+      }
+
+      .work-carousel,
+      .services-carousel {
+        width: 100%;
+        margin-inline: 0;
+        overflow: hidden;
+      }
+
+      .work-grid,
+      .services-grid {
+        position: relative;
+        display: block;
+        height: 414px;
+        overflow: visible;
+        padding: 0;
+        isolation: isolate;
+        touch-action: pan-y;
+      }
+
+      .work-card,
+      .service-card {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        display: flex;
+        width: min(82%, 360px);
+        height: 414px;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-50%) scale(0.92);
+        transition: transform 220ms ease, opacity 220ms ease, border-color var(--ease);
+      }
+
+      .work-card.is-active,
+      .service-card.is-active {
+        z-index: 3;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) scale(1);
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev,
+      .work-card.is-next,
+      .service-card.is-next {
+        z-index: 2;
+        opacity: 0.58;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev {
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
+      }
+
+      .work-card.is-next,
+      .service-card.is-next {
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
+      }
+
+      .work-body,
+      .service-card__body {
+        padding: 18px;
+      }
+
+      .work-visual,
+      .service-card__visual {
+        height: 150px;
+        min-height: 150px;
+      }
+
+      .service-card__visual svg {
+        width: 58px;
+        height: 58px;
+      }
+
+      .work-carousel__control,
+      .services-carousel__control {
+        display: none;
+      }
+
+      .deck-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .deck-dot {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        color: transparent;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .deck-dot::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.44);
+        border-radius: 50%;
+        background: transparent;
+        transition: transform var(--ease), background-color var(--ease), border-color var(--ease);
+      }
+
+      .deck-dot[aria-current="true"]::before {
+        border-color: #fff;
+        background: #fff;
+        transform: scale(1.25);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .work-grid,
+      .services-grid {
+        height: 404px;
+      }
+
+      .work-card,
+      .service-card {
+        width: 82%;
+        height: 404px;
+      }
+
+      .work-visual,
+      .service-card__visual {
+        height: 142px;
+        min-height: 142px;
+      }
+
+      .work-body,
+      .service-card__body {
+        padding: 16px;
+      }
+
+      .footer-inner {
+        gap: 5px;
+        font-size: 0.56rem;
+      }
+    }
+
+    @media (min-width: 1041px) {
+      .section {
+        padding-block: clamp(52px, 5vw, 60px);
+      }
+
+      .hero {
+        padding-block: clamp(56px, 5vw, 64px);
+      }
+
+      .contact-cta {
+        padding-block: 52px;
+      }
+
+      .work-grid,
+      .services-grid {
+        grid-auto-rows: auto;
+      }
+
+      .work-card,
+      .service-card {
+        height: auto;
+        min-height: 100%;
+      }
+
+      .work-visual {
+        height: auto;
+        min-height: 0;
+        aspect-ratio: 16 / 9;
+      }
+
+      .service-card__visual {
+        height: 96px;
+        min-height: 96px;
+      }
+
+      .work-body,
+      .service-card__body {
+        padding: 18px;
+      }
+
+      .work-type {
+        margin: 18px 0 0;
+        padding-top: 0;
+      }
+
+      .work-link {
+        margin-top: auto;
+        padding-top: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-card,
+      .service-card {
+        transition-duration: 0.01ms;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) and (min-width: 721px) and (max-width: 1040px) {
+      .work-card.is-active,
+      .service-card.is-active {
+        opacity: 1 !important;
+        transform: translateX(-50%) scale(1) !important;
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev {
+        opacity: 0.62 !important;
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92) !important;
+      }
+
+      .work-card.is-next,
+      .service-card.is-next {
+        opacity: 0.62 !important;
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92) !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) and (max-width: 720px) {
+      .work-card.is-active,
+      .service-card.is-active {
+        opacity: 1 !important;
+        transform: translateX(-50%) scale(1) !important;
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev {
+        opacity: 0.58 !important;
+        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92) !important;
+      }
+
+      .work-card.is-next,
+      .service-card.is-next {
+        opacity: 0.58 !important;
+        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92) !important;
       }
     }
   </style>
@@ -2726,7 +3295,7 @@
               </div>
 
               <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
+                View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
             </div>
           </article>
@@ -2758,7 +3327,7 @@
               </div>
 
               <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
+                View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
             </div>
           </article>
@@ -2788,11 +3357,18 @@
               </div>
 
               <a class="work-link" href="#">
-                View case study <span class="arrow" aria-hidden="true">→</span>
+                View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
             </div>
           </article>
           </div>
+
+          <div class="deck-dots" data-work-dots aria-label="Featured project position">
+            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show project 1 of 3" aria-current="true"></button>
+            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show project 2 of 3" aria-current="false"></button>
+            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show project 3 of 3" aria-current="false"></button>
+          </div>
+          <p class="deck-status" data-deck-status aria-live="polite"></p>
 
           <button
             class="work-carousel__control work-carousel__control--next"
@@ -2932,6 +3508,13 @@
             </article>
           </div>
 
+          <div class="deck-dots" data-services-dots aria-label="Service position">
+            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show service 1 of 3" aria-current="true"></button>
+            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show service 2 of 3" aria-current="false"></button>
+            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show service 3 of 3" aria-current="false"></button>
+          </div>
+          <p class="deck-status" data-deck-status aria-live="polite"></p>
+
           <button
             class="services-carousel__control services-carousel__control--next"
             type="button"
@@ -2951,7 +3534,7 @@
         <div class="stack-header">
           <p class="section-label">Technologies &amp; Tools</p>
           <a class="stack-link" href="/stack">
-            See full tech stack <span class="arrow" aria-hidden="true">→</span>
+            View all <span class="arrow" aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -3222,7 +3805,7 @@
       <div class="visual-shell process-shell">
         <div class="process-heading">
           <p class="section-label">How I work</p>
-          <h2>My Process.</h2>
+          <h2>My process.</h2>
         </div>
 
         <div class="process-interactive" data-process>
@@ -3409,122 +3992,197 @@
 
   <script>
     (() => {
-      const carousel = document.querySelector("[data-work-carousel]");
-      const track = carousel?.querySelector("[data-work-track]");
-      const prev = carousel?.querySelector("[data-work-prev]");
-      const next = carousel?.querySelector("[data-work-next]");
-      const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+      const moveSectionsIntoStoryOrder = () => {
+        const main = document.querySelector("main");
+        const stack = document.querySelector("#stack");
+        const process = document.querySelector("#process");
+        const services = document.querySelector("#services-preview");
 
-      if (!carousel || !track || !prev || !next || cards.length < 2) {
-        return;
-      }
+        if (!main || !stack || !process || !services) return;
 
-      const getCurrentIndex = () => {
-        const current = track.scrollLeft;
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
+        main.insertBefore(stack, services);
+        main.insertBefore(process, services);
+      };
+
+      const initDeck = ({
+        carouselSelector,
+        trackSelector,
+        cardSelector,
+        prevSelector,
+        nextSelector,
+        dotsSelector,
+        itemName,
+      }) => {
+        const carousel = document.querySelector(carouselSelector);
+        const track = carousel?.querySelector(trackSelector);
+        const prev = carousel?.querySelector(prevSelector);
+        const next = carousel?.querySelector(nextSelector);
+        const cards = track ? Array.from(track.querySelectorAll(cardSelector)) : [];
+        const dots = carousel ? Array.from(carousel.querySelectorAll(`${dotsSelector} [data-deck-index]`)) : [];
+
+        if (!carousel || !track || !prev || !next || cards.length < 2) return;
+
+        let activeIndex = 0;
+        let pointerStart = null;
+        let pointerGesture = false;
+
+        const wrap = (index) => (index + cards.length) % cards.length;
+        const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
+        const isDeckMode = () => window.innerWidth <= 1040;
+
+        const setCardLinkState = (card, isActive) => {
+          const actionable = !isDeckMode() || isActive;
+          card.querySelectorAll("a").forEach((link) => {
+            link.tabIndex = actionable ? 0 : -1;
+            link.setAttribute("aria-disabled", String(!actionable));
+          });
+        };
+
+        const render = () => {
+          cards.forEach((card, index) => {
+            const offset = (index - activeIndex + cards.length) % cards.length;
+            const isActive = offset === 0;
+            const isPrevious = offset === cards.length - 1;
+            const isNext = offset === 1;
+
+            card.classList.toggle("is-active", isActive);
+            card.classList.toggle("is-prev", isPrevious);
+            card.classList.toggle("is-next", isNext);
+            card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
+            card.setAttribute(
+              "aria-label",
+              `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`
+            );
+            card.setAttribute("aria-current", String(isActive));
+            setCardLinkState(card, isActive);
+          });
+
+          dots.forEach((dot, index) => {
+            dot.setAttribute("aria-current", String(index === activeIndex));
+          });
+
+          const status = carousel.querySelector("[data-deck-status]");
+          if (status) {
+            status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
+          }
+        };
+
+        const select = (index) => {
+          activeIndex = wrap(index);
+          render();
+        };
+
+        const completeSwipe = (endX, endY) => {
+          if (!pointerStart) return;
+
+          const deltaX = endX - pointerStart.x;
+          const deltaY = endY - pointerStart.y;
+          pointerStart = null;
+
+          if (Math.abs(deltaX) < 44 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
+          select(activeIndex + (deltaX < 0 ? 1 : -1));
+        };
+
+        prev.addEventListener("click", () => select(activeIndex - 1));
+        next.addEventListener("click", () => select(activeIndex + 1));
+
+        dots.forEach((dot) => {
+          dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex)));
+        });
 
         cards.forEach((card, index) => {
-          const distance = Math.abs(card.offsetLeft - current);
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = index;
+          card.addEventListener("click", (event) => {
+            if (!isDeckMode()) return;
+            const link = event.target.closest("a");
+            if (link && index === activeIndex) return;
+            if (index !== activeIndex) {
+              event.preventDefault();
+              select(index);
+            }
+          });
+        });
+
+        track.addEventListener("keydown", (event) => {
+          if (!isDeckMode()) return;
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            select(activeIndex - 1);
+            track.focus();
+          } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            select(activeIndex + 1);
+            track.focus();
           }
         });
 
-        return closestIndex;
-      };
-
-      const goTo = (index) => {
-        const target = cards[(index + cards.length) % cards.length];
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        track.scrollTo({
-          left: target.offsetLeft,
-          behavior: reduceMotion ? "auto" : "smooth",
+        track.addEventListener("pointerdown", (event) => {
+          if (!isDeckMode()) return;
+          if (!event.isPrimary) return;
+          pointerGesture = true;
+          pointerStart = { x: event.clientX, y: event.clientY };
+          track.setPointerCapture?.(event.pointerId);
         });
+
+        track.addEventListener("pointerup", (event) => {
+          if (!isDeckMode()) return;
+          pointerGesture = false;
+          track.releasePointerCapture?.(event.pointerId);
+          completeSwipe(event.clientX, event.clientY);
+        });
+
+        track.addEventListener("pointercancel", () => {
+          pointerGesture = false;
+          pointerStart = null;
+        });
+
+        if (!window.PointerEvent) {
+          track.addEventListener("touchstart", (event) => {
+            if (!isDeckMode() || pointerStart) return;
+            const touch = event.changedTouches[0];
+            pointerStart = { x: touch.clientX, y: touch.clientY };
+          }, { passive: true });
+
+          track.addEventListener("touchend", (event) => {
+            if (!isDeckMode() || pointerGesture) return;
+            const touch = event.changedTouches[0];
+            completeSwipe(touch.clientX, touch.clientY);
+          }, { passive: true });
+
+          track.addEventListener("touchcancel", () => {
+            pointerStart = null;
+          }, { passive: true });
+        }
+
+        window.addEventListener("resize", render);
+
+        track.setAttribute(
+          "aria-label",
+          `${itemName}. Swipe left or right, select a side card, or use the previous and next buttons.`
+        );
+        render();
       };
 
-      prev.addEventListener("click", () => goTo(getCurrentIndex() - 1));
-      next.addEventListener("click", () => goTo(getCurrentIndex() + 1));
+      moveSectionsIntoStoryOrder();
 
-      track.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          goTo(getCurrentIndex() - 1);
-        }
-
-        if (event.key === "ArrowRight") {
-          event.preventDefault();
-          goTo(getCurrentIndex() + 1);
-        }
+      initDeck({
+        carouselSelector: "[data-work-carousel]",
+        trackSelector: "[data-work-track]",
+        cardSelector: ".work-card",
+        prevSelector: "[data-work-prev]",
+        nextSelector: "[data-work-next]",
+        dotsSelector: "[data-work-dots]",
+        itemName: "Featured project",
       });
 
-      track.setAttribute(
-        "aria-label",
-        "Featured projects. Swipe horizontally or use the previous and next project buttons."
-      );
-    })();
-  </script>
-
-
-  <script>
-    (() => {
-      const carousel = document.querySelector("[data-services-carousel]");
-      const track = carousel?.querySelector("[data-services-track]");
-      const prev = carousel?.querySelector("[data-services-prev]");
-      const next = carousel?.querySelector("[data-services-next]");
-      const cards = track ? Array.from(track.querySelectorAll(".service-card")) : [];
-
-      if (!carousel || !track || !prev || !next || cards.length < 2) {
-        return;
-      }
-
-      const getCurrentIndex = () => {
-        const current = track.scrollLeft;
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
-
-        cards.forEach((card, index) => {
-          const distance = Math.abs(card.offsetLeft - current);
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = index;
-          }
-        });
-
-        return closestIndex;
-      };
-
-      const goTo = (index) => {
-        const target = cards[(index + cards.length) % cards.length];
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        track.scrollTo({
-          left: target.offsetLeft,
-          behavior: reduceMotion ? "auto" : "smooth",
-        });
-      };
-
-      prev.addEventListener("click", () => goTo(getCurrentIndex() - 1));
-      next.addEventListener("click", () => goTo(getCurrentIndex() + 1));
-
-      track.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          goTo(getCurrentIndex() - 1);
-        }
-
-        if (event.key === "ArrowRight") {
-          event.preventDefault();
-          goTo(getCurrentIndex() + 1);
-        }
+      initDeck({
+        carouselSelector: "[data-services-carousel]",
+        trackSelector: "[data-services-track]",
+        cardSelector: ".service-card",
+        prevSelector: "[data-services-prev]",
+        nextSelector: "[data-services-next]",
+        dotsSelector: "[data-services-dots]",
+        itemName: "Service",
       });
-
-      track.setAttribute(
-        "aria-label",
-        "Services. Swipe horizontally or use the previous and next service buttons."
-      );
     })();
   </script>
 
@@ -3557,12 +4215,6 @@
 
       tabs.forEach((tab, index) => {
         tab.addEventListener("click", () => selectStep(tab));
-
-        tab.addEventListener("mouseenter", () => {
-          if (window.matchMedia("(hover: hover)").matches) {
-            selectStep(tab);
-          }
-        });
 
         tab.addEventListener("focus", () => selectStep(tab));
 
