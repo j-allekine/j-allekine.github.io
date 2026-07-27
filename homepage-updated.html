@@ -3522,6 +3522,7 @@
       overflow: visible;
       isolation: isolate;
       outline: none;
+      touch-action: pan-y;
     }
 
     .work-grid:focus-visible {
@@ -3575,6 +3576,10 @@
 
     .work-card.is-hidden {
       visibility: hidden;
+    }
+
+    .work-card:not(.is-active) .work-link {
+      pointer-events: none;
     }
 
     .work-card.is-active:hover {
@@ -3690,6 +3695,112 @@
       .work-card,
       .work-card .mock-window {
         transition-duration: 0.01ms;
+      }
+    }
+
+    .work-carousel .deck-dots {
+      display: none;
+      pointer-events: none;
+    }
+
+    .work-carousel .deck-dot {
+      display: block;
+      width: 6px;
+      height: 6px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.44);
+      border-radius: 50%;
+      background: transparent;
+      cursor: default;
+    }
+
+    .work-carousel .deck-dot::before {
+      display: none;
+    }
+
+    .work-carousel .deck-dot[aria-current="true"] {
+      border-color: #fff;
+      background: #fff;
+      transform: scale(1.25);
+    }
+
+    @media (max-width: 720px) {
+      .work-carousel .deck-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-card {
+        transition-duration: 0.01ms;
+      }
+    }
+
+    /* Ticket 06: evidence-to-contact spacing and heading rhythm */
+
+    .section,
+    #process {
+      padding-block: clamp(48px, 6vw, 80px);
+      border-top: 0;
+    }
+
+    .hero {
+      padding-block: clamp(64px, 7vw, 100px);
+    }
+
+    .stack-section {
+      padding-block: clamp(40px, 4.5vw, 64px);
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .contact-cta {
+      padding-block: clamp(48px, 6vw, 80px) clamp(72px, 10vw, 136px);
+      border-top: 0;
+    }
+
+    .section-heading,
+    .stack-header {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(12px, 2vw, 32px);
+    }
+
+    .section-heading > div,
+    .stack-header > div {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .section-heading > a,
+    .stack-header > a {
+      flex: 0 0 auto;
+      align-self: flex-start;
+      margin-top: 0;
+    }
+
+    .stack-header .section-label {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 720px) {
+      .section-heading,
+      .stack-header {
+        gap: 12px;
+      }
+
+      .section-heading > a,
+      .stack-header > a {
+        max-width: 45%;
+        text-align: right;
+      }
+
+      .stack-header .section-label {
+        font-size: clamp(0.6rem, 2.3vw, 0.74rem);
       }
     }
   </style>
@@ -3954,10 +4065,10 @@
           </article>
           </div>
 
-          <div class="deck-dots" data-work-dots aria-label="Featured project position">
-            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show project 1 of 3" aria-current="true"></button>
-            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show project 2 of 3" aria-current="false"></button>
-            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show project 3 of 3" aria-current="false"></button>
+          <div class="deck-dots" data-work-dots aria-label="Featured work position" aria-hidden="true">
+            <span class="deck-dot" data-deck-index="0" aria-current="true"></span>
+            <span class="deck-dot" data-deck-index="1" aria-current="false"></span>
+            <span class="deck-dot" data-deck-index="2" aria-current="false"></span>
           </div>
           <p class="deck-status" id="work-deck-status" data-deck-status role="status" aria-live="polite"></p>
         </div>
@@ -3966,153 +4077,13 @@
 
 
 
-    <section class="section services-section" id="services-preview">
-      <div class="visual-shell">
-        <div class="section-heading">
-          <div>
-            <p class="section-label">Services</p>
-            <h2>What I build.</h2>
-          </div>
-
-          <a class="see-all" href="/services">
-            See all services <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <div
-          class="services-carousel"
-          data-services-carousel
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Services"
-        >
-          <button
-            class="services-carousel__control services-carousel__control--prev"
-            type="button"
-            aria-label="Previous service"
-            data-services-prev
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m14.5 6-6 6 6 6"></path>
-            </svg>
-          </button>
-
-          <div class="services-grid" data-services-track tabindex="0">
-            <article
-              class="service-card"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="1 of 3: Spreadsheet and Data Systems"
-            >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="24" y="25" width="72" height="70" rx="7"></rect>
-                  <path d="M24 47h72M48 25v70M72 25v70"></path>
-                  <path d="M31 35h10M55 35h10M79 35h10"></path>
-                  <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
-                </svg>
-              </div>
-
-              <div class="service-card__body">
-                <h3>Spreadsheet &amp; Data Systems</h3>
-                <p>
-                  Turn operational spreadsheets into reliable systems for tracking, reporting, inventory, finance, and day-to-day data.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Tracking</span>
-                  <span>Reporting</span>
-                  <span>Dashboards</span>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="service-card"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="2 of 3: Workflow Automation"
-            >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="18" y="48" width="26" height="24" rx="5"></rect>
-                  <rect x="76" y="24" width="26" height="24" rx="5"></rect>
-                  <rect x="76" y="72" width="26" height="24" rx="5"></rect>
-                  <circle cx="60" cy="60" r="10"></circle>
-                  <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
-                  <path d="M84 36h10M84 84h10"></path>
-                </svg>
-              </div>
-
-              <div class="service-card__body">
-                <h3>Workflow Automation</h3>
-                <p>
-                  Connect repetitive work across your tools, data, documents, and notifications so less time is spent moving things manually.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Data movement</span>
-                  <span>Documents</span>
-                  <span>Notifications</span>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="service-card"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="3 of 3: Internal Tools and Web Apps"
-            >
-              <div class="service-card__visual" aria-hidden="true">
-                <svg viewBox="0 0 120 120">
-                  <rect x="18" y="24" width="84" height="72" rx="8"></rect>
-                  <path d="M18 43h84"></path>
-                  <circle cx="29" cy="34" r="2"></circle>
-                  <circle cx="37" cy="34" r="2"></circle>
-                  <circle cx="45" cy="34" r="2"></circle>
-                  <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
-                </svg>
-              </div>
-
-              <div class="service-card__body">
-                <h3>Internal Tools &amp; Web Apps</h3>
-                <p>
-                  Build lightweight tools for workflows that need more structure, clearer roles, or a better interface than a spreadsheet can provide.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Operations</span>
-                  <span>Data entry</span>
-                  <span>Internal apps</span>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="deck-dots" data-services-dots aria-label="Service position">
-            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show service 1 of 3" aria-current="true"></button>
-            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show service 2 of 3" aria-current="false"></button>
-            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show service 3 of 3" aria-current="false"></button>
-          </div>
-          <p class="deck-status" data-deck-status aria-live="polite"></p>
-
-          <button
-            class="services-carousel__control services-carousel__control--next"
-            type="button"
-            aria-label="Next service"
-            data-services-next
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m9.5 6 6 6-6 6"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
     <section class="stack-section" id="stack">
       <div class="visual-shell">
-        <div class="stack-header">
-          <p class="section-label">Technologies &amp; Tools</p>
-          <a class="stack-link" href="/stack">
+        <div class="section-heading stack-header">
+          <div>
+            <div class="section-label" role="heading" aria-level="2">Technologies &amp; Tools</div>
+          </div>
+          <a class="see-all" href="/stack">
             View all <span class="arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -4505,6 +4476,148 @@
       </div>
     </section>
 
+    <section class="section services-section" id="services-preview">
+      <div class="visual-shell">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Services</p>
+            <h2>What I build.</h2>
+          </div>
+
+          <a class="see-all" href="/services">
+            See all services <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div
+          class="services-carousel"
+          data-services-carousel
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Services"
+        >
+          <button
+            class="services-carousel__control services-carousel__control--prev"
+            type="button"
+            aria-label="Previous service"
+            data-services-prev
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m14.5 6-6 6 6 6"></path>
+            </svg>
+          </button>
+
+          <div class="services-grid" data-services-track tabindex="0">
+            <article
+              class="service-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 of 3: Spreadsheet and Data Systems"
+            >
+              <div class="service-card__visual" aria-hidden="true">
+                <svg viewBox="0 0 120 120">
+                  <rect x="24" y="25" width="72" height="70" rx="7"></rect>
+                  <path d="M24 47h72M48 25v70M72 25v70"></path>
+                  <path d="M31 35h10M55 35h10M79 35h10"></path>
+                  <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
+                </svg>
+              </div>
+
+              <div class="service-card__body">
+                <h3>Spreadsheet &amp; Data Systems</h3>
+                <p>
+                  Turn operational spreadsheets into reliable systems for tracking, reporting, inventory, finance, and day-to-day data.
+                </p>
+                <div class="service-card__meta" aria-label="Common use cases">
+                  <span>Tracking</span>
+                  <span>Reporting</span>
+                  <span>Dashboards</span>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="service-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 of 3: Workflow Automation"
+            >
+              <div class="service-card__visual" aria-hidden="true">
+                <svg viewBox="0 0 120 120">
+                  <rect x="18" y="48" width="26" height="24" rx="5"></rect>
+                  <rect x="76" y="24" width="26" height="24" rx="5"></rect>
+                  <rect x="76" y="72" width="26" height="24" rx="5"></rect>
+                  <circle cx="60" cy="60" r="10"></circle>
+                  <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
+                  <path d="M84 36h10M84 84h10"></path>
+                </svg>
+              </div>
+
+              <div class="service-card__body">
+                <h3>Workflow Automation</h3>
+                <p>
+                  Connect repetitive work across your tools, data, documents, and notifications so less time is spent moving things manually.
+                </p>
+                <div class="service-card__meta" aria-label="Common use cases">
+                  <span>Data movement</span>
+                  <span>Documents</span>
+                  <span>Notifications</span>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="service-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 of 3: Internal Tools and Web Apps"
+            >
+              <div class="service-card__visual" aria-hidden="true">
+                <svg viewBox="0 0 120 120">
+                  <rect x="18" y="24" width="84" height="72" rx="8"></rect>
+                  <path d="M18 43h84"></path>
+                  <circle cx="29" cy="34" r="2"></circle>
+                  <circle cx="37" cy="34" r="2"></circle>
+                  <circle cx="45" cy="34" r="2"></circle>
+                  <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
+                </svg>
+              </div>
+
+              <div class="service-card__body">
+                <h3>Internal Tools &amp; Web Apps</h3>
+                <p>
+                  Build lightweight tools for workflows that need more structure, clearer roles, or a better interface than a spreadsheet can provide.
+                </p>
+                <div class="service-card__meta" aria-label="Common use cases">
+                  <span>Operations</span>
+                  <span>Data entry</span>
+                  <span>Internal apps</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="deck-dots" data-services-dots aria-label="Service position">
+            <button class="deck-dot" type="button" data-deck-index="0" aria-label="Show service 1 of 3" aria-current="true"></button>
+            <button class="deck-dot" type="button" data-deck-index="1" aria-label="Show service 2 of 3" aria-current="false"></button>
+            <button class="deck-dot" type="button" data-deck-index="2" aria-label="Show service 3 of 3" aria-current="false"></button>
+          </div>
+          <p class="deck-status" data-deck-status aria-live="polite"></p>
+
+          <button
+            class="services-carousel__control services-carousel__control--next"
+            type="button"
+            aria-label="Next service"
+            data-services-next
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9.5 6 6 6-6 6"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <section class="contact-cta" id="contact">
       <div class="visual-shell">
         <div class="cta-card">
@@ -4867,18 +4980,195 @@
         render();
       };
 
+      const initFeaturedWorkDeck = () => {
+        const carousel = document.querySelector("[data-work-carousel]");
+        const track = carousel?.querySelector("[data-work-track]");
+        const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+        const dots = carousel
+          ? Array.from(carousel.querySelectorAll("[data-work-dots] [data-deck-index]"))
+          : [];
+
+        if (!carousel || !track || cards.length < 2) return;
+
+        const SWIPE_THRESHOLD = 48;
+        const AXIS_RATIO = 1.2;
+        const TAP_MOVEMENT_THRESHOLD = 8;
+        let activeIndex = 0;
+        let gesture = null;
+        let suppressClick = false;
+
+        const wrap = (index) => (index + cards.length) % cards.length;
+        const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || "Featured work";
+
+        const setCardLinkState = (card, isActive) => {
+          card.querySelectorAll("a").forEach((link) => {
+            link.tabIndex = isActive ? 0 : -1;
+            link.setAttribute("aria-disabled", String(!isActive));
+          });
+        };
+
+        const render = () => {
+          activeIndex = wrap(activeIndex);
+
+          cards.forEach((card, index) => {
+            const offset = (index - activeIndex + cards.length) % cards.length;
+            const isActive = offset === 0;
+            const isPrevious = offset === cards.length - 1;
+            const isNext = offset === 1;
+
+            card.classList.toggle("is-active", isActive);
+            card.classList.toggle("is-prev", isPrevious);
+            card.classList.toggle("is-next", isNext);
+            card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
+            card.setAttribute(
+              "aria-label",
+              `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`
+            );
+            card.setAttribute("aria-current", String(isActive));
+            card.setAttribute("aria-posinset", String(index + 1));
+            card.setAttribute("aria-setsize", String(cards.length));
+            setCardLinkState(card, isActive);
+          });
+
+          dots.forEach((dot, index) => {
+            dot.setAttribute("aria-current", String(index === activeIndex));
+          });
+
+          const status = carousel.querySelector("[data-deck-status]");
+          if (status) {
+            status.textContent = `Featured work ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
+          }
+        };
+
+        const select = (index, moveFocus = false) => {
+          activeIndex = wrap(index);
+          render();
+          if (moveFocus) track.focus({ preventScroll: true });
+        };
+
+        const beginGesture = (startX, startY, pointerId = null) => {
+          suppressClick = false;
+          gesture = { startX, startY, pointerId };
+        };
+
+        const completeGesture = (endX, endY) => {
+          if (!gesture) return;
+
+          const { startX, startY } = gesture;
+          gesture = null;
+          const deltaX = endX - startX;
+          const deltaY = endY - startY;
+          const horizontalDistance = Math.abs(deltaX);
+          const verticalDistance = Math.abs(deltaY);
+
+          if (Math.max(horizontalDistance, verticalDistance) < TAP_MOVEMENT_THRESHOLD) return;
+
+          suppressClick = true;
+          if (
+            horizontalDistance < SWIPE_THRESHOLD ||
+            horizontalDistance <= verticalDistance * AXIS_RATIO
+          ) {
+            return;
+          }
+
+          select(activeIndex + (deltaX < 0 ? 1 : -1));
+        };
+
+        const releasePointer = (pointerId) => {
+          try {
+            if (track.hasPointerCapture?.(pointerId)) track.releasePointerCapture(pointerId);
+          } catch {
+            // Synthetic browser tests and cancelled native gestures may not own capture.
+          }
+        };
+
+        cards.forEach((card, index) => {
+          card.addEventListener("click", (event) => {
+            const target = event.target;
+            const link = target instanceof Element ? target.closest("a") : null;
+            if (link && index === activeIndex) return;
+            if (index !== activeIndex) {
+              event.preventDefault();
+              select(index, true);
+            }
+          });
+        });
+
+        track.addEventListener("click", (event) => {
+          if (!suppressClick) return;
+          event.preventDefault();
+          event.stopPropagation();
+          suppressClick = false;
+        }, true);
+
+        track.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            select(activeIndex - 1);
+            track.focus({ preventScroll: true });
+          } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            select(activeIndex + 1);
+            track.focus({ preventScroll: true });
+          }
+        });
+
+        track.addEventListener("pointerdown", (event) => {
+          if (!event.isPrimary) return;
+          beginGesture(event.clientX, event.clientY, event.pointerId);
+          try {
+            track.setPointerCapture(event.pointerId);
+          } catch {
+            // Synthetic browser tests may dispatch an uncaptured pointer.
+          }
+        });
+
+        track.addEventListener("pointerup", (event) => {
+          if (!gesture || gesture.pointerId !== event.pointerId) return;
+          releasePointer(event.pointerId);
+          completeGesture(event.clientX, event.clientY);
+        });
+
+        track.addEventListener("pointercancel", () => {
+          gesture = null;
+          suppressClick = false;
+        });
+
+        if (!window.PointerEvent) {
+          track.addEventListener("touchstart", (event) => {
+            const touch = event.changedTouches[0];
+            if (touch) beginGesture(touch.clientX, touch.clientY);
+          }, { passive: true });
+
+          track.addEventListener("touchend", (event) => {
+            const touch = event.changedTouches[0];
+            if (touch) completeGesture(touch.clientX, touch.clientY);
+          }, { passive: true });
+
+          track.addEventListener("touchcancel", () => {
+            gesture = null;
+            suppressClick = false;
+          }, { passive: true });
+        }
+
+        const preserveSelection = () => {
+          activeIndex = wrap(activeIndex);
+          render();
+        };
+
+        window.addEventListener("resize", preserveSelection);
+        window.addEventListener("orientationchange", preserveSelection);
+
+        track.setAttribute(
+          "aria-label",
+          "Featured work. Select a side card or use Left Arrow and Right Arrow to change the centered item."
+        );
+        render();
+      };
+
       moveSectionsIntoStoryOrder();
 
-      initDeck({
-        carouselSelector: "[data-work-carousel]",
-        trackSelector: "[data-work-track]",
-        cardSelector: ".work-card",
-        prevSelector: "[data-work-prev]",
-        nextSelector: "[data-work-next]",
-        dotsSelector: "[data-work-dots]",
-        itemName: "Featured project",
-        deckMode: () => true,
-      });
+      initFeaturedWorkDeck();
 
       initDeck({
         carouselSelector: "[data-services-carousel]",
