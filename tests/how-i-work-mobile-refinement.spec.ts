@@ -73,15 +73,24 @@ test.describe("standalone How I Work mobile refinement", () => {
         const nav = process.querySelector("[role='tablist']");
         const dot = tab?.querySelector(".process-tab__dot");
         const icon = tab?.querySelector(".process-tab__icon")?.getBoundingClientRect();
+        const label = tab?.querySelector(".process-tab__label")?.getBoundingClientRect();
         const dotRect = dot?.getBoundingClientRect();
+        const connector = nav ? getComputedStyle(nav, "::before") : null;
+        const connectorY = nav && connector
+          ? nav.getBoundingClientRect().top + Number.parseFloat(connector.top)
+          : Number.NaN;
 
         return {
           iconVisible: Boolean(tab?.querySelector("svg")),
           iconSize: icon ? [icon.width, icon.height] : [0, 0],
           dotVisible: dot ? getComputedStyle(dot).display !== "none" : false,
           dotSize: dotRect ? [dotRect.width, dotRect.height] : [0, 0],
-          connectorVisible: nav
-            ? getComputedStyle(nav, "::before").display !== "none"
+          connectorVisible: connector?.display !== "none",
+          connectorThroughDots: dotRect
+            ? Math.abs(dotRect.top + dotRect.height / 2 - connectorY) < 1
+            : false,
+          labelsClearOfConnector: label
+            ? connectorY < label.top || connectorY > label.bottom
             : false,
         };
       });
@@ -91,6 +100,8 @@ test.describe("standalone How I Work mobile refinement", () => {
       expect(desktopState.dotVisible).toBe(true);
       expect(desktopState.dotSize.every((size) => size >= 13 && size <= 16)).toBe(true);
       expect(desktopState.connectorVisible).toBe(true);
+      expect(desktopState.connectorThroughDots).toBe(true);
+      expect(desktopState.labelsClearOfConnector).toBe(true);
     }
   });
 
