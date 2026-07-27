@@ -1,0 +1,15 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "ghost";
+  class?: string;
+  bookingPlaceholder?: boolean;
+}
+
+const { href, variant = "primary", class: className = "", bookingPlaceholder = false } = Astro.props;
+const classes = ["button", `button--${variant}`, className].filter(Boolean).join(" ");
+---
+
+<a class={classes} href={href} data-booking-placeholder={bookingPlaceholder ? true : undefined}>
+  <slot />
+</a>

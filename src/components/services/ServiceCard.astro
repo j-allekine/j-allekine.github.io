@@ -1,0 +1,52 @@
+---
+import type { Service } from "../../data/services";
+
+interface Props {
+  service: Service;
+  index: number;
+  total: number;
+}
+
+const { service, index, total } = Astro.props;
+---
+
+<article class="service-card" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${total}: ${service.title}`}>
+  <div class="service-card__visual" aria-hidden="true">
+    {service.visual === "spreadsheet" && (
+      <svg viewBox="0 0 120 120">
+        <rect x="24" y="25" width="72" height="70" rx="7"></rect>
+        <path d="M24 47h72M48 25v70M72 25v70"></path>
+        <path d="M31 35h10M55 35h10M79 35h10"></path>
+        <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
+      </svg>
+    )}
+    {service.visual === "automation" && (
+      <svg viewBox="0 0 120 120">
+        <rect x="18" y="48" width="26" height="24" rx="5"></rect>
+        <rect x="76" y="24" width="26" height="24" rx="5"></rect>
+        <rect x="76" y="72" width="26" height="24" rx="5"></rect>
+        <circle cx="60" cy="60" r="10"></circle>
+        <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
+        <path d="M84 36h10M84 84h10"></path>
+      </svg>
+    )}
+    {service.visual === "web-app" && (
+      <svg viewBox="0 0 120 120">
+        <rect x="18" y="24" width="84" height="72" rx="8"></rect>
+        <path d="M18 43h84"></path>
+        <circle cx="29" cy="34" r="2"></circle>
+        <circle cx="37" cy="34" r="2"></circle>
+        <circle cx="45" cy="34" r="2"></circle>
+        <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
+      </svg>
+    )}
+  </div>
+
+  <div class="service-card__body">
+    <h3>{service.title}</h3>
+    <p>{service.description}</p>
+    <div class="service-card__meta" aria-label="Common use cases">
+      {service.tags.map((tag) => <span>{tag}</span>)}
+    </div>
+  </div>
+</article>

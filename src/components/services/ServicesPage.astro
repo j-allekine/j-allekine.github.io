@@ -1,0 +1,19 @@
+---
+import ServiceCard from "./ServiceCard.astro";
+import { services } from "../../data/services";
+---
+
+<section class="section" id="services-page">
+  <div class="visual-shell">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Services</p>
+        <h1>What I build.</h1>
+      </div>
+    </div>
+
+    <div class="services-grid services-grid--index">
+      {services.map((service, index) => <ServiceCard service={service} index={index} total={services.length} />)}
+    </div>
+  </div>
+</section>

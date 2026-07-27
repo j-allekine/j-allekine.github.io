@@ -1,0 +1,38 @@
+---
+import SectionHeader from "../shared/SectionHeader.astro";
+import ServiceCard from "../services/ServiceCard.astro";
+import { services } from "../../data/services";
+---
+
+<section class="section services-section" id="services-preview">
+  <div class="visual-shell">
+    <SectionHeader label="Services" title="What I build." href="/services" linkLabel="See all services" />
+
+    <div
+      class="services-carousel"
+      data-services-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Services"
+    >
+      <button class="services-carousel__control services-carousel__control--prev" type="button" aria-label="Previous service" data-services-prev>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"></path></svg>
+      </button>
+
+      <div class="services-grid" data-services-track tabindex="0">
+        {services.map((service, index) => <ServiceCard service={service} index={index} total={services.length} />)}
+      </div>
+
+      <div class="deck-dots" data-services-dots aria-label="Service position">
+        {services.map((_service, index) => (
+          <button class="deck-dot" type="button" data-deck-index={index} aria-label={`Show service ${index + 1} of ${services.length}`} aria-current={index === 0 ? "true" : "false"}></button>
+        ))}
+      </div>
+      <p class="deck-status" data-deck-status aria-live="polite"></p>
+
+      <button class="services-carousel__control services-carousel__control--next" type="button" aria-label="Next service" data-services-next>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6"></path></svg>
+      </button>
+    </div>
+  </div>
+</section>

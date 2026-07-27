@@ -1,0 +1,50 @@
+---
+import type { ProjectVisual as ProjectVisualType } from "../../data/projects";
+
+interface Props {
+  type: ProjectVisualType;
+}
+
+const { type } = Astro.props;
+---
+
+<div class="work-visual" aria-hidden="true">
+  <div class="mock-window">
+    <div class="mock-window__top"><i></i><i></i><i></i></div>
+
+    {type === "dashboard" && (
+      <div class="mock-dashboard">
+        <div class="mock-sidebar"></div>
+        <div class="mock-main">
+          <div class="mock-metrics">
+            <div class="mock-box"></div>
+            <div class="mock-box"></div>
+            <div class="mock-box"></div>
+          </div>
+          <div class="mock-box mock-chart"></div>
+        </div>
+      </div>
+    )}
+
+    {type === "flow" && (
+      <div class="mock-flow">
+        <div class="flow-diagram">
+          <div class="flow-block">Upload forms</div>
+          <div class="flow-line"></div>
+          <div class="flow-block">Extract data</div>
+          <div class="flow-block">Validate</div>
+          <div class="flow-line"></div>
+          <div class="flow-block">Generate output</div>
+        </div>
+      </div>
+    )}
+
+    {type === "table" && (
+      <div class="mock-table">
+        {Array.from({ length: 6 }).map(() => (
+          <div class="mock-row"><span></span><span></span><span></span></div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>

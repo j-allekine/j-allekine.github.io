@@ -1,140 +1,31 @@
+---
+import SectionHeader from "../shared/SectionHeader.astro";
+import ProjectCard from "../work/ProjectCard.astro";
+import { projects } from "../../data/projects";
+---
+
 <section class="section" id="work">
-  <div class="shell">
-    <div class="section-heading">
-      <div>
-        <p class="section-label">Featured systems</p>
-        <h2>Selected work.</h2>
-      </div>
+  <div class="visual-shell">
+    <SectionHeader label="Featured systems" title="Selected work." href="/work" linkLabel="See all work" />
 
-      <a class="see-all" href="/work">
-        See all work <span class="arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-
-    <div
-      class="work-carousel"
-      data-work-carousel
-      role="region"
-      aria-roledescription="carousel"
-      aria-label="Featured projects"
-    >
-      <button
-        class="work-carousel__control work-carousel__control--prev"
-        type="button"
-        aria-label="Previous project"
-        data-work-prev
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m14.5 6-6 6 6 6"></path>
-        </svg>
+    <div class="work-carousel" data-work-carousel role="region" aria-roledescription="carousel" aria-label="Featured projects">
+      <button class="work-carousel__control work-carousel__control--prev" type="button" aria-label="Previous project" data-work-prev>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"></path></svg>
       </button>
 
       <div class="work-grid" data-work-track tabindex="0">
-        <article class="work-card" role="group" aria-roledescription="slide" aria-label="1 of 3: Pharmacy Inventory System">
-          <div class="work-visual" aria-hidden="true">
-            <div class="mock-window">
-              <div class="mock-window__top"><i></i><i></i><i></i></div>
-              <div class="mock-dashboard">
-                <div class="mock-sidebar"></div>
-                <div class="mock-main">
-                  <div class="mock-metrics">
-                    <div class="mock-box"></div>
-                    <div class="mock-box"></div>
-                    <div class="mock-box"></div>
-                  </div>
-                  <div class="mock-box mock-chart"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="work-body">
-            <h3>Pharmacy Inventory System</h3>
-            <p>Centralizes medicine movement, expiry monitoring, FIFO handling, reordering, sales, and reporting in one operational system.</p>
-
-            <div class="work-type" aria-label="Project stack and industry">
-              <span>Excel</span>
-              <span>Inventory</span>
-              <span>Healthcare</span>
-            </div>
-
-            <a class="work-link" href="#">
-              View case study <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </article>
-
-        <article class="work-card" role="group" aria-roledescription="slide" aria-label="2 of 3: Hospital OCR Automation Pipeline">
-          <div class="work-visual" aria-hidden="true">
-            <div class="mock-window">
-              <div class="mock-window__top"><i></i><i></i><i></i></div>
-              <div class="mock-flow">
-                <div class="flow-diagram">
-                  <div class="flow-block">Upload forms</div>
-                  <div class="flow-line"></div>
-                  <div class="flow-block">Extract data</div>
-                  <div class="flow-block">Validate</div>
-                  <div class="flow-line"></div>
-                  <div class="flow-block">Generate output</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="work-body">
-            <h3>Hospital OCR Automation Pipeline</h3>
-            <p>Turns uploaded hospital forms into structured records while keeping human review inside the workflow for faster, cleaner processing.</p>
-
-            <div class="work-type" aria-label="Project stack and industry">
-              <span>Apps Script</span>
-              <span>OCR</span>
-              <span>Google APIs</span>
-            </div>
-
-            <a class="work-link" href="#">
-              View case study <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </article>
-
-        <article class="work-card" role="group" aria-roledescription="slide" aria-label="3 of 3: LGU Inventory & Asset System">
-          <div class="work-visual" aria-hidden="true">
-            <div class="mock-window">
-              <div class="mock-window__top"><i></i><i></i><i></i></div>
-              <div class="mock-table">
-                <div class="mock-row"><span></span><span></span><span></span></div>
-                <div class="mock-row"><span></span><span></span><span></span></div>
-                <div class="mock-row"><span></span><span></span><span></span></div>
-                <div class="mock-row"><span></span><span></span><span></span></div>
-                <div class="mock-row"><span></span><span></span><span></span></div>
-                <div class="mock-row"><span></span><span></span><span></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="work-body">
-            <h3>LGU Inventory &amp; Asset System</h3>
-            <p>Creates one source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt through disposal.</p>
-
-            <div class="work-type" aria-label="Project stack and industry">
-              <span>Web App</span>
-              <span>Government</span>
-              <span>Assets</span>
-            </div>
-
-            <a class="work-link" href="#">
-              View case study <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </article>
+        {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} />)}
       </div>
 
-      <button
-        class="work-carousel__control work-carousel__control--next"
-        type="button"
-        aria-label="Next project"
-        data-work-next
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m9.5 6 6 6-6 6"></path>
-        </svg>
+      <div class="deck-dots" data-work-dots aria-label="Featured project position">
+        {projects.map((_project, index) => (
+          <button class="deck-dot" type="button" data-deck-index={index} aria-label={`Show project ${index + 1} of ${projects.length}`} aria-current={index === 0 ? "true" : "false"}></button>
+        ))}
+      </div>
+      <p class="deck-status" data-deck-status aria-live="polite"></p>
+
+      <button class="work-carousel__control work-carousel__control--next" type="button" aria-label="Next project" data-work-next>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6"></path></svg>
       </button>
     </div>
   </div>
@@ -142,94 +33,152 @@
 
 <script is:inline>
   (() => {
-    const cards = Array.from(document.querySelectorAll(".work-card"));
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const moveSectionsIntoStoryOrder = () => {
+      const main = document.querySelector("main");
+      const stack = document.querySelector("#stack");
+      const process = document.querySelector("#process");
+      const services = document.querySelector("#services-preview");
 
-    if (!cards.length || reduceMotion || !("IntersectionObserver" in window)) {
-      return;
-    }
+      if (!main || !stack || !process || !services) return;
 
-    cards.forEach((card, index) => {
-      card.classList.add("is-pending");
-      card.style.setProperty("--reveal-delay", `${index * 80}ms`);
-    });
+      main.insertBefore(stack, services);
+      main.insertBefore(process, services);
+    };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+    const initDeck = ({ carouselSelector, trackSelector, cardSelector, prevSelector, nextSelector, dotsSelector, itemName }) => {
+      const carousel = document.querySelector(carouselSelector);
+      const track = carousel?.querySelector(trackSelector);
+      const prev = carousel?.querySelector(prevSelector);
+      const next = carousel?.querySelector(nextSelector);
+      const cards = track ? Array.from(track.querySelectorAll(cardSelector)) : [];
+      const dots = carousel ? Array.from(carousel.querySelectorAll(`${dotsSelector} [data-deck-index]`)) : [];
 
-          entry.target.classList.remove("is-pending");
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+      if (!carousel || !track || !prev || !next || cards.length < 2) return;
+
+      let activeIndex = 0;
+      let pointerStart = null;
+      let pointerGesture = false;
+
+      const wrap = (index) => (index + cards.length) % cards.length;
+      const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
+      const isDeckMode = () => window.innerWidth <= 1040;
+
+      const setCardLinkState = (card, isActive) => {
+        const actionable = !isDeckMode() || isActive;
+        card.querySelectorAll("a").forEach((link) => {
+          link.tabIndex = actionable ? 0 : -1;
+          link.setAttribute("aria-disabled", String(!actionable));
         });
-      },
-      {
-        threshold: 0.18,
-        rootMargin: "0px 0px -6% 0px",
-      }
-    );
+      };
 
-    cards.forEach((card) => observer.observe(card));
-  })();
-</script>
+      const render = () => {
+        cards.forEach((card, index) => {
+          const offset = (index - activeIndex + cards.length) % cards.length;
+          const isActive = offset === 0;
+          const isPrevious = offset === cards.length - 1;
+          const isNext = offset === 1;
 
-<script is:inline>
-  (() => {
-    const carousel = document.querySelector("[data-work-carousel]");
-    const track = carousel?.querySelector("[data-work-track]");
-    const prev = carousel?.querySelector("[data-work-prev]");
-    const next = carousel?.querySelector("[data-work-next]");
-    const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+          card.classList.toggle("is-active", isActive);
+          card.classList.toggle("is-prev", isPrevious);
+          card.classList.toggle("is-next", isNext);
+          card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
+          card.setAttribute("aria-label", `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`);
+          card.setAttribute("aria-current", String(isActive));
+          setCardLinkState(card, isActive);
+        });
 
-    if (!carousel || !track || !prev || !next || cards.length < 2) {
-      return;
-    }
+        dots.forEach((dot, index) => dot.setAttribute("aria-current", String(index === activeIndex)));
+        const status = carousel.querySelector("[data-deck-status]");
+        if (status) status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
+      };
 
-    const getCurrentIndex = () => {
-      const current = track.scrollLeft;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
+      const select = (index) => {
+        activeIndex = wrap(index);
+        render();
+      };
+
+      const completeSwipe = (endX, endY) => {
+        if (!pointerStart) return;
+
+        const deltaX = endX - pointerStart.x;
+        const deltaY = endY - pointerStart.y;
+        pointerStart = null;
+
+        if (Math.abs(deltaX) < 44 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
+        select(activeIndex + (deltaX < 0 ? 1 : -1));
+      };
+
+      prev.addEventListener("click", () => select(activeIndex - 1));
+      next.addEventListener("click", () => select(activeIndex + 1));
+      dots.forEach((dot) => dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex))));
 
       cards.forEach((card, index) => {
-        const distance = Math.abs(card.offsetLeft - current);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
+        card.addEventListener("click", (event) => {
+          if (!isDeckMode()) return;
+          const link = event.target.closest("a");
+          if (link && index === activeIndex) return;
+          if (index !== activeIndex) {
+            event.preventDefault();
+            select(index);
+          }
+        });
+      });
+
+      track.addEventListener("keydown", (event) => {
+        if (!isDeckMode()) return;
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          select(activeIndex - 1);
+          track.focus();
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          select(activeIndex + 1);
+          track.focus();
         }
       });
 
-      return closestIndex;
-    };
-
-    const goTo = (index) => {
-      const target = cards[(index + cards.length) % cards.length];
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      track.scrollTo({
-        left: target.offsetLeft,
-        behavior: reduceMotion ? "auto" : "smooth",
+      track.addEventListener("pointerdown", (event) => {
+        if (!isDeckMode() || !event.isPrimary) return;
+        pointerGesture = true;
+        pointerStart = { x: event.clientX, y: event.clientY };
+        track.setPointerCapture?.(event.pointerId);
       });
+
+      track.addEventListener("pointerup", (event) => {
+        if (!isDeckMode()) return;
+        pointerGesture = false;
+        track.releasePointerCapture?.(event.pointerId);
+        completeSwipe(event.clientX, event.clientY);
+      });
+
+      track.addEventListener("pointercancel", () => {
+        pointerGesture = false;
+        pointerStart = null;
+      });
+
+      if (!window.PointerEvent) {
+        track.addEventListener("touchstart", (event) => {
+          if (!isDeckMode() || pointerStart) return;
+          const touch = event.changedTouches[0];
+          pointerStart = { x: touch.clientX, y: touch.clientY };
+        }, { passive: true });
+
+        track.addEventListener("touchend", (event) => {
+          if (!isDeckMode() || pointerGesture) return;
+          const touch = event.changedTouches[0];
+          completeSwipe(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        track.addEventListener("touchcancel", () => { pointerStart = null; }, { passive: true });
+      }
+
+      window.addEventListener("resize", render);
+      track.setAttribute("aria-label", `${itemName}. Swipe left or right, select a side card, or use the previous and next buttons.`);
+      render();
     };
 
-    prev.addEventListener("click", () => goTo(getCurrentIndex() - 1));
-    next.addEventListener("click", () => goTo(getCurrentIndex() + 1));
-
-    track.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        goTo(getCurrentIndex() - 1);
-      }
-
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        goTo(getCurrentIndex() + 1);
-      }
-    });
-
-    track.setAttribute(
-      "aria-label",
-      "Featured projects. Swipe horizontally or use the previous and next project buttons."
-    );
+    moveSectionsIntoStoryOrder();
+    initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
+    initDeck({ carouselSelector: "[data-services-carousel]", trackSelector: "[data-services-track]", cardSelector: ".service-card", prevSelector: "[data-services-prev]", nextSelector: "[data-services-next]", dotsSelector: "[data-services-dots]", itemName: "Service" });
   })();
 </script>
