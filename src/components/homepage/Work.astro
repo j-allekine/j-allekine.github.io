@@ -124,6 +124,21 @@ import { projects } from "../../data/projects";
         });
       });
 
+      track.addEventListener("click", (event) => {
+        if (!isDeckMode()) return;
+
+        const target = event.target instanceof Element ? event.target : null;
+        if (target?.closest("a")) return;
+
+        const card = target?.closest(cardSelector)
+          || document.elementFromPoint(event.clientX, event.clientY)?.closest(cardSelector);
+        const index = card ? cards.indexOf(card) : -1;
+
+        if (index < 0 || index === activeIndex) return;
+        event.preventDefault();
+        select(index);
+      });
+
       track.addEventListener("keydown", (event) => {
         if (!isDeckMode()) return;
         if (event.key === "ArrowLeft") {

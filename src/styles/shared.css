@@ -375,3 +375,71 @@
       outline-offset: 4px;
     }
 
+    /* Social marks */
+
+    .social-link {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      color: #d8d8df;
+      background: transparent;
+      box-shadow: none;
+      transition: transform var(--ease), filter var(--ease), color var(--ease), background-color var(--ease);
+    }
+
+    .social-link svg {
+      width: 21px;
+      height: 21px;
+      fill: currentColor;
+      stroke: none;
+    }
+
+    .social-link--github {
+      color: #fff;
+      background: #24292f;
+    }
+
+    .social-link--linkedin {
+      color: #0a66c2;
+    }
+
+    .social-link--instagram svg {
+      fill: url("#instagram-gradient");
+    }
+
+    .social-link--instagram svg path {
+      fill: url("#instagram-gradient");
+    }
+
+    .social-link--email svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      color: #fff;
+      background: transparent;
+      filter: drop-shadow(0 5px 12px rgba(255, 255, 255, 0.18));
+    }
+
+    .social-link--github:hover {
+      background: #30363d;
+    }
+
+    .social-link--linkedin:hover {
+      color: #0a66c2;
+      filter: drop-shadow(0 5px 12px rgba(10, 102, 194, 0.34));
+    }
+
+    .social-link--instagram:hover {
+      filter: drop-shadow(0 5px 12px rgba(214, 41, 118, 0.34));
+    }
+
+    .social-link--email:hover {
+      color: #f5f5f7;
+    }

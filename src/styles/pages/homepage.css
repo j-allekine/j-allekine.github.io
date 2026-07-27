@@ -2536,79 +2536,67 @@
       }
     }
 
-    @media (prefers-reduced-motion: reduce) and (min-width: 721px) and (max-width: 1040px) {
-      .work-card.is-active,
-      .service-card.is-active {
-        opacity: 1 !important;
-        transform: translateX(-50%) scale(1) !important;
-      }
+    /* Homepage refinement: compact layered decks at every viewport. */
 
-      .work-card.is-prev,
-      .service-card.is-prev {
-        opacity: 0.62 !important;
-        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92) !important;
-      }
-
-      .work-card.is-next,
-      .service-card.is-next {
-        opacity: 0.62 !important;
-        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92) !important;
-      }
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 0.42fr);
+      column-gap: clamp(28px, 4vw, 42px);
     }
 
-    @media (prefers-reduced-motion: reduce) and (max-width: 720px) {
+    .hero h1 {
+      max-width: none;
+      font-size: clamp(2.75rem, 7vw, 3.85rem);
     }
 
-    /* All homepage work and service cards use the same centered deck. */
+    .hero-name-line {
+      white-space: nowrap;
+    }
+
+    .hero-portrait-wrap {
+      width: min(100%, 220px);
+    }
 
     .work-carousel,
     .services-carousel {
       width: 100%;
-      min-width: 0;
+      max-width: 680px;
+      margin-inline: auto;
       overflow: hidden;
     }
 
     .work-grid,
     .services-grid {
-      position: relative;
       display: grid;
       width: 100%;
-      min-width: 0;
+      height: 420px;
+      min-height: 420px;
       grid-template-columns: minmax(0, 1fr);
-      grid-auto-rows: auto;
+      grid-auto-rows: 1fr;
       gap: 0;
-      height: auto;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+      overflow: visible;
       isolation: isolate;
       touch-action: pan-y;
+      user-select: none;
     }
 
     .work-card,
     .service-card {
       position: relative;
-      inset: auto;
       grid-area: 1 / 1;
-      width: 100%;
-      min-width: 0;
+      width: 82%;
+      justify-self: center;
+      height: 420px;
       min-height: 0;
-      height: auto;
       margin: 0;
       opacity: 0;
       pointer-events: none;
-      transform: scale(0.98);
+      transform: scale(0.94);
       transition:
         transform 220ms ease,
         opacity 220ms ease,
         border-color var(--ease),
-        background-color var(--ease);
-    }
-
-    .work-grid > .work-card,
-    .services-grid > .service-card {
-      grid-column: 1;
-      grid-row: 1;
+        background-color var(--ease),
+        box-shadow var(--ease);
     }
 
     .work-card.is-active,
@@ -2616,64 +2604,230 @@
       z-index: 3;
       opacity: 1;
       pointer-events: auto;
-      transform: none;
+      transform: scale(1);
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
+    }
+
+    .work-card.is-prev,
+    .service-card.is-prev,
+    .work-card.is-next,
+    .service-card.is-next {
+      z-index: 2;
+      opacity: 0.58;
+      pointer-events: auto;
+      cursor: pointer;
     }
 
     .work-card.is-prev,
     .service-card.is-prev {
-      transform: translateX(-100%) scale(0.98);
+      transform: translateX(-12%) rotate(-2deg) scale(0.94);
     }
 
     .work-card.is-next,
     .service-card.is-next {
-      transform: translateX(100%) scale(0.98);
+      transform: translateX(12%) rotate(2deg) scale(0.94);
+    }
+
+    .work-card.is-hidden,
+    .service-card.is-hidden {
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .work-card.is-active:hover,
+    .service-card.is-active:hover {
+      transform: scale(1) translateY(-4px);
+    }
+
+    .work-card.is-prev:hover,
+    .service-card.is-prev:hover {
+      transform: translateX(-12%) rotate(-2deg) scale(0.94);
+    }
+
+    .work-card.is-next:hover,
+    .service-card.is-next:hover {
+      transform: translateX(12%) rotate(2deg) scale(0.94);
+    }
+
+    .work-card:not(.is-active) .work-link,
+    .service-card:not(.is-active) a {
+      pointer-events: none;
+    }
+
+    .work-visual,
+    .service-card__visual {
+      height: 156px;
+      min-height: 156px;
+      aspect-ratio: auto;
+    }
+
+    .work-body,
+    .service-card__body {
+      min-height: 0;
+      padding: 20px;
+    }
+
+    .work-body p,
+    .service-card__body p {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    .work-type {
+      margin-top: 16px;
+      padding-top: 0;
+    }
+
+    .work-link {
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    .service-card__visual svg {
+      width: 68px;
+      height: 68px;
     }
 
     .work-carousel__control,
     .services-carousel__control {
       display: grid;
+      width: 44px;
+      height: 44px;
+    }
+
+    .work-carousel__control--prev,
+    .services-carousel__control--prev {
+      left: 24px;
+    }
+
+    .work-carousel__control--next,
+    .services-carousel__control--next {
+      right: 24px;
     }
 
     .deck-dots {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin-top: 18px;
-    }
-
-    .deck-dot {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      color: transparent;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .deck-dot::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.44);
-      border-radius: 50%;
-      background: transparent;
-      transition: transform var(--ease), background-color var(--ease), border-color var(--ease);
-    }
-
-    .deck-dot[aria-current="true"]::before {
-      border-color: #fff;
-      background: #fff;
-      transform: scale(1.25);
+      margin-top: 16px;
     }
 
     @media (max-width: 720px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 176px);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.75rem, 12vw, 3.5rem);
+      }
+
+      .work-grid,
+      .services-grid {
+        height: 390px;
+        min-height: 390px;
+      }
+
+      .work-card,
+      .service-card {
+        height: 390px;
+      }
+
+      .work-card.is-prev,
+      .service-card.is-prev {
+        transform: translateX(-10%) rotate(-1.5deg) scale(0.94);
+      }
+
+      .work-card.is-next,
+      .service-card.is-next {
+        transform: translateX(10%) rotate(1.5deg) scale(0.94);
+      }
+
+      .work-card.is-prev:hover,
+      .service-card.is-prev:hover {
+        transform: translateX(-10%) rotate(-1.5deg) scale(0.94);
+      }
+
+      .work-card.is-next:hover,
+      .service-card.is-next:hover {
+        transform: translateX(10%) rotate(1.5deg) scale(0.94);
+      }
+
+      .work-visual,
+      .service-card__visual {
+        height: 136px;
+        min-height: 136px;
+      }
+
+      .work-body,
+      .service-card__body {
+        padding: 18px;
+      }
+
+      .service-card__visual svg {
+        width: 60px;
+        height: 60px;
+      }
+
       .work-carousel__control,
       .services-carousel__control {
-        display: none;
+        width: 38px;
+        height: 38px;
+      }
+
+      .work-carousel__control--prev,
+      .services-carousel__control--prev {
+        left: 21px;
+      }
+
+      .work-carousel__control--next,
+      .services-carousel__control--next {
+        right: 21px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .work-grid,
+      .services-grid {
+        height: 382px;
+        min-height: 382px;
+      }
+
+      .work-card,
+      .service-card {
+        height: 382px;
+      }
+
+      .work-visual,
+      .service-card__visual {
+        height: 128px;
+        min-height: 128px;
+      }
+    }
+
+    @media (min-width: 1041px) {
+      .work-grid,
+      .services-grid {
+        height: 400px;
+        min-height: 400px;
+      }
+
+      .work-card,
+      .service-card {
+        height: 400px;
+      }
+
+      .work-visual,
+      .service-card__visual {
+        height: 148px;
+        min-height: 148px;
       }
     }
 
