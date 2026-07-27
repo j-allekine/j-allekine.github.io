@@ -1630,39 +1630,6 @@
         --support-size: 0.875rem;
       }
 
-      .process-heading {
-        gap: 9px;
-      }
-
-
-      .process-nav::before {
-        top: 54px;
-      }
-
-      .process-tab {
-        gap: 7px;
-        padding-inline: 4px;
-      }
-
-      .process-tab__icon {
-        width: 30px;
-        height: 30px;
-      }
-
-      .process-tab__icon svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      .process-tab__label {
-        font-size: 0.62rem;
-        letter-spacing: 0.02em;
-      }
-
-      .process-panel {
-        min-height: 138px;
-      }
-
       .stack-header {
         align-items: flex-start;
         flex-direction: column;
@@ -2462,65 +2429,6 @@
         padding-top: 14px;
       }
 
-      .process-shell {
-        gap: 18px;
-      }
-
-      .process-nav {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 4px;
-        padding: 4px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.012);
-      }
-
-      .process-nav::before,
-      .process-tab__icon,
-      .process-tab__dot {
-        display: none;
-      }
-
-      .process-tab {
-        display: grid;
-        min-height: 38px;
-        align-items: center;
-        padding: 8px 4px;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        color: #8c8c95;
-      }
-
-      .process-tab:hover {
-        transform: none;
-      }
-
-      .process-tab[aria-selected="true"] {
-        border-color: var(--line-strong);
-        background: rgba(255, 255, 255, 0.07);
-      }
-
-      .process-tab__label {
-        font-size: 0.62rem;
-        letter-spacing: 0.02em;
-      }
-
-      .process-panel {
-        min-height: 0;
-        padding: 17px 16px;
-      }
-
-      .process-panel__eyebrow {
-        margin-bottom: 7px;
-        font-size: 0.6rem;
-      }
-
-      .process-panel__description {
-        font-size: 0.875rem;
-        line-height: 1.55;
-      }
-
       .stack-section {
         padding-block: 20px 24px;
       }
@@ -2598,6 +2506,120 @@
 
       .footer-back {
         justify-self: end;
+      }
+    }
+
+    @media (max-width: 719px) {
+      .process-shell {
+        gap: 18px;
+      }
+
+      .process-nav {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0;
+        padding: 0 0 6px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      .process-nav::before {
+        display: block;
+        top: 24px;
+        right: 12.5%;
+        left: 12.5%;
+        z-index: 0;
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .process-tab {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        min-height: 78px;
+        align-items: start;
+        gap: 7px;
+        padding: 0 2px 8px;
+        border: 0;
+        border-radius: 0;
+        color: #8c8c95;
+        background: transparent;
+      }
+
+      .process-tab:hover {
+        transform: none;
+      }
+
+      .process-tab:focus-visible {
+        outline: 0;
+      }
+
+      .process-tab:focus-visible .process-tab__icon {
+        outline: 2px solid #fff;
+        outline-offset: 4px;
+      }
+
+      .process-tab__icon {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 50%;
+        background: var(--bg);
+        transition:
+          border-color var(--ease),
+          background-color var(--ease),
+          box-shadow var(--ease),
+          transform var(--ease);
+      }
+
+      .process-tab__icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .process-tab[aria-selected="true"] {
+        color: var(--text);
+      }
+
+      .process-tab[aria-selected="true"] .process-tab__icon {
+        border-color: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.045);
+        transform: none;
+      }
+
+      .process-tab__label {
+        font-size: 0.6rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        line-height: 1.2;
+      }
+
+      .process-tab[aria-selected="true"] .process-tab__label {
+        font-weight: 700;
+      }
+
+      .process-tab__dot {
+        display: none;
+      }
+
+      .process-panel {
+        min-height: 0;
+        padding: 17px 16px;
+      }
+
+      .process-panel__eyebrow {
+        margin-bottom: 7px;
+        font-size: 0.6rem;
+      }
+
+      .process-panel__description {
+        font-size: 0.875rem;
+        line-height: 1.55;
       }
     }
 
@@ -2700,75 +2722,6 @@
       .service-card:not(.is-active) a {
         pointer-events: auto;
       }
-    }
-
-    .process-nav::before {
-      display: none;
-    }
-
-    .process-nav {
-      gap: 8px;
-      padding: 0;
-    }
-
-    .process-tab {
-      gap: 10px;
-      padding: 0 8px 14px;
-      border: 0;
-      border-radius: 0;
-    }
-
-    .process-nav {
-      border: 0;
-      background: transparent;
-    }
-
-    .process-tab[aria-selected="true"] {
-      border: 0;
-      background: transparent;
-    }
-
-    .process-tab:focus-visible {
-      outline: 0;
-    }
-
-    .process-tab:focus-visible .process-tab__icon {
-      outline: 2px solid #fff;
-      outline-offset: 4px;
-    }
-
-    .process-tab:hover {
-      transform: none;
-    }
-
-    .process-tab__icon {
-      display: grid;
-      width: 64px;
-      height: 64px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.018);
-      transition: border-color var(--ease), background-color var(--ease), transform var(--ease);
-    }
-
-    .process-tab__icon svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    .process-tab[aria-selected="true"] .process-tab__icon {
-      border-color: rgba(255, 255, 255, 0.9);
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.045);
-      transform: translateY(-2px);
-    }
-
-    .process-tab__label {
-      font-weight: 600;
-    }
-
-    .process-tab__dot {
-      display: none;
     }
 
     .contact-cta {
@@ -3827,8 +3780,7 @@
             >
               <span class="process-tab__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
-                  <path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H11l-4.5 3v-3H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z"></path>
-                  <path d="M7.5 10h9M7.5 13h6"></path>
+                  <path d="M12 5.5c4.8 0 8.5 2.1 8.5 5s-3.7 5-8.5 5c-1.1 0-2.1-.1-3.1-.3L6 18l.8-3.7c-2-.9-3.3-2.2-3.3-3.8 0-2.9 3.7-5 8.5-5Z"></path>
                 </svg>
               </span>
               <span class="process-tab__label">Discovery</span>
