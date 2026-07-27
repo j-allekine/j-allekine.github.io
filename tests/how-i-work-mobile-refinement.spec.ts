@@ -110,6 +110,10 @@ test.describe("standalone How I Work mobile refinement", () => {
 
     await plan.click();
     await expect(plan).toHaveAttribute("aria-selected", "true");
+    await expect(plan.locator(".process-tab__icon")).toHaveCSS(
+      "background-color",
+      "rgb(5, 5, 5)"
+    );
     await expect(page.locator("[data-process-title]")).toHaveText("Plan");
     await expect(page.locator("[data-process-description]")).toContainText("roadmap");
     await expect(panel).toHaveAttribute("aria-labelledby", "process-tab-plan");
