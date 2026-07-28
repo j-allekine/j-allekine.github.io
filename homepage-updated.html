@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="Jihm Allekine Almedilla builds spreadsheet systems, automations, data tools, and practical software."
+    content="Jihm Allekine is an operational problem-solver who builds spreadsheet systems, automations, data tools, and practical software."
   />
-  <title>J. Allekine | Systems, Automation & Software</title>
+  <title>J. Allekine | Operational Problem-Solver</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -2675,7 +2675,7 @@
       display: none;
     }
 
-    @media (max-width: 899px) {
+    @media (max-width: 1279px) {
       :root {
         --mobile-header-height: 56px;
       }
@@ -4255,10 +4255,221 @@
         font-size: clamp(0.6rem, 2.3vw, 0.74rem);
       }
     }
+
+    /* Shared homepage shell: persistent desktop sidebar, responsive drawer, and approved content hierarchy. */
+
+    .desktop-sidebar {
+      display: none;
+    }
+
+    .hero-statement {
+      max-width: 30ch;
+      margin: 22px 0 0;
+      color: #dedee3;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-weight: 500;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+
+    .about-placeholder {
+      min-height: 180px;
+    }
+
+    .footer-inner {
+      grid-template-columns: 1fr auto;
+    }
+
+    @media (min-width: 1280px) {
+      :root {
+        --sidebar-width: 224px;
+      }
+
+      .desktop-sidebar {
+        position: fixed;
+        z-index: 60;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        width: var(--sidebar-width);
+        flex-direction: column;
+        padding: 34px 28px 28px;
+        border-right: 1px solid var(--line);
+        color: var(--text);
+        background: var(--surface);
+      }
+
+      .desktop-sidebar__brand {
+        color: #f1f1f4;
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .desktop-sidebar__nav {
+        display: grid;
+        gap: 4px;
+        margin-top: 64px;
+      }
+
+      .desktop-sidebar__nav a {
+        position: relative;
+        display: flex;
+        min-height: 40px;
+        align-items: center;
+        color: #a7a7b0;
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .desktop-sidebar__nav a::before {
+        content: "";
+        width: 0;
+        height: 1px;
+        margin-right: 0;
+        background: currentColor;
+        transition: width var(--ease), margin-right var(--ease);
+      }
+
+      .desktop-sidebar__nav a:hover,
+      .desktop-sidebar__nav a:focus-visible {
+        color: #fff;
+      }
+
+      .desktop-sidebar__nav a:hover::before,
+      .desktop-sidebar__nav a:focus-visible::before {
+        width: 14px;
+        margin-right: 8px;
+      }
+
+      .desktop-sidebar__bottom,
+      .mobile-sidebar__bottom {
+        display: grid;
+        gap: 18px;
+        margin-top: auto;
+      }
+
+      .sidebar-socials {
+        display: grid;
+        gap: 8px;
+      }
+
+      .sidebar-socials a {
+        width: fit-content;
+        color: #a7a7b0;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.02em;
+      }
+
+      .sidebar-socials a:hover,
+      .sidebar-socials a:focus-visible {
+        color: #fff;
+      }
+
+      .sidebar-verse {
+        color: #76767f;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .page-frame {
+        margin-left: var(--sidebar-width);
+      }
+
+      .site-header {
+        display: none;
+      }
+
+      main [id] {
+        scroll-margin-top: 24px;
+      }
+    }
+
+    @media (max-width: 1279px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "portrait"
+          "intro"
+          "details";
+        row-gap: 30px;
+      }
+
+      .hero-intro,
+      .hero-details {
+        align-self: auto;
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 360px);
+        max-width: none;
+        justify-self: center;
+      }
+
+      .desktop-sidebar {
+        display: none;
+      }
+
+      .brand {
+        display: inline-flex;
+      }
+
+      .menu-button {
+        display: inline-flex;
+        order: 0;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .mobile-sidebar__bottom {
+        padding: 18px 22px 28px;
+      }
+
+      .mobile-sidebar__bottom .sidebar-socials a {
+        min-height: 40px;
+        align-items: center;
+        display: flex;
+      }
+
+      .mobile-sidebar__bottom .sidebar-verse {
+        margin-top: 4px;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <aside class="desktop-sidebar" data-desktop-sidebar aria-label="Desktop site navigation">
+    <a class="desktop-sidebar__brand" href="#top" aria-label="J. Allekine homepage">
+      J. ALLEKINE
+    </a>
+
+    <nav class="desktop-sidebar__nav" aria-label="Desktop primary">
+      <a href="#top">Home</a>
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="desktop-sidebar__bottom">
+      <div class="sidebar-socials" data-sidebar-socials aria-label="Social links">
+        <a href="https://github.com/j-allekine" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/j-allekine/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="mailto:ajihmallekine@gmail.com">Email</a>
+      </div>
+      <span class="sidebar-verse">Colossians 3:23</span>
+    </div>
+  </aside>
+
   <div class="mobile-sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
 
   <aside
@@ -4281,11 +4492,20 @@
     </div>
 
     <nav class="mobile-sidebar__nav" aria-label="Mobile primary">
-      <a href="/work">Work</a>
-      <a href="/services">Services</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
+      <a href="#top">Home</a>
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
     </nav>
+
+    <div class="mobile-sidebar__bottom">
+      <div class="sidebar-socials" data-sidebar-socials aria-label="Social links">
+        <a href="https://github.com/j-allekine" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/j-allekine/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="mailto:ajihmallekine@gmail.com">Email</a>
+      </div>
+      <span class="sidebar-verse">Colossians 3:23</span>
+    </div>
   </aside>
 
   <div class="page-frame" data-page-frame data-menu-open="false">
@@ -4308,22 +4528,22 @@
         </button>
 
         <nav class="nav" id="primary-navigation" aria-label="Primary" data-navigation>
-          <a href="/work">Work</a>
-          <a href="/services">Services</a>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
+          <a href="#top">Home</a>
+          <a href="#work">Work</a>
+          <a href="#stack">Stack</a>
+          <a href="#contact">Contact</a>
         </nav>
       </div>
     </header>
 
   <main id="top">
-    <section class="hero shell" aria-labelledby="hero-title">
+    <section class="hero shell" id="hero" aria-labelledby="hero-title">
       <div class="hero-intro">
-        <p class="hero-label">Systems &amp; Automation Developer</p>
         <h1 id="hero-title">
-          <span class="hero-name-line">Jihm Allekine</span>
-          <span class="hero-name-line">Almedilla</span>
+          <span class="hero-name-line">JIHM ALLEKINE</span>
+          <span class="hero-name-line">ALMEDILLA</span>
         </h1>
+        <p class="hero-statement">I am an automation specialist.</p>
       </div>
 
       <div class="hero-portrait-wrap">
@@ -4346,19 +4566,23 @@
         </p>
 
         <div class="hero-actions">
-          <!-- Replace #contact with the real 30-minute scheduling URL when available. -->
-          <a class="button button--primary" href="#contact" data-booking-placeholder>
-            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3.5" y="5.5" width="17" height="15" rx="2"></rect>
-              <path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"></path>
-            </svg>
+          <a class="button button--primary" href="#work">
+            View selected work <span class="arrow" aria-hidden="true">&#8599;</span>
+          </a>
+          <a class="button button--ghost" href="/contact">
+            Contact me <span class="arrow" aria-hidden="true">&#8599;</span>
+          </a>
+          <!--
+          <a class="button button--primary" href="#work">
             Book a 30-minute call <span class="arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="button button--ghost" href="#work">
+          <a class="button button--ghost" href="/contact">
             View Work <span class="arrow" aria-hidden="true">→</span>
           </a>
+          -->
         </div>
 
+        <!--
         <div class="hero-socials">
 <div class="socials" aria-label="Social links">
           <a
@@ -4390,6 +4614,7 @@
           </a>
         </div>
         </div>
+        -->
       </div>
     </section>
 
@@ -4448,9 +4673,11 @@
                 <span>Healthcare</span>
               </div>
 
+              <!--
               <a class="work-link" href="#" aria-disabled="false">
                 View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
+              -->
             </div>
           </article>
 
@@ -4480,9 +4707,11 @@
                 <span>Google APIs</span>
               </div>
 
+              <!--
               <a class="work-link" href="#" tabindex="-1" aria-disabled="true">
                 View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
+              -->
             </div>
           </article>
 
@@ -4510,9 +4739,11 @@
                 <span>Assets</span>
               </div>
 
+              <!--
               <a class="work-link" href="#" tabindex="-1" aria-disabled="true">
                 View case study <span class="arrow" aria-hidden="true">&#8599;</span>
               </a>
+              -->
             </div>
           </article>
           </div>
@@ -4533,7 +4764,7 @@
       <div class="visual-shell">
         <div class="section-heading stack-header">
           <div>
-            <div class="section-label" role="heading" aria-level="2">Technologies &amp; Tools</div>
+            <div class="section-label" role="heading" aria-level="2">Stack</div>
           </div>
           <a class="see-all" href="/stack">
             View all <span class="arrow" aria-hidden="true">→</span>
@@ -4928,6 +5159,7 @@
       </div>
     </section>
 
+    <!-- Services remain removed from the homepage baseline.
     <section class="section services-section" id="services-preview">
       <div class="visual-shell">
         <div class="section-heading">
@@ -5063,6 +5295,15 @@
         </div>
       </div>
     </section>
+    -->
+
+    <section class="section about-placeholder" id="about" aria-labelledby="about-title">
+      <div class="reading-shell">
+        <p class="section-label">About</p>
+        <h2 id="about-title">About</h2>
+        <!-- Approved About copy is deferred to the dependent homepage chunk. -->
+      </div>
+    </section>
 
     <section class="contact-cta" id="contact">
       <div class="visual-shell">
@@ -5086,7 +5327,6 @@
   <footer>
     <div class="visual-shell footer-inner">
       <span>© 2026 J. Allekine</span>
-      <span class="footer-verse">Colossians 3:23</span>
       <a class="footer-back" href="#">Back to top ↑</a>
     </div>
   </footer>
@@ -5100,7 +5340,7 @@
     const pageFrame = document.querySelector("[data-page-frame]");
     let savedScrollState = null;
 
-    const isCompactViewport = () => window.innerWidth < 900;
+    const isCompactViewport = () => window.innerWidth < 1280;
     const isMenuOpen = () => menuButton?.getAttribute("aria-expanded") === "true";
     const getSidebarFocusableElements = () =>
       [...(mobileSidebar?.querySelectorAll(
@@ -5244,7 +5484,7 @@
     });
 
     window.addEventListener("resize", () => {
-      if (window.innerWidth >= 900 && (isMenuOpen() || savedScrollState)) {
+      if (window.innerWidth >= 1280 && (isMenuOpen() || savedScrollState)) {
         setMenuState(false, { restoreFocus: false });
       }
     });
@@ -5252,18 +5492,6 @@
 
   <script>
     (() => {
-      const moveSectionsIntoStoryOrder = () => {
-        const main = document.querySelector("main");
-        const stack = document.querySelector("#stack");
-        const process = document.querySelector("#process");
-        const services = document.querySelector("#services-preview");
-
-        if (!main || !stack || !process || !services) return;
-
-        main.insertBefore(stack, services);
-        main.insertBefore(process, services);
-      };
-
       const initSpotlightDeck = ({
         carouselSelector = "[data-work-carousel]",
         trackSelector = "[data-work-track]",
@@ -5474,18 +5702,7 @@
         render();
       };
 
-      moveSectionsIntoStoryOrder();
-
       initSpotlightDeck();
-
-      initSpotlightDeck({
-        carouselSelector: "[data-services-carousel]",
-        trackSelector: "[data-services-track]",
-        cardSelector: ".service-card",
-        dotsSelector: "[data-services-dots]",
-        itemName: "Services",
-        ariaLabel: "Services. Select a side card or use Left Arrow and Right Arrow to change the centered service.",
-      });
     })();
   </script>
 

@@ -23,7 +23,7 @@ test.describe("standalone homepage contact and footer", () => {
       await page.setViewportSize(viewport);
 
       const contact = page.locator("#contact");
-      const button = page.getByRole("link", { name: /Contact Me/ });
+      const button = contact.getByRole("link", { name: /Contact me/i });
       const layout = await button.locator("..").evaluate((card) => {
         const copy = card.firstElementChild!.getBoundingClientRect();
         const button = card.querySelector<HTMLElement>("a")!.getBoundingClientRect();
@@ -77,7 +77,6 @@ test.describe("standalone homepage contact and footer", () => {
     expect(row.contained).toBe(true);
     expect(row.separated).toBe(true);
     expect(new Set(row.tops.map((top) => Math.round(top))).size).toBe(1);
-    await expect(footer.getByText("Colossians 3:23")).toBeVisible();
     const backToTop = footer.getByRole("link", { name: /Back to top/ });
 
     await page.evaluate(() => {
@@ -92,11 +91,10 @@ test.describe("standalone homepage contact and footer", () => {
       await page.setViewportSize(viewport);
       await page.locator("#contact").scrollIntoViewIfNeeded();
 
-      await expect(page.getByRole("link", { name: /Contact Me/ })).toBeVisible();
+      await expect(page.locator("#contact").getByRole("link", { name: /Contact me/i })).toBeVisible();
       await expect(page.getByRole("link", { name: /Back to top/ })).toBeVisible();
       await expect(page.locator("[data-process] [role='tab']")).toHaveCount(4);
       await expect(page.locator("[data-work-track] .work-card.is-active")).toHaveCount(1);
-      await expect(page.locator("[data-services-track] .service-card.is-active")).toHaveCount(1);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
       await page.screenshot({
@@ -110,14 +108,14 @@ test.describe("standalone homepage contact and footer", () => {
     await menuButton.click();
     await expect(menuButton).toHaveAttribute("aria-expanded", "true");
     await page.setViewportSize({ width: 1024, height: 768 });
-    await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
-    await expect(menuButton).toBeHidden();
+    await expect(page.locator("[data-navigation]")).toBeHidden();
+    await expect(menuButton).toBeVisible();
+    await page.keyboard.press("Escape");
 
     await page.setViewportSize({ width: 844, height: 390 });
-    await expect(page.getByRole("link", { name: /Contact Me/ })).toBeVisible();
+    await expect(page.locator("#contact").getByRole("link", { name: /Contact me/i })).toBeVisible();
     await expect(page.locator("[data-process] [role='tab']")).toHaveCount(4);
     await expect(page.locator("[data-work-track] .work-card.is-active")).toHaveCount(1);
-    await expect(page.locator("[data-services-track] .service-card.is-active")).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 });

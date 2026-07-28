@@ -24,8 +24,8 @@ test.describe("issue #5 standalone footer", () => {
       const items = footerInner.locator(":scope > *");
 
       await expect(footer).toBeVisible();
-      await expect(items).toHaveCount(3);
-      for (let index = 0; index < 3; index += 1) {
+      await expect(items).toHaveCount(2);
+      for (let index = 0; index < 2; index += 1) {
         await expect(items.nth(index)).toBeVisible();
       }
 
@@ -64,7 +64,7 @@ test.describe("issue #5 standalone footer", () => {
       });
 
       expect(layout.noHorizontalOverflow, viewport.name).toBe(true);
-      expect(layout.items, viewport.name).toHaveLength(3);
+      expect(layout.items, viewport.name).toHaveLength(2);
       expect(layout.fontSize, viewport.name).toBeGreaterThanOrEqual(8.96);
 
       const rowTop = Math.round(layout.items[0].top);

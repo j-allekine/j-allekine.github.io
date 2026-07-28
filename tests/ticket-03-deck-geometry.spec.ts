@@ -15,7 +15,6 @@ const viewports = [
 
 const deckSelectors = [
   { name: "featured-work", track: "[data-work-track]", carousel: "[data-work-carousel]" },
-  { name: "services", track: "[data-services-track]", carousel: "[data-services-carousel]" },
 ];
 
 test.describe("Issue 3 shared spotlight deck geometry", () => {
@@ -29,7 +28,7 @@ test.describe("Issue 3 shared spotlight deck geometry", () => {
       await page.waitForTimeout(300);
 
       const states = await page.evaluate(() =>
-        ["work", "services"].map((kind) => {
+        ["work"].map((kind) => {
           const track = document.querySelector(`[data-${kind}-track]`);
           const trackRect = track?.getBoundingClientRect();
           const cards = [...(track?.querySelectorAll("article") ?? [])];

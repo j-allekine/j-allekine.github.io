@@ -220,30 +220,8 @@ test.describe("ticket 03 Featured Work touch and motion", () => {
     await expect(dots.locator("[aria-current='true']")).toHaveAttribute("data-deck-index", "1");
   });
 
-  test("keeps only the centered card link actionable", async ({ page }) => {
-    for (const viewport of [
-      { width: 390, height: 844 },
-      { width: 1440, height: 900 },
-    ]) {
-      await page.setViewportSize(viewport);
-      const linkState = await page.evaluate(() =>
-        [...document.querySelectorAll("[data-work-track] .work-card")].map((card) => {
-          const link = card.querySelector(".work-link") as HTMLAnchorElement | null;
-          return {
-            active: card.classList.contains("is-active"),
-            tabIndex: link?.tabIndex,
-            pointerEvents: link ? getComputedStyle(link).pointerEvents : "",
-            ariaDisabled: link?.getAttribute("aria-disabled"),
-          };
-        })
-      );
-
-      expect(linkState).toEqual([
-        { active: true, tabIndex: 0, pointerEvents: "auto", ariaDisabled: "false" },
-        { active: false, tabIndex: -1, pointerEvents: "none", ariaDisabled: "true" },
-        { active: false, tabIndex: -1, pointerEvents: "none", ariaDisabled: "true" },
-      ]);
-    }
+  test("omits deferred individual case-study actions", async ({ page }) => {
+    await expect(page.locator("[data-work-track] .work-link")).toHaveCount(0);
   });
 
   test("respects reduced motion and preserves selection across resize and orientation", async ({ page }) => {
