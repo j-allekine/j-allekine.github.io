@@ -112,6 +112,28 @@ test.describe("ticket 03 Featured Work touch and motion", () => {
     await expect(activeTitle(page)).toHaveText("LGU Inventory & Asset System");
   });
 
+  test("promotes the right preview directly into the center position", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    const rightPreview = page.locator(`${workTrack} .work-card.is-next`);
+    await expect(rightPreview).toBeVisible();
+    await rightPreview.scrollIntoViewIfNeeded();
+    const rightBox = await rightPreview.boundingBox();
+    if (!rightBox) throw new Error("Right Featured Work preview has no layout box");
+    await page.mouse.click(
+      rightBox.x + rightBox.width * 0.82,
+      rightBox.y + rightBox.height * 0.65
+    );
+
+    await expect(activeTitle(page)).toHaveText("Hospital OCR Automation Pipeline");
+    await expect(page.locator(`${workTrack} .work-card.is-active`)).toHaveClass(/is-active/);
+
+    const transitionProperties = await page.locator(`${workTrack} .work-card`).evaluateAll(
+      (cards) => cards.map((card) => getComputedStyle(card).transitionProperty)
+    );
+    expect(transitionProperties.every((properties) => !properties.includes("transform"))).toBe(true);
+  });
+
   test("supports the same gesture outcomes on phone and tablet", async ({ page }) => {
     for (const viewport of [
       { width: 390, height: 844 },

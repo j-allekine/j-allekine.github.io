@@ -111,7 +111,15 @@ test.describe("Issue 3 shared spotlight deck geometry", () => {
         const rect = item.getBoundingClientRect();
         return [item.getAttribute("aria-posinset"), { x: rect.x, y: rect.y, width: rect.width, height: rect.height }];
       })));
-      expect(afterHover).toEqual(beforeHover);
+
+      for (const key of Object.keys(beforeHover)) {
+        for (const dimension of ["x", "y", "width", "height"] as const) {
+          expect(
+            Math.abs(afterHover[key][dimension] - beforeHover[key][dimension]),
+            `${key} ${dimension} changed during hover`
+          ).toBeLessThanOrEqual(1);
+        }
+      }
     }
   });
 

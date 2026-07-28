@@ -4158,6 +4158,14 @@
       box-shadow: none;
     }
 
+    /* Featured Work side cards are selectable previews, not a rotating carousel. */
+    .work-card {
+      transition:
+        opacity 180ms ease,
+        border-color var(--ease),
+        background-color var(--ease);
+    }
+
     @media (min-width: 1041px) {
       .work-grid,
       .work-card {
@@ -4185,6 +4193,11 @@
         flex-basis: 134px;
         height: 134px;
         min-height: 134px;
+      }
+
+      .work-body p {
+        display: block;
+        max-height: calc(1.58em * 2);
       }
     }
 
@@ -5373,10 +5386,27 @@
         });
 
         track.addEventListener("click", (event) => {
-          if (!suppressClick) return;
+          if (suppressClick) {
+            event.preventDefault();
+            event.stopPropagation();
+            suppressClick = false;
+            return;
+          }
+
+          const elements = document.elementsFromPoint(event.clientX, event.clientY);
+          const activeCard = elements.find((element) =>
+            element.closest(cardSelector)?.classList.contains("is-active")
+          );
+          if (activeCard) return;
+
+          const sideCard = elements
+            .map((element) => element.closest(cardSelector))
+            .find((card) => card && card !== cards[activeIndex]);
+          const sideIndex = sideCard ? cards.indexOf(sideCard) : -1;
+          if (sideIndex === -1) return;
+
           event.preventDefault();
-          event.stopPropagation();
-          suppressClick = false;
+          select(sideIndex, true);
         }, true);
 
         track.addEventListener("keydown", (event) => {

@@ -149,7 +149,12 @@ test.describe("standalone compact responsive homepage", () => {
       const styles = getComputedStyle(element);
       const lineHeight = Number.parseFloat(styles.lineHeight);
       const rect = element.getBoundingClientRect();
-      return { lineHeight, visibleHeight: rect.height, scrollHeight: element.scrollHeight };
+      return {
+        lineHeight,
+        visibleHeight: (element as HTMLElement).offsetHeight,
+        transformedHeight: rect.height,
+        scrollHeight: element.scrollHeight,
+      };
     });
     expect(descriptionLayout.visibleHeight).toBeLessThanOrEqual(descriptionLayout.lineHeight * 2 + 2);
     expect(descriptionLayout.scrollHeight).toBeGreaterThanOrEqual(descriptionLayout.visibleHeight);
