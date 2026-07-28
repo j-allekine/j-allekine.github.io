@@ -2489,10 +2489,10 @@
       }
 
       .footer-inner {
-        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-columns: max-content minmax(0, 1fr) max-content;
         justify-items: stretch;
         min-height: 0;
-        gap: 8px;
+        gap: 6px;
         padding-block: 18px;
         font-size: clamp(0.56rem, 2.3vw, 0.66rem);
       }
@@ -2510,6 +2510,10 @@
       .footer-verse,
       .footer-back {
         justify-self: center;
+      }
+
+      .footer-verse {
+        letter-spacing: 0.04em;
       }
 
       .footer-back {
@@ -4135,6 +4139,38 @@
       .work-card,
       .service-card {
         width: 84%;
+      }
+    }
+
+    /* Issue #4: Featured Work media fills a stable card proportion. */
+
+    .work-visual {
+      flex: 0 0 38%;
+      height: auto;
+      min-height: 0;
+    }
+
+    .work-card .mock-window,
+    .work-card:hover .mock-window {
+      inset: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    @media (max-width: 720px) {
+      .work-visual {
+        flex-basis: 150px;
+        height: 150px;
+        min-height: 150px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .work-visual {
+        flex-basis: 142px;
+        height: 142px;
+        min-height: 142px;
       }
     }
 
