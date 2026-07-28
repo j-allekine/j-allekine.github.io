@@ -4021,6 +4021,123 @@
       border-top: 0;
     }
 
+    /* Issue 3: shared Featured Work and Services deck geometry */
+
+    .work-carousel,
+    .services-carousel {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .work-grid,
+    .services-grid {
+      position: relative;
+      display: block;
+      padding: 0;
+      overflow: visible;
+      isolation: isolate;
+      touch-action: pan-y;
+    }
+
+    .work-card,
+    .service-card {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 42%;
+      min-height: 0;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%);
+      transform-origin: center;
+      transition:
+        transform 250ms ease,
+        opacity 250ms ease,
+        border-color var(--ease),
+        background-color var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .work-card.is-active,
+    .service-card.is-active {
+      z-index: 3;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%);
+    }
+
+    .work-card.is-prev,
+    .work-card.is-next,
+    .service-card.is-prev,
+    .service-card.is-next {
+      z-index: 2;
+      opacity: 0.66;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .work-card.is-prev,
+    .service-card.is-prev {
+      transform: translateX(calc(-50% - var(--deck-side-offset))) rotate(-7deg);
+    }
+
+    .work-card.is-next,
+    .service-card.is-next {
+      transform: translateX(calc(-50% + var(--deck-side-offset))) rotate(7deg);
+    }
+
+    .work-card.is-hidden,
+    .service-card.is-hidden {
+      visibility: hidden;
+    }
+
+    .work-card.is-active:hover,
+    .service-card.is-active:hover {
+      transform: translateX(-50%);
+    }
+
+    .work-card.is-prev:hover,
+    .service-card.is-prev:hover {
+      transform: translateX(calc(-50% - var(--deck-side-offset))) rotate(-7deg);
+    }
+
+    .work-card.is-next:hover,
+    .service-card.is-next:hover {
+      transform: translateX(calc(-50% + var(--deck-side-offset))) rotate(7deg);
+    }
+
+    @media (min-width: 1041px) {
+      .work-grid,
+      .services-grid {
+        --deck-side-offset: 48%;
+      }
+    }
+
+    @media (min-width: 721px) and (max-width: 1040px) {
+      .work-grid,
+      .services-grid {
+        --deck-side-offset: 32%;
+      }
+
+      .work-card,
+      .service-card {
+        width: 57%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .work-grid,
+      .services-grid {
+        --deck-side-offset: 1%;
+      }
+
+      .work-card,
+      .service-card {
+        width: 84%;
+      }
+    }
+
     .section-heading,
     .stack-header {
       display: flex;
