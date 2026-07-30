@@ -35,6 +35,20 @@ test.describe("homepage Stack", () => {
     await expect(primarySequence.locator(".stack-item span:last-child")).toHaveText(approvedTools);
     await expect(loopSequence).toHaveCount(1);
     await expect(loopSequence.locator(".stack-item")).toHaveCount(approvedTools.length);
+
+    const loopAlignment = await stack.locator(".stack-track").evaluate((track) => {
+      const [primary, duplicate] = Array.from(track.querySelectorAll(".stack-sequence"));
+      const primaryBox = primary.getBoundingClientRect();
+      const duplicateBox = duplicate.getBoundingClientRect();
+
+      return {
+        sequenceWidth: primaryBox.width,
+        duplicateOffset: duplicateBox.x - primaryBox.x,
+      };
+    });
+
+    expect(Math.abs(loopAlignment.duplicateOffset - loopAlignment.sequenceWidth))
+      .toBeLessThanOrEqual(0.5);
   });
 
   test("stays compact and contained at every approved review width", async ({ page }) => {
