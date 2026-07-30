@@ -23,10 +23,13 @@ test.describe("issue #14 responsive Hero portrait composition", () => {
       await page.setViewportSize(viewport);
 
       const portraitBox = await portrait.boundingBox();
-      const headingBox = await page.locator("#hero-title").boundingBox();
+      const introBox = await page.locator("#hero .hero-intro").boundingBox();
+      const detailsBox = await page.locator("#hero .hero-details").boundingBox();
       expect(portraitBox).not.toBeNull();
-      expect(headingBox).not.toBeNull();
-      expect(portraitBox!.y + portraitBox!.height).toBeLessThanOrEqual(headingBox!.y);
+      expect(introBox).not.toBeNull();
+      expect(detailsBox).not.toBeNull();
+      expect(introBox!.y - (portraitBox!.y + portraitBox!.height)).toBeGreaterThanOrEqual(20);
+      expect(detailsBox!.y - (introBox!.y + introBox!.height)).toBeGreaterThanOrEqual(20);
       expect(portraitBox!.height).toBeGreaterThan(portraitBox!.width);
       expect(portraitBox!.height / portraitBox!.width).toBeLessThanOrEqual(1.3);
       await expect(page.locator("html")).toHaveJSProperty("scrollWidth", viewport.width);
@@ -42,18 +45,22 @@ test.describe("issue #14 responsive Hero portrait composition", () => {
 
       const hero = page.locator("#hero");
       const portraitBox = await hero.locator(".hero-portrait").boundingBox();
-      const headingBox = await hero.locator("#hero-title").boundingBox();
+      const introBox = await hero.locator(".hero-intro").boundingBox();
+      const detailsBox = await hero.locator(".hero-details").boundingBox();
       const heroBox = await hero.boundingBox();
       const actions = hero.locator(".hero-actions a");
       const primaryBox = await actions.nth(0).boundingBox();
       const secondaryBox = await actions.nth(1).boundingBox();
 
       expect(portraitBox).not.toBeNull();
-      expect(headingBox).not.toBeNull();
+      expect(introBox).not.toBeNull();
+      expect(detailsBox).not.toBeNull();
       expect(heroBox).not.toBeNull();
       expect(primaryBox).not.toBeNull();
       expect(secondaryBox).not.toBeNull();
-      expect(portraitBox!.x + portraitBox!.width).toBeLessThan(headingBox!.x);
+      expect(introBox!.x - (portraitBox!.x + portraitBox!.width)).toBeGreaterThanOrEqual(32);
+      expect(detailsBox!.x - (portraitBox!.x + portraitBox!.width)).toBeGreaterThanOrEqual(32);
+      expect(detailsBox!.y - (introBox!.y + introBox!.height)).toBeGreaterThanOrEqual(16);
       expect(Math.abs(portraitBox!.width / portraitBox!.height - 1)).toBeLessThanOrEqual(0.12);
       expect(portraitBox!.width).toBeGreaterThanOrEqual(250);
       expect(portraitBox!.width).toBeLessThanOrEqual(320);
