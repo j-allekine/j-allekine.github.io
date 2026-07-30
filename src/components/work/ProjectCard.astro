@@ -6,10 +6,9 @@ interface Props {
   project: Project;
   index: number;
   total: number;
-  showCaseStudyLink?: boolean;
 }
 
-const { project, index, total, showCaseStudyLink = true } = Astro.props;
+const { project, index, total } = Astro.props;
 ---
 
 <article
@@ -17,8 +16,6 @@ const { project, index, total, showCaseStudyLink = true } = Astro.props;
   role="group"
   aria-roledescription="slide"
   aria-label={`${index + 1} of ${total}: ${project.title}`}
-  aria-posinset={index + 1}
-  aria-setsize={total}
 >
   <ProjectVisual type={project.visual} />
   <div class="work-body">
@@ -29,10 +26,8 @@ const { project, index, total, showCaseStudyLink = true } = Astro.props;
       {project.tags.map((tag) => <span>{tag}</span>)}
     </div>
 
-    {showCaseStudyLink && (
-      <a class="work-link" href={project.href}>
-        View case study <span class="arrow" aria-hidden="true">↗</span>
-      </a>
-    )}
+    <a class="work-link" href={project.href}>
+      View case study <span class="arrow" aria-hidden="true">↗</span>
+    </a>
   </div>
 </article>

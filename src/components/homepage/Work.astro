@@ -6,23 +6,23 @@ import { projects } from "../../data/projects";
 
 <section class="section" id="work">
   <div class="content-shell">
-    <SectionHeader label="FEATURED PROJECTS" title="Selected work." href="/work" linkLabel="See all work" />
+    <SectionHeader label="Featured systems" title="Selected work." href="/work" linkLabel="See all work" />
 
-    <div class="work-carousel" data-work-carousel role="region" aria-roledescription="carousel" aria-label="Featured projects" aria-describedby="work-deck-status">
+    <div class="work-carousel" data-work-carousel role="region" aria-roledescription="carousel" aria-label="Featured projects">
       <button class="work-carousel__control work-carousel__control--prev" type="button" aria-label="Previous project" data-work-prev>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"></path></svg>
       </button>
 
       <div class="work-grid" data-work-track tabindex="0">
-        {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} showCaseStudyLink={false} />)}
+        {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} />)}
       </div>
 
-      <div class="deck-dots" data-work-dots aria-hidden="true">
+      <div class="deck-dots" data-work-dots aria-label="Featured project position">
         {projects.map((_project, index) => (
-          <span class="deck-dot" data-deck-index={index} aria-current={index === 0 ? "true" : "false"}></span>
+          <button class="deck-dot" type="button" data-deck-index={index} aria-label={`Show project ${index + 1} of ${projects.length}`} aria-current={index === 0 ? "true" : "false"}></button>
         ))}
       </div>
-      <p class="deck-status" id="work-deck-status" data-deck-status role="status" aria-live="polite"></p>
+      <p class="deck-status" data-deck-status aria-live="polite"></p>
 
       <button class="work-carousel__control work-carousel__control--next" type="button" aria-label="Next project" data-work-next>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6"></path></svg>
@@ -45,7 +45,7 @@ import { projects } from "../../data/projects";
       main.insertBefore(process, services);
     };
 
-    const initDeck = ({ carouselSelector, trackSelector, cardSelector, prevSelector, nextSelector, dotsSelector, itemName, wideBreakpoint = null, interactiveDots = true }) => {
+    const initDeck = ({ carouselSelector, trackSelector, cardSelector, prevSelector, nextSelector, dotsSelector, itemName }) => {
       const carousel = document.querySelector(carouselSelector);
       const track = carousel?.querySelector(trackSelector);
       const prev = carousel?.querySelector(prevSelector);
@@ -61,7 +61,7 @@ import { projects } from "../../data/projects";
 
       const wrap = (index) => (index + cards.length) % cards.length;
       const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
-      const isDeckMode = () => !wideBreakpoint || !window.matchMedia(`(min-width: ${wideBreakpoint}px)`).matches;
+      const isDeckMode = () => true;
 
       const setCardLinkState = (card, isActive) => {
         const actionable = !isDeckMode() || isActive;
@@ -72,37 +72,22 @@ import { projects } from "../../data/projects";
       };
 
       const render = () => {
-        const visibleSlots = wideBreakpoint
-          ? window.innerWidth >= wideBreakpoint
-            ? cards.length
-            : window.innerWidth >= 768
-              ? 2
-              : 1
-          : 1;
-
         cards.forEach((card, index) => {
           const offset = (index - activeIndex + cards.length) % cards.length;
           const isActive = offset === 0;
           const isPrevious = offset === cards.length - 1;
           const isNext = offset === 1;
-          const isVisible = !wideBreakpoint || offset < visibleSlots;
 
           card.classList.toggle("is-active", isActive);
           card.classList.toggle("is-prev", isPrevious);
           card.classList.toggle("is-next", isNext);
           card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
-          if (wideBreakpoint) {
-            card.style.opacity = isVisible ? "1" : "0";
-            card.style.pointerEvents = isVisible ? "auto" : "none";
-            card.setAttribute("aria-hidden", String(!isVisible));
-          }
           card.setAttribute("aria-label", `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`);
           card.setAttribute("aria-current", String(isActive));
           setCardLinkState(card, isActive);
         });
 
         dots.forEach((dot, index) => dot.setAttribute("aria-current", String(index === activeIndex)));
-        carousel.style.setProperty("--work-active-index", String(activeIndex));
         const status = carousel.querySelector("[data-deck-status]");
         if (status) status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
       };
@@ -125,9 +110,7 @@ import { projects } from "../../data/projects";
 
       prev.addEventListener("click", () => select(activeIndex - 1));
       next.addEventListener("click", () => select(activeIndex + 1));
-      if (interactiveDots) {
-        dots.forEach((dot) => dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex))));
-      }
+      dots.forEach((dot) => dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex))));
 
       cards.forEach((card, index) => {
         card.addEventListener("click", (event) => {
@@ -179,9 +162,7 @@ import { projects } from "../../data/projects";
       track.addEventListener("pointerup", (event) => {
         if (!isDeckMode()) return;
         pointerGesture = false;
-        if (track.hasPointerCapture?.(event.pointerId)) {
-          track.releasePointerCapture(event.pointerId);
-        }
+        track.releasePointerCapture?.(event.pointerId);
         completeSwipe(event.clientX, event.clientY);
       });
 
@@ -207,13 +188,13 @@ import { projects } from "../../data/projects";
       }
 
       window.addEventListener("resize", render);
-      track.setAttribute("aria-label", `${itemName}. Use Left Arrow or Right Arrow to change the selected project. Swipe on touch screens.`);
+      track.setAttribute("aria-label", `${itemName}. Swipe left or right, select a side card, or use the previous and next buttons.`);
       render();
     };
 
     const initializeHomepageDecks = () => {
       moveSectionsIntoStoryOrder();
-      initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project", wideBreakpoint: 1280, interactiveDots: false });
+      initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
       initDeck({ carouselSelector: "[data-services-carousel]", trackSelector: "[data-services-track]", cardSelector: ".service-card", prevSelector: "[data-services-prev]", nextSelector: "[data-services-next]", dotsSelector: "[data-services-dots]", itemName: "Service" });
     };
 
