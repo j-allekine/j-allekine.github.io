@@ -38,10 +38,41 @@ test.describe("shared homepage decisions", () => {
       expect(sidebarWidth).toBeGreaterThanOrEqual(224);
       expect(sidebarWidth).toBeLessThanOrEqual(240);
 
-      const navigationGrid = sidebar.locator(".desktop-sidebar__nav");
-      await expect(navigationGrid).toHaveCSS("display", "grid");
-      await expect(navigationGrid).toHaveCSS("border-top-style", "solid");
-      await expect(navigationGrid).toHaveCSS("border-bottom-style", "solid");
+      const navigationList = sidebar.locator(".desktop-sidebar__nav");
+      const brand = sidebar.locator(".desktop-sidebar__brand");
+      const workLink = navigationList.getByRole("link", { name: "Work", exact: true });
+
+      await expect(navigationList).toHaveCSS("display", "grid");
+      await expect(navigationList).toHaveCSS("border-top-width", "0px");
+      await expect(navigationList).toHaveCSS("border-bottom-width", "0px");
+
+      const brandType = await brand.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          fontFamily: style.fontFamily,
+          fontSize: style.fontSize,
+          fontWeight: style.fontWeight,
+          letterSpacing: style.letterSpacing,
+        };
+      });
+      const navigationType = await workLink.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          fontFamily: style.fontFamily,
+          fontSize: style.fontSize,
+          fontWeight: style.fontWeight,
+          letterSpacing: style.letterSpacing,
+        };
+      });
+      expect(navigationType).toEqual(brandType);
+
+      await page.mouse.move(width - 1, 899);
+      const restingColor = await workLink.evaluate((element) => getComputedStyle(element).color);
+      await workLink.hover();
+      await expect.poll(() => workLink.evaluate((element) => getComputedStyle(element).color))
+        .not.toBe(restingColor);
+      await expect(workLink).toHaveCSS("transform", "none");
+      await expect(workLink).toHaveCSS("transition-property", "color");
 
       for (const item of primaryNavigation) {
         await expect(sidebar.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(

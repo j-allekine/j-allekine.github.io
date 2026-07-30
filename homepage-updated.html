@@ -3677,47 +3677,26 @@
       .desktop-sidebar__nav {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 0;
-        margin-top: 32px;
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
+        gap: 4px;
+        margin-top: 48px;
       }
 
       .desktop-sidebar__nav a {
-        position: relative;
         display: flex;
-        min-height: 52px;
+        min-height: 40px;
         align-items: center;
-        border-bottom: 1px solid var(--line);
-        color: #a7a7b0;
+        color: #85858f;
         font-family: var(--mono);
-        font-size: 0.76rem;
-        letter-spacing: 0.03em;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
-      }
-
-      .desktop-sidebar__nav a:last-child {
-        border-bottom: 0;
-      }
-
-      .desktop-sidebar__nav a::before {
-        content: "";
-        width: 0;
-        height: 1px;
-        margin-right: 0;
-        background: currentColor;
-        transition: width var(--ease), margin-right var(--ease);
+        transition: color var(--ease);
       }
 
       .desktop-sidebar__nav a:hover,
       .desktop-sidebar__nav a:focus-visible {
-        color: #fff;
-      }
-
-      .desktop-sidebar__nav a:hover::before,
-      .desktop-sidebar__nav a:focus-visible::before {
-        width: 14px;
-        margin-right: 8px;
+        color: #f1f1f4;
       }
 
       .desktop-sidebar__bottom,
