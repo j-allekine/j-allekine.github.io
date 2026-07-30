@@ -3801,6 +3801,77 @@
         margin-top: 4px;
       }
     }
+
+    /* Compact Hero proportions: keep work evidence close without weakening the identity hierarchy. */
+
+    .hero {
+      row-gap: 20px;
+      padding-block: clamp(48px, 4.5vw, 64px);
+      column-gap: clamp(40px, 5vw, 72px);
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 4.4vw, 4rem);
+    }
+
+    .hero-portrait-wrap {
+      width: min(100%, 320px);
+    }
+
+    .hero-actions {
+      margin-top: 24px;
+    }
+
+    @media (min-width: 1280px) {
+      .hero-portrait {
+        aspect-ratio: 1 / 1.04;
+      }
+    }
+
+    @media (max-width: 1279px) {
+      .hero {
+        row-gap: 16px;
+        padding-block: 24px 32px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.75rem, 6vw, 3.25rem);
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 280px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        row-gap: 14px;
+        padding-block: 24px 32px;
+      }
+
+      .hero h1 {
+        font-size: 2.625rem;
+        line-height: 0.96;
+      }
+
+      .hero-statement {
+        margin-top: 14px;
+      }
+
+      .hero-portrait-wrap {
+        width: min(68vw, 216px);
+      }
+
+      .hero-copy,
+      .hero-copy--lead {
+        font-size: 0.8125rem;
+        line-height: 1.5;
+      }
+
+      .hero-actions {
+        margin-top: 16px;
+      }
+    }
   </style>
 </head>
 
@@ -3922,7 +3993,7 @@
 
         <div class="hero-actions">
           <a class="button button--primary" href="#work">
-            View selected work <span class="arrow" aria-hidden="true">&#8599;</span>
+            View selected work <span class="arrow" aria-hidden="true">&#8595;</span>
           </a>
           <a class="button button--ghost" href="/contact">
             Contact me <span class="arrow" aria-hidden="true">&#8599;</span>
