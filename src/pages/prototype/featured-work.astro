@@ -119,7 +119,7 @@ const current = "A";
         <a href="/work">See all work <span aria-hidden="true">→</span></a>
       </header>
 
-      <div class="peek-deck" data-deck data-prototype-keyboard-scope tabindex="0" aria-label="Featured projects. Use Left and Right Arrow keys to select a project.">
+      <div class="peek-deck" data-deck data-swipe data-prototype-keyboard-scope tabindex="0" aria-label="Featured projects. Swipe horizontally or use Left and Right Arrow keys to select a project.">
         {projects.map((project, index) => (
           <article class:list={["project-card", { "is-active": index === 0, "is-next": index === 1 }]} data-card data-index={index} aria-label={`${index + 1} of ${projects.length}: ${project.title}`}>
             <ProjectVisual type={project.visual} />
@@ -148,6 +148,7 @@ const current = "A";
     const scope = deck.querySelector<HTMLElement>("[data-prototype-keyboard-scope]") ?? deck;
     const status = deck.querySelector<HTMLElement>("[data-status]") ?? deck.parentElement?.querySelector<HTMLElement>("[data-status]");
     let active = 0;
+    let pointerStart: { x: number; y: number } | null = null;
 
     const title = (card: HTMLElement) => card.querySelector("h2, .index-title")?.textContent?.trim() ?? "Project";
     const render = (announce = false) => {
@@ -189,6 +190,36 @@ const current = "A";
       event.preventDefault();
       select(active + (event.key === "ArrowRight" ? 1 : -1));
     });
+    if (deck.hasAttribute("data-swipe")) {
+      deck.addEventListener("pointerdown", (event) => {
+        if (!event.isPrimary) return;
+        pointerStart = { x: event.clientX, y: event.clientY };
+        try {
+          deck.setPointerCapture?.(event.pointerId);
+        } catch {
+          // Some browsers reject capture for synthetic or already-ended pointers.
+        }
+      });
+      deck.addEventListener("pointerup", (event) => {
+        if (!pointerStart || !event.isPrimary) return;
+        const deltaX = event.clientX - pointerStart.x;
+        const deltaY = event.clientY - pointerStart.y;
+        pointerStart = null;
+        try {
+          if (deck.hasPointerCapture?.(event.pointerId)) {
+            deck.releasePointerCapture(event.pointerId);
+          }
+        } catch {
+          // Selection should still complete when capture release is unavailable.
+        }
+
+        if (Math.abs(deltaX) < 48 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
+        select(active + (deltaX < 0 ? 1 : -1));
+      });
+      deck.addEventListener("pointercancel", () => {
+        pointerStart = null;
+      });
+    }
     render();
   });
 </script>
@@ -280,7 +311,7 @@ const current = "A";
 
   .section-heading a,
   .all-work-block {
-    color: #f0eee9;
+    color: #111113;
     font-family: var(--mono);
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -386,6 +417,7 @@ const current = "A";
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
     padding-inline: 28px;
+    touch-action: pan-y;
   }
 
   .variant-d .project-card {
@@ -429,6 +461,19 @@ const current = "A";
     transition: transform 160ms ease;
   }
 
+  .variant-d .deck-chevron::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid #b8b3aa;
+    border-radius: 50%;
+    background: #e7e4dc;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
   .variant-d .deck-chevron i::before {
     color: inherit;
   }
@@ -437,7 +482,12 @@ const current = "A";
   .variant-d .peek-deck:focus-within .deck-chevron,
   .variant-d .deck-chevron:hover {
     opacity: 1;
-    color: #ffffff;
+    color: #000000;
+  }
+
+  .variant-d .deck-chevron:hover::before {
+    border-color: #8d887f;
+    background: #f2efe8;
   }
 
   .variant-d .deck-chevron--previous:hover i {
@@ -450,6 +500,10 @@ const current = "A";
 
   .variant-d .deck-chevron:active i {
     transform: scale(0.86);
+  }
+
+  .variant-d .deck-chevron:active::before {
+    transform: scale(0.94);
   }
 
   .variant-d .deck-chevron:focus-visible {
@@ -787,16 +841,7 @@ const current = "A";
     }
 
     .variant-d .deck-chevron {
-      width: 44px;
-      height: 44px;
-    }
-
-    .variant-d .deck-chevron--previous {
-      left: 6px;
-    }
-
-    .variant-d .deck-chevron--next {
-      right: 6px;
+      display: none;
     }
 
     .index-row > button {
