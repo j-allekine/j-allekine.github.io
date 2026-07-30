@@ -6,7 +6,6 @@ export interface Project {
   description: string;
   tags: string[];
   visual: ProjectVisual;
-  href: string;
 }
 
 // Keep homepage project content in one collection-shaped module so it can move
@@ -18,7 +17,6 @@ export const projects: Project[] = [
     description: "Centralizes medicine movement, expiry monitoring, FIFO handling, reordering, sales, and reporting in one operational system.",
     tags: ["Excel", "Inventory", "Healthcare"],
     visual: "dashboard",
-    href: "#",
   },
   {
     slug: "hospital-ocr-automation-pipeline",
@@ -26,7 +24,6 @@ export const projects: Project[] = [
     description: "Turns uploaded hospital forms into structured records while keeping human review inside the workflow for faster, cleaner processing.",
     tags: ["Apps Script", "OCR", "Google APIs"],
     visual: "flow",
-    href: "#",
   },
   {
     slug: "lgu-inventory-asset-system",
@@ -34,6 +31,5 @@ export const projects: Project[] = [
     description: "Creates one source of truth for consumable supplies, semi-expendable property, and fixed assets from receipt through disposal.",
     tags: ["Web App", "Government", "Assets"],
     visual: "table",
-    href: "#",
   },
 ];

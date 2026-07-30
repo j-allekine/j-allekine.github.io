@@ -16,6 +16,8 @@ const { project, index, total } = Astro.props;
   role="group"
   aria-roledescription="slide"
   aria-label={`${index + 1} of ${total}: ${project.title}`}
+  aria-posinset={index + 1}
+  aria-setsize={total}
 >
   <ProjectVisual type={project.visual} />
   <div class="work-body">
@@ -25,9 +27,5 @@ const { project, index, total } = Astro.props;
     <div class="work-type" aria-label="Project stack and industry">
       {project.tags.map((tag) => <span>{tag}</span>)}
     </div>
-
-    <a class="work-link" href={project.href}>
-      View case study <span class="arrow" aria-hidden="true">↗</span>
-    </a>
   </div>
 </article>
