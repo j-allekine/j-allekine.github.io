@@ -154,7 +154,7 @@ test.describe("standalone How I Work Process tabs", () => {
     }
   });
 
-  test("keeps the shared panel height stable and honors reduced motion", async ({ page }) => {
+  test("adapts the shared panel height and honors reduced motion", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 });
 
     const process = page.locator("[data-process]");
@@ -165,7 +165,7 @@ test.describe("standalone How I Work Process tabs", () => {
       heights.push(await process.locator("[role='tabpanel']").evaluate((panel) => panel.getBoundingClientRect().height));
     }
 
-    expect(new Set(heights.map((height) => Math.round(height))).size).toBe(1);
+    expect(new Set(heights.map((height) => Math.round(height))).size).toBeGreaterThan(1);
 
     await page.emulateMedia({ reducedMotion: "reduce" });
     const transitionDuration = await process.locator(".process-tab__icon").first().evaluate(
@@ -173,10 +173,15 @@ test.describe("standalone How I Work Process tabs", () => {
     );
     expect(transitionDuration).toBeLessThanOrEqual(0.01);
 
-    const processHeight = await process.evaluate((element) => element.getBoundingClientRect().height);
     await processTabs(page).nth(1).click();
     await expect(page.locator("[data-process-title]")).toHaveText("Plan");
-    expect(await process.evaluate((element) => element.getBoundingClientRect().height)).toBe(processHeight);
+    const panelState = await process.locator("[role='tabpanel']").evaluate((panel) => ({
+      animations: panel.getAnimations().length,
+      clientHeight: panel.clientHeight,
+      scrollHeight: panel.scrollHeight,
+    }));
+    expect(panelState.animations).toBe(0);
+    expect(panelState.scrollHeight).toBeLessThanOrEqual(panelState.clientHeight + 1);
   });
 
   test("captures the required visual checkpoints", async ({ page }, testInfo) => {
