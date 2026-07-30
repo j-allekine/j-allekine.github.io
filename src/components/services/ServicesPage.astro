@@ -17,3 +17,48 @@ import { services } from "../../data/services";
     </div>
   </div>
 </section>
+
+<style>
+  .services-grid--index {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 18px;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    isolation: auto;
+  }
+
+  .services-grid--index :global(.service-card) {
+    position: relative;
+    grid-area: auto;
+    display: flex;
+    flex: 0 1 calc((100% - 36px) / 3);
+    width: auto;
+    height: auto;
+    min-height: 100%;
+    margin: 0;
+    inset: auto;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    justify-self: auto;
+  }
+
+  @media (max-width: 1040px) {
+    .services-grid--index {
+      display: flex;
+    }
+
+    .services-grid--index :global(.service-card) {
+      flex-basis: calc((100% - 18px) / 2);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .services-grid--index :global(.service-card) {
+      flex-basis: 100%;
+    }
+  }
+</style>

@@ -1,9 +1,10 @@
 ---
-import Header from "../components/shared/Header.astro";
-import Footer from "../components/shared/Footer.astro";
+import SiteNavigation from "../components/site/SiteNavigation.astro";
+import SiteFooter from "../components/site/SiteFooter.astro";
 import "../styles/tokens.css";
 import "../styles/global.css";
 import "../styles/shared.css";
+import "../styles/shell.css";
 
 interface Props {
   title?: string;
@@ -35,8 +36,10 @@ const {
   />
 </head>
 <body>
-  <Header />
-  <slot />
-  <Footer />
+  <SiteNavigation />
+  <div class="page-frame" data-page-frame>
+    <slot />
+    <SiteFooter />
+  </div>
 </body>
 </html>

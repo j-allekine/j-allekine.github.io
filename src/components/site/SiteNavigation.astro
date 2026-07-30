@@ -1,0 +1,262 @@
+---
+const isHome = Astro.url.pathname === "/";
+const primaryNavigation = [
+  { label: "Work", href: "/work" },
+  { label: "Stack", href: "/stack" },
+  { label: "Contact", href: "/contact" },
+];
+const socialLinks = [
+  { label: "GitHub", href: "https://github.com/j-allekine", external: true },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/j-allekine/", external: true },
+  { label: "Email", href: "mailto:ajihmallekine@gmail.com", external: false },
+];
+---
+
+<aside class="desktop-sidebar" data-desktop-sidebar aria-label="Desktop site navigation">
+  <a
+    class="desktop-sidebar__brand"
+    href="/"
+    aria-label="J. Allekine homepage"
+    aria-current={isHome ? "page" : undefined}
+  >
+    <span class="brand-mark" aria-hidden="true"><span></span></span>
+    <span>J. ALLEKINE</span>
+  </a>
+
+  <nav class="desktop-sidebar__nav" aria-label="Desktop primary">
+    {primaryNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+
+  <div class="desktop-sidebar__bottom">
+    <div class="sidebar-socials" data-sidebar-socials aria-label="Social links">
+      {socialLinks.map((link) => (
+        <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noreferrer" : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <span class="sidebar-verse">Colossians 3:23</span>
+  </div>
+</aside>
+
+<div class="mobile-sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+
+<aside
+  class="mobile-sidebar"
+  id="mobile-sidebar"
+  aria-label="Mobile navigation"
+  aria-hidden="true"
+  data-mobile-sidebar
+>
+  <div class="mobile-sidebar__header">
+    <a
+      class="mobile-sidebar__brand"
+      href="/"
+      aria-label="J. Allekine homepage"
+      aria-current={isHome ? "page" : undefined}
+    >J. ALLEKINE</a>
+    <button class="mobile-sidebar__close" type="button" aria-label="Close navigation" data-menu-close></button>
+  </div>
+
+  <nav class="mobile-sidebar__nav" aria-label="Mobile primary">
+    {primaryNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+
+  <div class="mobile-sidebar__bottom">
+    <div class="sidebar-socials" data-sidebar-socials aria-label="Social links">
+      {socialLinks.map((link) => (
+        <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noreferrer" : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <span class="sidebar-verse">Colossians 3:23</span>
+  </div>
+</aside>
+
+<header class="site-header">
+  <div class="content-shell header-inner">
+    <a
+      class="brand"
+      href="/"
+      aria-label="J. Allekine homepage"
+      aria-current={isHome ? "page" : undefined}
+    >
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span>J. ALLEKINE</span>
+    </a>
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="mobile-sidebar"
+      data-menu-button
+    >
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav" id="primary-navigation" aria-label="Primary">
+      {primaryNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const menuButton = document.querySelector("[data-menu-button]");
+    const mobileSidebar = document.querySelector("[data-mobile-sidebar]");
+    const mobileSidebarClose = document.querySelector("[data-menu-close]");
+    const sidebarBackdrop = document.querySelector("[data-sidebar-backdrop]");
+    const getPageFrame = () => document.querySelector("[data-page-frame]");
+    let savedScrollState = null;
+
+    const isCompactViewport = () => window.innerWidth < 1280;
+    const isMenuOpen = () => menuButton?.getAttribute("aria-expanded") === "true";
+    const getFocusableElements = () =>
+      [...(mobileSidebar?.querySelectorAll(
+        "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])",
+      ) ?? [])].filter(
+        (element) =>
+          !element.hasAttribute("hidden") &&
+          element.getAttribute("aria-hidden") !== "true" &&
+          element.getClientRects().length > 0,
+      );
+
+    const lockBackgroundScroll = () => {
+      if (savedScrollState) return;
+
+      savedScrollState = {
+        htmlOverflow: document.documentElement.style.overflow,
+        bodyPosition: document.body.style.position,
+        bodyTop: document.body.style.top,
+        bodyWidth: document.body.style.width,
+        bodyOverflow: document.body.style.overflow,
+        bodyPaddingRight: document.body.style.paddingRight,
+        scrollY: window.scrollY,
+      };
+
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${savedScrollState.scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    };
+
+    const unlockBackgroundScroll = () => {
+      if (!savedScrollState) return;
+
+      const { htmlOverflow, bodyPosition, bodyTop, bodyWidth, bodyOverflow, bodyPaddingRight, scrollY } = savedScrollState;
+      document.documentElement.style.overflow = htmlOverflow;
+      document.body.style.position = bodyPosition;
+      document.body.style.top = bodyTop;
+      document.body.style.width = bodyWidth;
+      document.body.style.overflow = bodyOverflow;
+      document.body.style.paddingRight = bodyPaddingRight;
+      savedScrollState = null;
+      window.scrollTo(0, scrollY);
+    };
+
+    const setPageInert = (isInert) => {
+      const pageFrame = getPageFrame();
+      if (!pageFrame) return;
+
+      pageFrame.inert = isInert;
+      if (isInert) {
+        pageFrame.setAttribute("inert", "");
+        pageFrame.setAttribute("aria-hidden", "true");
+      } else {
+        pageFrame.removeAttribute("inert");
+        pageFrame.removeAttribute("aria-hidden");
+      }
+    };
+
+    const setMenuState = (isOpen, { restoreFocus = true } = {}) => {
+      const pageFrame = getPageFrame();
+      if (!menuButton || !mobileSidebar || !sidebarBackdrop || !pageFrame) return;
+      if (isOpen && !isCompactViewport()) return;
+
+      if (isOpen) {
+        if (isMenuOpen()) return;
+
+        menuButton.setAttribute("aria-expanded", "true");
+        menuButton.setAttribute("aria-label", "Close navigation");
+        mobileSidebar.setAttribute("aria-hidden", "false");
+        mobileSidebar.dataset.open = "true";
+        sidebarBackdrop.dataset.open = "true";
+        document.documentElement.classList.add("menu-open");
+        document.body.classList.add("menu-open");
+        setPageInert(true);
+        lockBackgroundScroll();
+        requestAnimationFrame(() => mobileSidebarClose?.focus());
+        return;
+      }
+
+      if (!isMenuOpen() && !savedScrollState) return;
+
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Open navigation");
+      mobileSidebar.setAttribute("aria-hidden", "true");
+      mobileSidebar.dataset.open = "false";
+      sidebarBackdrop.dataset.open = "false";
+      setPageInert(false);
+      document.documentElement.classList.remove("menu-open");
+      document.body.classList.remove("menu-open");
+      unlockBackgroundScroll();
+
+      if (restoreFocus && isCompactViewport()) {
+        requestAnimationFrame(() => menuButton.focus());
+      }
+    };
+
+    menuButton?.addEventListener("click", () => setMenuState(!isMenuOpen()));
+    mobileSidebar?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuState(false));
+    });
+    mobileSidebarClose?.addEventListener("click", () => setMenuState(false));
+    sidebarBackdrop?.addEventListener("click", () => setMenuState(false));
+
+    document.addEventListener("focusin", (event) => {
+      if (!isMenuOpen() || mobileSidebar?.contains(event.target)) return;
+      mobileSidebarClose?.focus();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!isMenuOpen()) return;
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMenuState(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = getFocusableElements();
+      if (!focusableElements.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (!mobileSidebar.contains(document.activeElement)) {
+        event.preventDefault();
+        firstElement.focus();
+      } else if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1280 && (isMenuOpen() || savedScrollState)) {
+        setMenuState(false, { restoreFocus: false });
+      }
+    });
+  })();
+</script>

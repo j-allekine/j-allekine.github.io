@@ -10,6 +10,7 @@
     body {
       margin: 0;
       min-width: 320px;
+      overflow-x: hidden;
       color: var(--text);
       background: var(--bg);
       font-family: var(--sans);
