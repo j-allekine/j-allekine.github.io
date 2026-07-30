@@ -133,6 +133,10 @@ test.describe("homepage integrated responsive and accessibility review", () => {
   });
 
   test("keeps the responsive navigation surface contained and recoverable", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 900 });
+    const pageLeftBeforeOpen = await page.locator("[data-page-frame]").evaluate(
+      (element) => element.getBoundingClientRect().left
+    );
     const menuButton = await openNavigation(page);
     const navigationPanel = page.locator("[data-mobile-sidebar]");
     const pageFrame = page.locator("[data-page-frame]");
@@ -141,6 +145,10 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect(pageFrame).toHaveAttribute("aria-hidden", "true");
     await expect(page.locator("body")).toHaveCSS("position", "fixed");
     await expect(page.locator("html")).toHaveCSS("overflow", "hidden");
+    await expect.poll(
+      () => pageFrame.evaluate((element) => element.getBoundingClientRect().left)
+    ).toBe(pageLeftBeforeOpen);
+    await expect(navigationPanel.locator(".mobile-sidebar__brand")).toHaveAttribute("href", "/");
     await expect(navigationPanel.locator("[data-menu-close]")).toBeFocused();
 
     const focusableItems = navigationPanel.locator("a[href], button:not([disabled])");
