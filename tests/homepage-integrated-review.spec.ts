@@ -78,6 +78,47 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     }
   });
 
+  test("keeps the Hero compact enough to reach work evidence quickly", async ({ page }) => {
+    const expectations = [
+      { width: 320, height: 568, maxHeroHeight: 900, maxPortraitWidth: 220, maxTitleSize: 42 },
+      { width: 768, height: 900, maxHeroHeight: 850, maxPortraitWidth: 280, maxTitleSize: 52 },
+      { width: 1279, height: 768, maxHeroHeight: 850, maxPortraitWidth: 300, maxTitleSize: 52 },
+      { width: 1280, height: 900, maxHeroHeight: 620, maxPortraitWidth: 320, maxTitleSize: 64 },
+      { width: 1440, height: 900, maxHeroHeight: 620, maxPortraitWidth: 320, maxTitleSize: 64 },
+    ];
+
+    for (const expectation of expectations) {
+      await page.setViewportSize(expectation);
+
+      const measurements = await page.locator("#hero").evaluate((hero) => {
+        const portrait = hero.querySelector(".hero-portrait-wrap");
+        const title = hero.querySelector("h1");
+        const heroStyle = getComputedStyle(hero);
+        const portraitRect = portrait?.getBoundingClientRect();
+
+        return {
+          heroHeight: hero.getBoundingClientRect().height,
+          portraitWidth: portraitRect?.width ?? 0,
+          titleSize: Number.parseFloat(getComputedStyle(title!).fontSize),
+          paddingTop: Number.parseFloat(heroStyle.paddingTop),
+          paddingBottom: Number.parseFloat(heroStyle.paddingBottom),
+        };
+      });
+
+      expect(measurements.heroHeight, `${expectation.width}px Hero height`)
+        .toBeLessThanOrEqual(expectation.maxHeroHeight);
+      expect(measurements.portraitWidth, `${expectation.width}px portrait width`)
+        .toBeLessThanOrEqual(expectation.maxPortraitWidth);
+      expect(measurements.titleSize, `${expectation.width}px title size`)
+        .toBeLessThanOrEqual(expectation.maxTitleSize);
+      expect(measurements.paddingTop, `${expectation.width}px top padding`).toBeLessThanOrEqual(64);
+      expect(measurements.paddingBottom, `${expectation.width}px bottom padding`).toBeLessThanOrEqual(64);
+    }
+
+    await expect(page.getByRole("link", { name: /View selected work/ }).locator(".arrow"))
+      .toHaveText("↓");
+  });
+
   test("uses the brand for Home and route links for the other pages", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
 
@@ -92,6 +133,10 @@ test.describe("homepage integrated responsive and accessibility review", () => {
   });
 
   test("keeps the responsive navigation surface contained and recoverable", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 900 });
+    const pageLeftBeforeOpen = await page.locator("[data-page-frame]").evaluate(
+      (element) => element.getBoundingClientRect().left
+    );
     const menuButton = await openNavigation(page);
     const navigationPanel = page.locator("[data-mobile-sidebar]");
     const pageFrame = page.locator("[data-page-frame]");
@@ -100,6 +145,10 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect(pageFrame).toHaveAttribute("aria-hidden", "true");
     await expect(page.locator("body")).toHaveCSS("position", "fixed");
     await expect(page.locator("html")).toHaveCSS("overflow", "hidden");
+    await expect.poll(
+      () => pageFrame.evaluate((element) => element.getBoundingClientRect().left)
+    ).toBe(pageLeftBeforeOpen);
+    await expect(navigationPanel.locator(".mobile-sidebar__brand")).toHaveAttribute("href", "/");
     await expect(navigationPanel.locator("[data-menu-close]")).toBeFocused();
 
     const focusableItems = navigationPanel.locator("a[href], button:not([disabled])");

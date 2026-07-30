@@ -134,6 +134,18 @@ test.describe("shared homepage decisions", () => {
           item.href
         );
       }
+      const socialGroup = navigationPanel.locator(".sidebar-socials");
+      const socialLink = socialGroup.getByRole("link", { name: "GitHub", exact: true });
+      const verse = navigationPanel.locator(".sidebar-verse");
+      await expect(navigationPanel.locator(".mobile-sidebar__bottom")).toHaveCSS("display", "grid");
+      await expect(socialGroup).toHaveCSS("display", "grid");
+      await expect(socialGroup).toHaveCSS("gap", "8px");
+      await expect(socialLink).toHaveCSS("font-family", /Geist Mono/);
+      await expect(socialLink).toHaveCSS("font-size", "11.2px");
+      await expect(socialLink).toHaveCSS("color", "rgb(167, 167, 176)");
+      await expect(verse).toHaveCSS("font-family", /Geist Mono/);
+      await expect(verse).toHaveCSS("font-size", "10.24px");
+      await expect(verse).toHaveCSS("color", "rgb(118, 118, 127)");
       await expect(navigationPanel).toContainText("Colossians 3:23");
 
       await page.keyboard.press("Escape");
