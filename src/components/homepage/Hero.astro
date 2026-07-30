@@ -1,19 +1,18 @@
 ---
 import Button from "../shared/Button.astro";
-import SocialLinks from "../shared/SocialLinks.astro";
 ---
 
-<section class="hero content-shell" aria-labelledby="hero-title">
+<section class="hero content-shell" id="hero" aria-labelledby="hero-title">
   <div class="hero-intro">
-    <p class="hero-label">Systems &amp; Automation Developer</p>
     <h1 id="hero-title">
-      <span class="hero-name-line">Jihm Allekine</span>
-      <span class="hero-name-line">Almedilla</span>
+      <span class="hero-name-line">JIHM ALLEKINE</span>
+      <span class="hero-name-line">ALMEDILLA</span>
     </h1>
+    <p class="hero-statement">I am an automation specialist.</p>
   </div>
 
   <div class="hero-portrait-wrap">
-    <div class="hero-portrait" role="img" aria-label="Temporary portrait area for Jihm Allekine Almedilla">
+    <div class="hero-portrait" aria-hidden="true">
       <span class="hero-portrait-corner hero-portrait-corner--top" aria-hidden="true"></span>
       <span class="hero-portrait-corner hero-portrait-corner--bottom" aria-hidden="true"></span>
     </div>
@@ -21,25 +20,19 @@ import SocialLinks from "../shared/SocialLinks.astro";
 
   <div class="hero-details">
     <p class="hero-copy hero-copy--lead">
-      I build practical systems that turn messy, manual work into clear and reliable operations. From spreadsheets and workflow automation to data tools and software, I focus on understanding how the work actually happens and building solutions people can depend on.
+      I build spreadsheet systems, workflow automations, data tools, and practical software that turn manual processes into clearer, more reliable operations. I enjoy mapping workflows, understanding the details, and building useful tools that people can rely on.
     </p>
     <p class="hero-copy">
-      My faith shapes the way I work. I see building as stewardship: serving people well, pursuing excellence, and creating things with purpose and integrity.
+      My Christian faith shapes how I approach my work. I see building as an act of stewardship: serving people well, pursuing excellence, and creating work that honors God.
     </p>
 
     <div class="hero-actions">
-      <Button href="#contact" bookingPlaceholder>
-        <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3.5" y="5.5" width="17" height="15" rx="2"></rect>
-          <path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"></path>
-        </svg>
-        Book a 30-minute call <span class="arrow" aria-hidden="true">↗</span>
+      <Button href="#work">
+        View selected work <span class="arrow" aria-hidden="true">&#8595;</span>
       </Button>
-      <Button href="#work" variant="ghost">
-        View Work <span class="arrow" aria-hidden="true">→</span>
+      <Button href="/contact" variant="ghost">
+        Contact me <span class="arrow" aria-hidden="true">&#8599;</span>
       </Button>
     </div>
-
-    <div class="hero-socials"><SocialLinks /></div>
   </div>
 </section>
