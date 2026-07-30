@@ -56,7 +56,7 @@ test.describe("shared homepage decisions", () => {
     }
   });
 
-  test("uses the same accessible drawer below the desktop breakpoint", async ({ page }) => {
+  test("uses the same accessible responsive navigation panel below the desktop breakpoint", async ({ page }) => {
     for (const viewport of [
       { width: 1279, height: 768 },
       { width: 768, height: 900 },
@@ -64,30 +64,36 @@ test.describe("shared homepage decisions", () => {
     ]) {
       await page.setViewportSize(viewport);
       const menuButton = page.locator("[data-menu-button]");
-      const drawer = page.locator("[data-mobile-sidebar]");
+      const navigationPanel = page.locator("[data-mobile-sidebar]");
+      const pageFrame = page.locator("[data-page-frame]");
 
       await expect(page.locator("[data-desktop-sidebar]")).toBeHidden();
       await expect(menuButton).toBeVisible();
       await expect(page.locator(".site-header .brand")).toBeVisible();
+      await expect(menuButton).toHaveAttribute("aria-expanded", "false");
+      await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
+      await expect(navigationPanel).toBeHidden();
+      await expect(pageFrame).not.toHaveAttribute("inert");
+      await expect(pageFrame).not.toHaveAttribute("aria-hidden");
 
       await menuButton.click();
-      await expect(drawer).toHaveAttribute("aria-hidden", "false");
-      await expect(page.locator("[data-page-frame]")).toHaveAttribute("inert", "");
+      await expect(navigationPanel).toHaveAttribute("aria-hidden", "false");
+      await expect(pageFrame).toHaveAttribute("inert", "");
       await expect(page.locator("[data-menu-close]")).toBeFocused();
 
       for (const item of primaryNavigation) {
-        await expect(drawer.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(
+        await expect(navigationPanel.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(
           "href",
           item.href
         );
       }
       for (const item of socialDestinations) {
-        await expect(drawer.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(
+        await expect(navigationPanel.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(
           "href",
           item.href
         );
       }
-      await expect(drawer).toContainText("Colossians 3:23");
+      await expect(navigationPanel).toContainText("Colossians 3:23");
 
       await page.keyboard.press("Escape");
       await expect(menuButton).toHaveAttribute("aria-expanded", "false");

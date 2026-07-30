@@ -100,16 +100,16 @@ test.describe("homepage integrated responsive and accessibility review", () => {
 
   test("keeps the responsive navigation surface contained and recoverable", async ({ page }) => {
     const menuButton = await openNavigation(page);
-    const drawer = page.locator("[data-mobile-sidebar]");
+    const navigationPanel = page.locator("[data-mobile-sidebar]");
     const pageFrame = page.locator("[data-page-frame]");
 
     await expect(pageFrame).toHaveAttribute("inert", "");
     await expect(pageFrame).toHaveAttribute("aria-hidden", "true");
     await expect(page.locator("body")).toHaveCSS("position", "fixed");
     await expect(page.locator("html")).toHaveCSS("overflow", "hidden");
-    await expect(drawer.locator("[data-menu-close]")).toBeFocused();
+    await expect(navigationPanel.locator("[data-menu-close]")).toBeFocused();
 
-    const focusableItems = drawer.locator("a[href], button:not([disabled])");
+    const focusableItems = navigationPanel.locator("a[href], button:not([disabled])");
     await focusableItems.first().focus();
     await page.keyboard.press("Shift+Tab");
     await expect(focusableItems.last()).toBeFocused();
@@ -118,20 +118,20 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect(focusableItems.first()).toBeFocused();
 
     await page.keyboard.press("Escape");
-    await expect(drawer).toHaveAttribute("aria-hidden", "true");
+    await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toBeFocused();
     await expect(pageFrame).not.toHaveAttribute("inert");
 
     await menuButton.click();
-    await drawer.locator("[data-menu-close]").click();
-    await expect(drawer).toHaveAttribute("aria-hidden", "true");
+    await navigationPanel.locator("[data-menu-close]").click();
+    await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toBeFocused();
   });
 
   test("restores scroll after backdrop close and moves to a selected section", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 900 });
     const menuButton = page.locator("[data-menu-button]");
-    const drawer = page.locator("[data-mobile-sidebar]");
+    const navigationPanel = page.locator("[data-mobile-sidebar]");
     const backdrop = page.locator("[data-sidebar-backdrop]");
 
     await page.evaluate(() => {
@@ -140,15 +140,15 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     });
     const scrollBeforeOpen = await page.evaluate(() => window.scrollY);
     await menuButton.click();
-    await expect(drawer).toHaveAttribute("aria-hidden", "false");
+    await expect(navigationPanel).toHaveAttribute("aria-hidden", "false");
     await backdrop.click({ position: { x: 300, y: 4 } });
-    await expect(drawer).toHaveAttribute("aria-hidden", "true");
+    await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toBeFocused();
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforeOpen);
 
     await menuButton.click();
-    await drawer.getByRole("link", { name: "Work", exact: true }).click();
-    await expect(drawer).toHaveAttribute("aria-hidden", "true");
+    await navigationPanel.getByRole("link", { name: "Work", exact: true }).click();
+    await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toHaveAttribute("aria-expanded", "false");
     await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#work");
     await expect(page.locator("#work")).toBeInViewport();

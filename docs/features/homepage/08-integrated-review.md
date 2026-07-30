@@ -19,7 +19,7 @@ Verify that the completed homepage works as one coherent experience across conte
 - Verify the `1279px` to `1280px` shell transition.
 - Verify representative mobile, tablet, desktop, and minimum-width layouts.
 - Verify no horizontal overflow or obscured content.
-- Verify drawer focus containment, focus return, Escape, backdrop, scroll lock, and resize recovery.
+- Verify responsive navigation panel focus containment, focus return, Escape, backdrop, scroll lock, and resize recovery.
 - Verify Featured Work pointer and keyboard selection.
 - Verify How I Work tab semantics and shared panel behavior.
 - Verify visible focus, meaningful labels, heading order, contrast, and image alternatives.
@@ -45,7 +45,7 @@ The ticket is implemented, validated, and closed. The review covers the current 
 ## Validation evidence
 
 - `npm run typecheck` — 0 errors, 0 warnings, 0 hints.
-- `npm test` — 1 smoke test and 31 configured browser tests passed.
+- `npm test` — 1 smoke test and 32 configured browser tests passed.
 - Review screenshots are generated at `320`, `768`, `1279`, `1280`, and `1440` px by the integrated review test.
 
 ## Ready for tickets when

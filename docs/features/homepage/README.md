@@ -101,7 +101,7 @@ Do not mark a plan `ready for tickets` merely because its code scope is clear. I
 | The standalone HTML is a large legacy file with multiple old breakpoints and interaction layers | 01–08 | High | High | Establish the shell first, consolidate around the `1280px` breakpoint, and avoid stacking new overrides on obsolete rules |
 | The test suite is in transition and may still encode behavior rejected by the redesign, including Services or swipe behavior | 03, 08 | High | Medium | Identify each test as retain, rewrite, replace, or remove before the related plan reaches `ready for tickets` |
 | Approved copy, project media, résumé, and destinations are incomplete | 02, 03, 06, 07 | High | High | Use only approved content or explicitly approved neutral placeholders; do not invent claims, logos, metrics, or links |
-| Drawer, deck, and process accessibility behavior is underspecified | 01, 03, 05, 08 | High | Medium | Define focus, keyboard, live-region, resize, scroll-lock, and reduced-motion outcomes in each ticket |
+| Responsive navigation panel, deck, and process accessibility behavior is underspecified | 01, 03, 05, 08 | High | Medium | Define focus, keyboard, live-region, resize, scroll-lock, and reduced-motion outcomes in each ticket |
 | The redesign target and deployed production source may diverge | All plans | Medium | Medium | Keep the target file explicit and create a separate migration issue if the Astro site must eventually consume these changes |
 
 ## Ticket creation rules
