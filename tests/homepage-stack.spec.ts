@@ -1,8 +1,4 @@
 import { expect, test } from "@playwright/test";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
-
-const homepageUrl = pathToFileURL(resolve(process.cwd(), "homepage-updated.html")).href;
 const approvedTools = [
   "Excel",
   "Google Sheets",
@@ -20,7 +16,15 @@ const approvedTools = [
 
 test.describe("homepage Stack", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(homepageUrl, { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+  });
+
+  test("keeps every tool name available when external images fail", async ({ page }) => {
+    await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (route) => route.abort());
+    await page.reload({ waitUntil: "domcontentloaded" });
+
+    const primarySequence = page.locator("#stack .stack-sequence").first();
+    await expect(primarySequence.locator(".stack-item span:last-child")).toHaveText(approvedTools);
   });
 
   test("preserves the approved tool order and hides the loop copy from assistive technology", async ({
@@ -30,7 +34,9 @@ test.describe("homepage Stack", () => {
     const primarySequence = stack.locator(".stack-sequence").first();
     const loopSequence = stack.locator('.stack-sequence[aria-hidden="true"]');
 
+    await expect(stack.locator(".section-label")).toHaveCount(1);
     await expect(stack.locator(".section-label")).toHaveText("Stack");
+    await expect(stack).not.toContainText("Technologies & Tools");
     await expect(stack.locator(".see-all")).toHaveAttribute("href", "/stack");
     await expect(primarySequence.locator(".stack-item span:last-child")).toHaveText(approvedTools);
     await expect(loopSequence).toHaveCount(1);
@@ -52,13 +58,23 @@ test.describe("homepage Stack", () => {
   });
 
   test("stays compact and contained at every approved review width", async ({ page }) => {
-    for (const width of [320, 768, 1279, 1280, 1440]) {
+    const approvedGeometry = [
+      { width: 320, shellWidth: 280, padding: 52, headingGap: 10, itemHeight: 36 },
+      { width: 768, shellWidth: 706.56, padding: 48, headingGap: 12, itemHeight: 36 },
+      { width: 1279, shellWidth: 768, padding: 72, headingGap: 12, itemHeight: 36 },
+      { width: 1280, shellWidth: 768, padding: 72, headingGap: 12, itemHeight: 36 },
+      { width: 1440, shellWidth: 768, padding: 72, headingGap: 12, itemHeight: 36 },
+    ];
+
+    for (const expected of approvedGeometry) {
+      const { width } = expected;
       await page.setViewportSize({ width, height: 900 });
 
       const measurements = await page.locator("#stack").evaluate((section) => {
         const shell = section.querySelector(".reading-shell");
         const marquee = section.querySelector(".stack-marquee");
         const header = section.querySelector(".stack-header");
+        const firstItem = section.querySelector(".stack-item");
         const sectionStyle = getComputedStyle(section);
         const headerStyle = getComputedStyle(header!);
 
@@ -70,17 +86,30 @@ test.describe("homepage Stack", () => {
             Number.parseFloat(sectionStyle.paddingTop) +
             Number.parseFloat(sectionStyle.paddingBottom),
           headingGap: Number.parseFloat(headerStyle.marginBottom),
+          itemHeight: firstItem!.getBoundingClientRect().height,
           hasPageOverflow:
             document.documentElement.scrollWidth > document.documentElement.clientWidth,
         };
       });
 
-      expect(measurements.shellWidth, `${width}px shell`).toBeLessThanOrEqual(768);
-      expect(measurements.marqueeWidth, `${width}px marquee`).toBeLessThanOrEqual(
-        measurements.viewportWidth,
+      expect(measurements.shellWidth, `${width}px shell`).toBeCloseTo(expected.shellWidth, 0);
+      expect(measurements.marqueeWidth, `${width}px marquee`).toBeCloseTo(
+        expected.shellWidth,
+        0,
       );
-      expect(measurements.padding, `${width}px section padding`).toBeLessThanOrEqual(72);
-      expect(measurements.headingGap, `${width}px heading gap`).toBeLessThanOrEqual(12);
+      expect(measurements.padding, `${width}px section padding`).toBeCloseTo(
+        expected.padding,
+        0,
+      );
+      expect(measurements.headingGap, `${width}px heading gap`).toBeCloseTo(
+        expected.headingGap,
+        0,
+      );
+      expect(measurements.itemHeight, `${width}px item height`).toBeCloseTo(
+        expected.itemHeight,
+        0,
+      );
+      expect(measurements.marqueeWidth).toBeLessThanOrEqual(measurements.viewportWidth);
       expect(measurements.hasPageOverflow, `${width}px page overflow`).toBe(false);
     }
   });

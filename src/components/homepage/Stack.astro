@@ -1,257 +1,131 @@
-    <section class="stack-section" id="stack">
-      <div class="content-shell">
-        <div class="stack-header">
-          <p class="section-label">Technologies &amp; Tools</p>
-          <a class="stack-link" href="/stack">
-            View all <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
+---
+const tools = [
+  {
+    name: "Excel",
+    className: "stack-item--excel",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg/500px-Microsoft_Office_Excel_%282025%E2%80%93present%29.svg.png",
+    width: 18,
+    height: 18,
+  },
+  {
+    name: "Google Sheets",
+    className: "stack-item--sheets",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Google_Sheets_icon_%282026%29.svg/960px-Google_Sheets_icon_%282026%29.svg.png",
+    width: 17,
+    height: 17,
+  },
+  {
+    name: "Apps Script",
+    className: "stack-item--apps-script",
+    image: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_Apps_Script.svg",
+    width: 17,
+    height: 17,
+  },
+  { name: "VBA", className: "stack-item--vba", badge: true },
+  { name: "Git", image: "https://cdn.simpleicons.org/git/F05032", width: 17, height: 17 },
+  {
+    name: "GitHub",
+    className: "stack-item--github",
+    image: "https://cdn.simpleicons.org/github/FFFFFF",
+    width: 17,
+    height: 17,
+  },
+  { name: "HTML", image: "https://cdn.simpleicons.org/html5/E34F26", width: 17, height: 17 },
+  { name: "CSS", image: "https://cdn.simpleicons.org/css/663399", width: 17, height: 17 },
+  {
+    name: "JavaScript",
+    image: "https://cdn.simpleicons.org/javascript/F7DF1E",
+    width: 17,
+    height: 17,
+  },
+  {
+    name: "Python",
+    className: "stack-item--python",
+    image:
+      "https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg",
+    width: 17,
+    height: 17,
+  },
+  { name: "n8n", image: "https://cdn.simpleicons.org/n8n/EA4B71", width: 17, height: 17 },
+  { name: "Make", className: "stack-item--make", makeLogo: true },
+];
+---
 
-        <div class="stack-marquee" aria-label="Scrolling technology and tool list">
-          <div class="stack-track">
-            <div class="stack-item stack-item--excel">
-              <svg class="stack-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M4.5 4.5h9v15h-9z"></path>
-                <path d="M13.5 7h6v10h-6M7.2 9l3.5 6M10.7 9l-3.5 6"></path>
-              </svg>
-              <span>Excel</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/googlesheets/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Google Sheets</span>
-            </div>
-            <div class="stack-item stack-item--apps-script">
-              <img
-                src="https://cdn.simpleicons.org/googleappsscript/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Apps Script</span>
-            </div>
-            <div class="stack-item stack-item--vba">
-              <span class="stack-badge" aria-hidden="true">VB</span>
-              <span>VBA</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/git/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Git</span>
-            </div>
-            <div class="stack-item stack-item--github">
-              <img
-                src="https://cdn.simpleicons.org/github/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>GitHub</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/html5/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>HTML</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/css/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>CSS</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/javascript/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>JavaScript</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/python/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Python</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/n8n/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>n8n</span>
-            </div>
-            <div class="stack-item stack-item--make">
-              <img
-                src="https://cdn.simpleicons.org/make/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Make</span>
-            </div>
-            <div class="stack-item stack-item--excel">
-              <svg class="stack-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M4.5 4.5h9v15h-9z"></path>
-                <path d="M13.5 7h6v10h-6M7.2 9l3.5 6M10.7 9l-3.5 6"></path>
-              </svg>
-              <span>Excel</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/googlesheets/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Google Sheets</span>
-            </div>
-            <div class="stack-item stack-item--apps-script">
-              <img
-                src="https://cdn.simpleicons.org/googleappsscript/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Apps Script</span>
-            </div>
-            <div class="stack-item stack-item--vba">
-              <span class="stack-badge" aria-hidden="true">VB</span>
-              <span>VBA</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/git/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Git</span>
-            </div>
-            <div class="stack-item stack-item--github">
-              <img
-                src="https://cdn.simpleicons.org/github/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>GitHub</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/html5/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>HTML</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/css/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>CSS</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/javascript/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>JavaScript</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/python/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Python</span>
-            </div>
-            <div class="stack-item">
-              <img
-                src="https://cdn.simpleicons.org/n8n/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>n8n</span>
-            </div>
-            <div class="stack-item stack-item--make">
-              <img
-                src="https://cdn.simpleicons.org/make/ffffff"
-                alt=""
-                width="17"
-                height="17"
-                loading="lazy"
-                decoding="async"
-              />
-              <span>Make</span>
-            </div>
-          </div>
-        </div>
+<section class="stack-section" id="stack">
+  <div class="reading-shell">
+    <div class="section-heading stack-header">
+      <div>
+        <div class="section-label" role="heading" aria-level="2">Stack</div>
       </div>
-    </section>
+      <a class="see-all" href="/stack">
+        View all <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="stack-marquee" aria-label="Stack tools" tabindex="0">
+      <div class="stack-track">
+        {
+          [false, true].map((isDuplicate) => (
+            <div
+              class="stack-sequence"
+              role={isDuplicate ? undefined : "group"}
+              aria-label={isDuplicate ? undefined : "Tools"}
+              aria-hidden={isDuplicate ? "true" : undefined}
+            >
+              {tools.map((tool) => (
+                <div class:list={["stack-item", tool.className]}>
+                  {tool.badge && (
+                    <span class="stack-badge stack-badge--vba" aria-hidden="true">
+                      VBA
+                    </span>
+                  )}
+                  {tool.makeLogo && (
+                    <svg class="make-logo" viewBox="0 0 26 18" aria-hidden="true" focusable="false">
+                      <defs>
+                        <linearGradient
+                          id={isDuplicate ? "make-gradient-b" : "make-gradient-a"}
+                          x1="0"
+                          y1="0"
+                          x2="1"
+                          y2="1"
+                        >
+                          <stop offset="0" stop-color="#9B00FF" />
+                          <stop offset="1" stop-color="#FF2DAA" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M2 15.5 7.2 2.5h4.3L6.3 15.5H2Z"
+                        fill={`url(#${isDuplicate ? "make-gradient-b" : "make-gradient-a"})`}
+                      />
+                      <path
+                        d="M9.4 15.5 13.1 2.5h4.3l-3.8 13H9.4Z"
+                        fill={`url(#${isDuplicate ? "make-gradient-b" : "make-gradient-a"})`}
+                      />
+                      <path
+                        d="M17.1 15.5 18.9 2.5H23l-1.8 13h-4.1Z"
+                        fill={`url(#${isDuplicate ? "make-gradient-b" : "make-gradient-a"})`}
+                      />
+                    </svg>
+                  )}
+                  {tool.image && (
+                    <img
+                      src={tool.image}
+                      alt=""
+                      width={tool.width}
+                      height={tool.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  <span>{tool.name}</span>
+                </div>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

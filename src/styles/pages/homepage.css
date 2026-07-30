@@ -3095,3 +3095,88 @@
         transition-duration: 0.01ms;
       }
     }
+
+    /* Approved Stack migration for issue #30. */
+
+    .stack-section {
+      padding-block: clamp(24px, 3vw, 36px);
+    }
+
+    .stack-section > .reading-shell {
+      width: min(calc(100% - var(--gutter) * 2), 768px);
+      margin-inline: auto;
+    }
+
+    .section-heading.stack-header {
+      margin-bottom: 12px;
+    }
+
+    .stack-marquee {
+      overflow-x: hidden;
+      outline: none;
+    }
+
+    .stack-marquee:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 4px;
+    }
+
+    .stack-track {
+      gap: 0;
+      padding: 8px;
+      animation-duration: 34s;
+    }
+
+    .stack-sequence {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 12px;
+      padding-right: 12px;
+    }
+
+    .stack-item {
+      min-height: 36px;
+      padding-inline: 11px;
+    }
+
+    .stack-marquee:hover .stack-track,
+    .stack-marquee:focus-within .stack-track {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 720px) {
+      .stack-section {
+        padding-block: 24px 28px;
+      }
+
+      .section-heading.stack-header {
+        margin-bottom: 10px;
+      }
+
+      .stack-sequence {
+        gap: 8px;
+        padding-right: 8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stack-marquee {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-color: rgba(255, 255, 255, 0.36) transparent;
+        scrollbar-width: thin;
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+
+      .stack-track {
+        animation: none;
+        transform: none;
+        will-change: auto;
+      }
+
+      .stack-sequence[aria-hidden="true"] {
+        display: none;
+      }
+    }
