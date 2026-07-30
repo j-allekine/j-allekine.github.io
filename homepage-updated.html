@@ -3801,6 +3801,83 @@
         margin-top: 4px;
       }
     }
+
+    /* Issue #14: approved responsive Hero portrait composition. */
+
+    @media (max-width: 1279px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "portrait"
+          "intro"
+          "details";
+        row-gap: 30px;
+      }
+
+      .hero-portrait-wrap {
+        width: min(100%, 360px);
+        justify-self: center;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 4 / 5;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .hero {
+        width: min(calc(100% - var(--gutter) * 2), 800px);
+        min-height: 620px;
+        grid-template:
+          "portrait intro" auto
+          "portrait details" auto /
+          288px minmax(0, 1fr);
+        align-content: center;
+        align-items: start;
+        column-gap: 40px;
+        row-gap: 24px;
+        padding-block: 64px;
+      }
+
+      .hero-intro,
+      .hero-details {
+        align-self: start;
+      }
+
+      .hero-details {
+        max-width: none;
+      }
+
+      .hero-portrait-wrap {
+        width: 288px;
+        justify-self: start;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 0.96;
+      }
+
+      .hero h1 {
+        max-width: none;
+        font-size: clamp(2.5rem, 3.3vw, 2.75rem);
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+
+      .hero-statement {
+        margin-top: 20px;
+        font-size: 1.1rem;
+      }
+
+      .hero-actions {
+        gap: 8px;
+        margin-top: 26px;
+      }
+
+      .hero-actions .button--primary {
+        min-width: 0;
+      }
+    }
   </style>
 </head>
 
@@ -3902,11 +3979,7 @@
       </div>
 
       <div class="hero-portrait-wrap">
-        <div
-          class="hero-portrait"
-          role="img"
-          aria-label="Temporary portrait area for Jihm Allekine Almedilla"
-        >
+        <div class="hero-portrait" aria-hidden="true">
           <span class="hero-portrait-corner hero-portrait-corner--top" aria-hidden="true"></span>
           <span class="hero-portrait-corner hero-portrait-corner--bottom" aria-hidden="true"></span>
         </div>
