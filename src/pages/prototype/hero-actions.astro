@@ -1,0 +1,217 @@
+---
+// PROTOTYPE — THROWAWAY.
+// Three responsive Hero action behaviors, switchable via ?variant=, on /prototype/hero-actions.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/shared/Button.astro";
+import PrototypeSwitcher from "../../components/shared/PrototypeSwitcher.astro";
+
+const variants = [
+  { key: "A", name: "Adaptive pair" },
+  { key: "B", name: "Persistent stack" },
+  { key: "C", name: "Asymmetric actions" },
+];
+const current = "A";
+---
+
+<BaseLayout
+  title="Prototype: Mobile Hero Actions"
+  description="Throwaway prototype comparing mobile Hero action layouts."
+>
+  <main class="prototype-page">
+    <section class="prototype-hero" aria-labelledby="prototype-title">
+      <div class="prototype-context">
+        <p class="prototype-notice">Throwaway responsive prototype</p>
+        <output class="viewport-state" data-viewport-state aria-live="polite"></output>
+      </div>
+
+      <div class="portrait-placeholder" aria-hidden="true">
+        <span>Portrait placeholder</span>
+      </div>
+
+      <h1 id="prototype-title">Jihm Allekine<br />Almedilla</h1>
+      <p class="professional-statement">I am an automation specialist.</p>
+      <p class="supporting-copy">
+        I build spreadsheet systems, workflow automations, data tools, and practical software that turn manual
+        processes into clearer, more reliable operations.
+      </p>
+      <p class="faith-copy">
+        My Christian faith shapes how I approach my work. I see building as an act of stewardship: serving people
+        well, pursuing excellence, and creating work that honors God.
+      </p>
+
+      <div class="actions actions--adaptive" data-variant="A" data-layout-narrow="stacked" data-layout-wide="side by side">
+        <Button href="#selected-work">View selected work <span aria-hidden="true">↓</span></Button>
+        <Button href="/contact" variant="ghost">Contact me <span aria-hidden="true">↗</span></Button>
+      </div>
+
+      <div class="actions actions--stacked" data-variant="B" data-layout-narrow="stacked" data-layout-wide="stacked" hidden>
+        <Button href="#selected-work">View selected work <span aria-hidden="true">↓</span></Button>
+        <Button href="/contact" variant="ghost">Contact me <span aria-hidden="true">↗</span></Button>
+      </div>
+
+      <div class="actions actions--asymmetric" data-variant="C" data-layout-narrow="primary plus text link" data-layout-wide="primary plus text link" hidden>
+        <Button href="#selected-work">View selected work <span aria-hidden="true">↓</span></Button>
+        <a class="contact-link" href="/contact">Contact me <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section id="selected-work" class="work-target" aria-label="Selected Work destination">
+      <span>Featured Work starts here</span>
+    </section>
+  </main>
+
+  <PrototypeSwitcher variants={variants} current={current} />
+</BaseLayout>
+
+<script>
+  const state = document.querySelector<HTMLOutputElement>("[data-viewport-state]");
+
+  const updateViewportState = () => {
+    const active = document.querySelector<HTMLElement>("[data-variant]:not([hidden])");
+    const layout = window.innerWidth >= 480 ? active?.dataset.layoutWide : active?.dataset.layoutNarrow;
+    if (state) state.textContent = `${window.innerWidth}px · ${layout ?? "unknown layout"}`;
+  };
+
+  window.addEventListener("resize", updateViewportState);
+  window.addEventListener("popstate", updateViewportState);
+  document.addEventListener("click", () => requestAnimationFrame(updateViewportState));
+  window.addEventListener("keydown", () => requestAnimationFrame(updateViewportState));
+  updateViewportState();
+</script>
+
+<style>
+  .prototype-page {
+    min-height: 100vh;
+  }
+
+  .prototype-hero {
+    width: min(calc(100% - 32px), 640px);
+    margin-inline: auto;
+    padding-block: 28px 72px;
+  }
+
+  .prototype-context {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .prototype-notice,
+  .viewport-state {
+    margin: 0;
+    color: #a1a1aa;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .viewport-state {
+    flex: 0 0 auto;
+    color: #f5f5f7;
+  }
+
+  .portrait-placeholder {
+    display: grid;
+    width: min(100%, 288px);
+    aspect-ratio: 4 / 5;
+    margin-bottom: 28px;
+    place-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    color: var(--subtle);
+    background:
+      linear-gradient(135deg, transparent 49.8%, var(--line) 50%, transparent 50.2%),
+      linear-gradient(45deg, transparent 49.8%, var(--line) 50%, transparent 50.2%),
+      var(--surface);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.7rem, 14vw, 4.25rem);
+    font-weight: 600;
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+  }
+
+  .professional-statement {
+    margin: 24px 0 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .supporting-copy,
+  .faith-copy {
+    margin: 18px 0 0;
+    font-size: 0.91rem;
+    line-height: 1.65;
+  }
+
+  .faith-copy {
+    color: var(--muted);
+  }
+
+  .actions {
+    margin-top: 28px;
+  }
+
+  .actions[hidden] {
+    display: none;
+  }
+
+  .actions--adaptive,
+  .actions--stacked,
+  .actions--asymmetric {
+    display: grid;
+    gap: 10px;
+  }
+
+  .actions--adaptive :global(.button),
+  .actions--stacked :global(.button),
+  .actions--asymmetric :global(.button) {
+    width: 100%;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #d4d4d8;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .work-target {
+    display: grid;
+    min-height: 55vh;
+    place-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 480px) {
+    .prototype-hero {
+      padding-top: 44px;
+    }
+
+    .actions--adaptive {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

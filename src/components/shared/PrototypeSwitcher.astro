@@ -1,0 +1,121 @@
+---
+interface Variant {
+  key: string;
+  name: string;
+}
+
+interface Props {
+  variants: Variant[];
+  current: string;
+}
+
+const { variants, current } = Astro.props;
+---
+
+{
+  import.meta.env.DEV && (
+    <nav
+      class="prototype-switcher"
+      aria-label="Prototype variants"
+      data-prototype-switcher
+      data-variants={JSON.stringify(variants)}
+      data-current={current}
+    >
+      <button type="button" data-direction="-1" aria-label="Previous variant">←</button>
+      <output aria-live="polite">
+        {current} — {variants.find((variant) => variant.key === current)?.name}
+      </output>
+      <button type="button" data-direction="1" aria-label="Next variant">→</button>
+    </nav>
+  )
+}
+
+<script>
+  const switcher = document.querySelector<HTMLElement>("[data-prototype-switcher]");
+
+  if (switcher) {
+    const variants = JSON.parse(switcher.dataset.variants ?? "[]") as Array<{
+      key: string;
+      name: string;
+    }>;
+    const output = switcher.querySelector("output");
+    let current = new URL(window.location.href).searchParams.get("variant")?.toUpperCase() ?? variants[0]?.key;
+
+    if (!variants.some((variant) => variant.key === current)) {
+      current = variants[0]?.key;
+    }
+
+    const show = (key: string, updateUrl = true) => {
+      current = key;
+      document.querySelectorAll<HTMLElement>("[data-variant]").forEach((variant) => {
+        variant.hidden = variant.dataset.variant !== current;
+      });
+
+      const selected = variants.find((variant) => variant.key === current);
+      if (output && selected) output.textContent = `${selected.key} — ${selected.name}`;
+
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("variant", current);
+        window.history.replaceState({}, "", url);
+      }
+    };
+
+    const move = (direction: number) => {
+      const currentIndex = variants.findIndex((variant) => variant.key === current);
+      const nextIndex = (currentIndex + direction + variants.length) % variants.length;
+      show(variants[nextIndex].key);
+    };
+
+    switcher.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-direction]");
+      if (button) move(Number(button.dataset.direction));
+    });
+
+    window.addEventListener("keydown", (event) => {
+      const target = event.target as HTMLElement;
+      if (target.matches("input, textarea, [contenteditable]") || target.closest("[data-prototype-keyboard-scope]")) return;
+      if (event.key === "ArrowLeft") move(-1);
+      if (event.key === "ArrowRight") move(1);
+    });
+
+    show(current, false);
+  }
+</script>
+
+<style>
+  .prototype-switcher {
+    position: fixed;
+    z-index: 1000;
+    right: 50%;
+    bottom: 16px;
+    display: grid;
+    grid-template-columns: 42px minmax(170px, auto) 42px;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #3f3f46;
+    border-radius: 999px;
+    color: #fafafa;
+    background: #18181b;
+    box-shadow: 0 12px 36px rgb(0 0 0 / 55%);
+    font: 600 0.75rem/1 var(--mono);
+    transform: translateX(50%);
+  }
+
+  .prototype-switcher button {
+    min-height: 42px;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .prototype-switcher button:hover {
+    background: #3f3f46;
+  }
+
+  .prototype-switcher output {
+    padding-inline: 12px;
+    text-align: center;
+  }
+</style>
