@@ -45,8 +45,6 @@
     if (!tabs.length || !panel || !title || !description) return;
 
     const selectStep = (tab, moveFocus = false) => {
-      const previousHeight = panel.getBoundingClientRect().height;
-
       tabs.forEach((item) => {
         const selected = item === tab;
         item.setAttribute("aria-selected", String(selected));
@@ -56,20 +54,6 @@
       description.textContent = tab.dataset.description || "";
       panel.setAttribute("aria-labelledby", tab.id);
       if (moveFocus) tab.focus();
-
-      const nextHeight = panel.getBoundingClientRect().height;
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      panel.getAnimations().forEach((animation) => animation.cancel());
-      if (!reduceMotion && Math.abs(nextHeight - previousHeight) > 1) {
-        panel.animate(
-          { height: [`${previousHeight}px`, `${nextHeight}px`] },
-          {
-            duration: 180,
-            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-          },
-        );
-      }
     };
 
     tabs.forEach((tab, index) => {
