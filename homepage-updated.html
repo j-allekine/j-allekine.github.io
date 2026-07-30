@@ -3667,6 +3667,10 @@
       }
 
       .desktop-sidebar__brand {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 10px;
         color: #f1f1f4;
         font-family: var(--mono);
         font-size: 0.78rem;
@@ -3803,7 +3807,8 @@
 <body>
   <aside class="desktop-sidebar" data-desktop-sidebar aria-label="Desktop site navigation">
     <a class="desktop-sidebar__brand" href="/" aria-label="J. Allekine homepage" aria-current="page">
-      J. ALLEKINE
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span>J. ALLEKINE</span>
     </a>
 
     <nav class="desktop-sidebar__nav" aria-label="Desktop primary">

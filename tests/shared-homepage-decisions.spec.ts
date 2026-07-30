@@ -32,6 +32,7 @@ test.describe("shared homepage decisions", () => {
       await expect(sidebar).toHaveCSS("position", "fixed");
       await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("href", "/");
       await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("aria-current", "page");
+      await expect(sidebar.locator(".desktop-sidebar__brand .brand-mark")).toBeVisible();
       await expect(sidebar.getByRole("link", { name: "Home", exact: true })).toHaveCount(0);
 
       const sidebarWidth = await sidebar.evaluate((element) => element.getBoundingClientRect().width);
