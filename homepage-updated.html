@@ -3747,7 +3747,7 @@
 
     @media (max-width: 1279px) {
       .hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
           "portrait"
           "intro"
@@ -3764,6 +3764,10 @@
         width: min(100%, 360px);
         max-width: none;
         justify-self: center;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 4 / 5;
       }
 
       .desktop-sidebar {
@@ -3798,7 +3802,7 @@
       }
     }
 
-    /* Compact Hero proportions: keep work evidence close without weakening the identity hierarchy. */
+    /* Approved Bryl-inspired compact Hero proportions from prototype C. */
 
     .hero {
       row-gap: 20px;
@@ -3818,15 +3822,9 @@
       margin-top: 24px;
     }
 
-    @media (min-width: 1280px) {
-      .hero-portrait {
-        aspect-ratio: 1 / 1.04;
-      }
-    }
-
     @media (max-width: 1279px) {
       .hero {
-        row-gap: 16px;
+        row-gap: 20px;
         padding-block: 24px 32px;
       }
 
@@ -3841,7 +3839,7 @@
 
     @media (max-width: 720px) {
       .hero {
-        row-gap: 14px;
+        row-gap: 20px;
         padding-block: 24px 32px;
       }
 
@@ -3866,6 +3864,142 @@
 
       .hero-actions {
         margin-top: 16px;
+      }
+    }
+
+    /* Issue #20: compact, accessible Stack marquee. */
+
+    .stack-section {
+      padding-block: clamp(24px, 3vw, 36px);
+    }
+
+    .stack-header {
+      margin-bottom: 12px;
+    }
+
+    .stack-marquee {
+      overflow-x: hidden;
+      outline: none;
+    }
+
+    .stack-marquee:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 4px;
+    }
+
+    .stack-track {
+      gap: 0;
+      padding: 8px;
+      animation-duration: 34s;
+    }
+
+    .stack-sequence {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 12px;
+      padding-right: 12px;
+    }
+
+    .stack-item {
+      min-height: 36px;
+      padding-inline: 11px;
+    }
+
+    .stack-marquee:hover .stack-track,
+    .stack-marquee:focus-within .stack-track {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 720px) {
+      .stack-section {
+        padding-block: 24px 28px;
+      }
+
+      .stack-header {
+        margin-bottom: 10px;
+      }
+
+      .stack-sequence {
+        gap: 8px;
+        padding-right: 8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stack-marquee {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-color: rgba(255, 255, 255, 0.36) transparent;
+        scrollbar-width: thin;
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+
+      .stack-track {
+        animation: none;
+        transform: none;
+        will-change: auto;
+      }
+
+      .stack-sequence[aria-hidden="true"] {
+        display: none;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .hero {
+        --hero-portrait-size: 288px;
+        width: min(calc(100% - var(--gutter) * 2), 760px);
+        min-height: 620px;
+        grid-template:
+          "portrait intro" auto
+          "portrait details" auto /
+          var(--hero-portrait-size) minmax(0, 1fr);
+        align-content: center;
+        align-items: start;
+        column-gap: 40px;
+        row-gap: 24px;
+        padding-block: 64px;
+      }
+
+      .hero-intro,
+      .hero-details {
+        align-self: start;
+      }
+
+      .hero-details {
+        max-width: none;
+      }
+
+      .hero-portrait-wrap {
+        width: var(--hero-portrait-size);
+        justify-self: start;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 0.96;
+      }
+
+      .hero h1 {
+        max-width: none;
+        font-size: 2.6rem;
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+
+      .hero-statement {
+        margin-top: 20px;
+        font-size: 1.1rem;
+      }
+
+      .hero-actions {
+        gap: 8px;
+        margin-top: 26px;
+      }
+
+      .hero-actions .button--primary {
+        min-width: 0;
       }
     }
   </style>
@@ -3969,11 +4103,7 @@
       </div>
 
       <div class="hero-portrait-wrap">
-        <div
-          class="hero-portrait"
-          role="img"
-          aria-label="Temporary portrait area for Jihm Allekine Almedilla"
-        >
+        <div class="hero-portrait" aria-hidden="true">
           <span class="hero-portrait-corner hero-portrait-corner--top" aria-hidden="true"></span>
           <span class="hero-portrait-corner hero-portrait-corner--bottom" aria-hidden="true"></span>
         </div>
@@ -3994,49 +4124,7 @@
           <a class="button button--ghost" href="/contact">
             Contact me <span class="arrow" aria-hidden="true">&#8599;</span>
           </a>
-          <!--
-          <a class="button button--primary" href="#work">
-            Book a 30-minute call <span class="arrow" aria-hidden="true">↗</span>
-          </a>
-          <a class="button button--ghost" href="/contact">
-            View Work <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          -->
         </div>
-
-        <!--
-        <div class="hero-socials">
-<div class="socials" aria-label="Social links">
-          <a
-            class="social-link"
-            href="https://github.com/j-allekine"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" stroke="none" d="M12 .7A11.3 11.3 0 0 0 8.4 22.7c.6.1.8-.2.8-.6v-2.2c-3.4.7-4.1-1.4-4.1-1.4-.5-1.4-1.3-1.7-1.3-1.7-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6A4.7 4.7 0 0 1 5.8 7.4a4.4 4.4 0 0 1 .1-3.2s1-.3 3.4 1.2a11.8 11.8 0 0 1 6.1 0c2.4-1.5 3.4-1.2 3.4-1.2a4.4 4.4 0 0 1 .1 3.2 4.7 4.7 0 0 1 1.3 3.3c0 4.7-2.9 5.7-5.6 6 .4.4.8 1.1.8 2.2v3.2c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z"/>
-            </svg>
-          </a>
-           <a class="social-link" href="#" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" stroke="none" d="M20.5 3H3.5A.5.5 0 0 0 3 3.5v17c0 .3.2.5.5.5h17a.5.5 0 0 0 .5-.5v-17a.5.5 0 0 0-.5-.5ZM8.3 18H5.7V9.6h2.6V18ZM7 8.5A1.5 1.5 0 1 1 7 5.5a1.5 1.5 0 0 1 0 3Zm11 9.5h-2.6v-4.1c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2V18H9.8V9.6h2.5v1.1h.1c.3-.7 1.2-1.4 2.5-1.4 2.7 0 3.1 1.8 3.1 4.1V18Z"/>
-            </svg>
-          </a>
-           <a class="social-link" href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" stroke="none" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.5.6.2 1 .6 1.5 1 .5.5.8.9 1 1.5.2.5.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.5 2.4-.2.6-.6 1-1 1.5-.5.5-.9.8-1.5 1-.5.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.5-.6-.2-1-.6-1.5-1-.5-.5-.8-.9-1-1.5-.2-.5-.4-1.2-.5-2.4-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.9.5-2.4.2-.6.6-1 1-1.5.5-.5.9-.8 1.5-1 .5-.2 1.2-.4 2.4-.5C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.4.2-.7.4-1.1.7-.3.3-.5.7-.7 1.1-.2.4-.3.9-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.4.4.7.7 1.1.3.3.7.5 1.1.7.4.2.9.3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.4-.2.7-.4 1.1-.7.3-.3.5-.7.7-1.1.2-.4.3-.9.4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.4-.4-.7-.7-1.1-.3-.3-.7-.5-1.1-.7-.4-.2-.9-.3-2-.4C15.5 4 15.1 4 12 4Zm0 3.1a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 1.9a3.6 3.6 0 1 0 0 7.2A3.6 3.6 0 0 0 12 9Zm5.7-3.3a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/>
-            </svg>
-          </a>
-           <a class="social-link" href="mailto:hello@example.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3.5 5.5h17v13h-17z" />
-              <path d="m4 6 8 6.3L20 6" />
-            </svg>
-          </a>
-        </div>
-        </div>
-        -->
       </div>
     </section>
 
@@ -4193,8 +4281,13 @@
           </a>
         </div>
 
-        <div class="stack-marquee" aria-label="Scrolling technology and tool list">
+        <div
+          class="stack-marquee"
+          aria-label="Stack tools"
+          tabindex="0"
+        >
           <div class="stack-track">
+            <div class="stack-sequence" role="group" aria-label="Tools">
             <div class="stack-item stack-item--excel">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg/500px-Microsoft_Office_Excel_%282025%E2%80%93present%29.svg.png"
@@ -4323,6 +4416,8 @@
               </svg>
               <span>Make</span>
             </div>
+            </div>
+            <div class="stack-sequence" aria-hidden="true">
             <div class="stack-item stack-item--excel">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg/500px-Microsoft_Office_Excel_%282025%E2%80%93present%29.svg.png"
@@ -4450,6 +4545,7 @@
                 <path d="M17.1 15.5 18.9 2.5H23l-1.8 13h-4.1Z" fill="url(#make-gradient-a)"/>
               </svg>
               <span>Make</span>
+            </div>
             </div>
           </div>
         </div>
