@@ -78,24 +78,17 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     }
   });
 
-  test("highlights the visible navigation destination across the continuous page flow", async ({ page }) => {
+  test("uses the brand for Home and route links for the other pages", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
 
-    const activeNavigation = () =>
-      page.locator("[data-section-nav][aria-current='location']");
-
-    await expect(activeNavigation()).toHaveCount(3);
-    await expect(activeNavigation().first()).toHaveAttribute("href", "#top");
-
-    for (const target of ["work", "stack", "contact"]) {
-      await page.evaluate((sectionId) => {
-        document.documentElement.style.scrollBehavior = "auto";
-        document.getElementById(sectionId)?.scrollIntoView({ block: "start" });
-      }, target);
-      await expect
-        .poll(() => activeNavigation().first().getAttribute("href"))
-        .toBe(`#${target}`);
-    }
+    const sidebar = page.locator("[data-desktop-sidebar]");
+    await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("href", "/");
+    await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("aria-current", "page");
+    await expect(sidebar.getByRole("link", { name: "Home", exact: true })).toHaveCount(0);
+    await expect(sidebar.getByRole("link", { name: "Work", exact: true })).toHaveAttribute("href", "/work");
+    await expect(sidebar.getByRole("link", { name: "Stack", exact: true })).toHaveAttribute("href", "/stack");
+    await expect(sidebar.getByRole("link", { name: "Contact", exact: true })).toHaveAttribute("href", "/contact");
+    await expect(page.locator("[data-section-nav]")).toHaveCount(0);
   });
 
   test("keeps the responsive navigation surface contained and recoverable", async ({ page }) => {
@@ -128,7 +121,7 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect(menuButton).toBeFocused();
   });
 
-  test("restores scroll after backdrop close and moves to a selected section", async ({ page }) => {
+  test("restores scroll after backdrop close and closes before following a selected route", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 900 });
     const menuButton = page.locator("[data-menu-button]");
     const navigationPanel = page.locator("[data-mobile-sidebar]");
@@ -147,11 +140,14 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforeOpen);
 
     await menuButton.click();
-    await navigationPanel.getByRole("link", { name: "Work", exact: true }).click();
+    const workLink = navigationPanel.getByRole("link", { name: "Work", exact: true });
+    await expect(workLink).toHaveAttribute("href", "/work");
+    await workLink.evaluate((link) => {
+      link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    });
+    await workLink.click();
     await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toHaveAttribute("aria-expanded", "false");
-    await expect.poll(() => page.evaluate(() => window.location.hash)).toBe("#work");
-    await expect(page.locator("#work")).toBeInViewport();
   });
 
   test("closes safely when the compact breakpoint changes", async ({ page }) => {

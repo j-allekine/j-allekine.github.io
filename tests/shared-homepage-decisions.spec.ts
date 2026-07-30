@@ -7,10 +7,9 @@ const standaloneHomepageUrl = pathToFileURL(
 ).href;
 
 const primaryNavigation = [
-  { name: "Home", href: "#top" },
-  { name: "Work", href: "#work" },
-  { name: "Stack", href: "#stack" },
-  { name: "Contact", href: "#contact" },
+  { name: "Work", href: "/work" },
+  { name: "Stack", href: "/stack" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const socialDestinations = [
@@ -31,10 +30,18 @@ test.describe("shared homepage decisions", () => {
       const sidebar = page.locator("[data-desktop-sidebar]");
       await expect(sidebar).toBeVisible();
       await expect(sidebar).toHaveCSS("position", "fixed");
+      await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("href", "/");
+      await expect(sidebar.locator(".desktop-sidebar__brand")).toHaveAttribute("aria-current", "page");
+      await expect(sidebar.getByRole("link", { name: "Home", exact: true })).toHaveCount(0);
 
       const sidebarWidth = await sidebar.evaluate((element) => element.getBoundingClientRect().width);
       expect(sidebarWidth).toBeGreaterThanOrEqual(224);
       expect(sidebarWidth).toBeLessThanOrEqual(240);
+
+      const navigationGrid = sidebar.locator(".desktop-sidebar__nav");
+      await expect(navigationGrid).toHaveCSS("display", "grid");
+      await expect(navigationGrid).toHaveCSS("border-top-style", "solid");
+      await expect(navigationGrid).toHaveCSS("border-bottom-style", "solid");
 
       for (const item of primaryNavigation) {
         await expect(sidebar.getByRole("link", { name: item.name, exact: true })).toHaveAttribute(
@@ -70,6 +77,8 @@ test.describe("shared homepage decisions", () => {
       await expect(page.locator("[data-desktop-sidebar]")).toBeHidden();
       await expect(menuButton).toBeVisible();
       await expect(page.locator(".site-header .brand")).toBeVisible();
+      await expect(navigationPanel.locator(".mobile-sidebar__brand")).toHaveAttribute("href", "/");
+      await expect(navigationPanel.getByRole("link", { name: "Home", exact: true })).toHaveCount(0);
       await expect(menuButton).toHaveAttribute("aria-expanded", "false");
       await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
       await expect(navigationPanel).toBeHidden();

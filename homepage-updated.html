@@ -305,14 +305,6 @@
       transform: scaleX(1);
     }
 
-    .nav a.is-active {
-      color: #fff;
-    }
-
-    .nav a.is-active::after {
-      transform: scaleX(1);
-    }
-
     .menu-button {
       display: none;
       width: 44px;
@@ -2534,11 +2526,6 @@
         background: rgba(255, 255, 255, 0.06);
       }
 
-      .mobile-sidebar__nav a.is-active {
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.06);
-      }
-
       .mobile-sidebar :focus-visible {
         outline: 2px solid #fff;
         outline-offset: 3px;
@@ -3689,20 +3676,28 @@
 
       .desktop-sidebar__nav {
         display: grid;
-        gap: 4px;
-        margin-top: 64px;
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-top: 32px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
       }
 
       .desktop-sidebar__nav a {
         position: relative;
         display: flex;
-        min-height: 40px;
+        min-height: 52px;
         align-items: center;
+        border-bottom: 1px solid var(--line);
         color: #a7a7b0;
         font-family: var(--mono);
         font-size: 0.76rem;
         letter-spacing: 0.03em;
         text-transform: uppercase;
+      }
+
+      .desktop-sidebar__nav a:last-child {
+        border-bottom: 0;
       }
 
       .desktop-sidebar__nav a::before {
@@ -3721,15 +3716,6 @@
 
       .desktop-sidebar__nav a:hover::before,
       .desktop-sidebar__nav a:focus-visible::before {
-        width: 14px;
-        margin-right: 8px;
-      }
-
-      .desktop-sidebar__nav a.is-active {
-        color: #fff;
-      }
-
-      .desktop-sidebar__nav a.is-active::before {
         width: 14px;
         margin-right: 8px;
       }
@@ -3837,15 +3823,14 @@
 
 <body>
   <aside class="desktop-sidebar" data-desktop-sidebar aria-label="Desktop site navigation">
-    <a class="desktop-sidebar__brand" href="#top" aria-label="J. Allekine homepage">
+    <a class="desktop-sidebar__brand" href="/" aria-label="J. Allekine homepage" aria-current="page">
       J. ALLEKINE
     </a>
 
     <nav class="desktop-sidebar__nav" aria-label="Desktop primary">
-      <a href="#top" data-section-nav aria-current="location">Home</a>
-      <a href="#work" data-section-nav>Work</a>
-      <a href="#stack" data-section-nav>Stack</a>
-      <a href="#contact" data-section-nav>Contact</a>
+      <a href="/work">Work</a>
+      <a href="/stack">Stack</a>
+      <a href="/contact">Contact</a>
     </nav>
 
     <div class="desktop-sidebar__bottom">
@@ -3868,7 +3853,7 @@
     data-mobile-sidebar
   >
     <div class="mobile-sidebar__header">
-      <a class="mobile-sidebar__brand" href="/" aria-label="J. Allekine homepage">
+      <a class="mobile-sidebar__brand" href="/" aria-label="J. Allekine homepage" aria-current="page">
         J. ALLEKINE
       </a>
       <button
@@ -3880,10 +3865,9 @@
     </div>
 
     <nav class="mobile-sidebar__nav" aria-label="Mobile primary">
-      <a href="#top" data-section-nav aria-current="location">Home</a>
-      <a href="#work" data-section-nav>Work</a>
-      <a href="#stack" data-section-nav>Stack</a>
-      <a href="#contact" data-section-nav>Contact</a>
+      <a href="/work">Work</a>
+      <a href="/stack">Stack</a>
+      <a href="/contact">Contact</a>
     </nav>
 
     <div class="mobile-sidebar__bottom">
@@ -3899,7 +3883,7 @@
   <div class="page-frame" data-page-frame data-menu-open="false">
     <header class="site-header">
       <div class="visual-shell header-inner">
-        <a class="brand" href="/" aria-label="J. Allekine homepage">
+        <a class="brand" href="/" aria-label="J. Allekine homepage" aria-current="page">
           <span class="brand-mark" aria-hidden="true"><span></span></span>
           <span>J. ALLEKINE</span>
         </a>
@@ -3916,10 +3900,9 @@
         </button>
 
         <nav class="nav" id="primary-navigation" aria-label="Primary" data-navigation>
-          <a href="#top" data-section-nav aria-current="location">Home</a>
-          <a href="#work" data-section-nav>Work</a>
-          <a href="#stack" data-section-nav>Stack</a>
-          <a href="#contact" data-section-nav>Contact</a>
+          <a href="/work">Work</a>
+          <a href="/stack">Stack</a>
+          <a href="/contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -4739,53 +4722,6 @@
       }
     });
 
-    const sectionNavigation = [...document.querySelectorAll("[data-section-nav]")];
-    const sectionNavigationTargets = new Map([
-      ["hero", "#top"],
-      ["work", "#work"],
-      ["stack", "#stack"],
-      ["process", "#stack"],
-      ["about", "#stack"],
-      ["contact", "#contact"],
-    ]);
-    let activeNavigationFrame = 0;
-
-    const setActiveNavigation = (target) => {
-      sectionNavigation.forEach((link) => {
-        const isActive = link.getAttribute("href") === target;
-        link.classList.toggle("is-active", isActive);
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-        } else {
-          link.removeAttribute("aria-current");
-        }
-      });
-    };
-
-    const updateActiveNavigation = () => {
-      activeNavigationFrame = 0;
-      const marker = window.scrollY + Math.max(window.innerHeight * 0.5, 160);
-      let activeTarget = "#top";
-
-      document.querySelectorAll("main > section[id]").forEach((section) => {
-        const top = section.getBoundingClientRect().top + window.scrollY;
-        if (top <= marker) {
-          activeTarget = sectionNavigationTargets.get(section.id) || activeTarget;
-        }
-      });
-
-      setActiveNavigation(activeTarget);
-    };
-
-    const scheduleActiveNavigationUpdate = () => {
-      if (activeNavigationFrame) return;
-      activeNavigationFrame = requestAnimationFrame(updateActiveNavigation);
-    };
-
-    window.addEventListener("scroll", scheduleActiveNavigationUpdate, { passive: true });
-    window.addEventListener("resize", scheduleActiveNavigationUpdate);
-    window.addEventListener("hashchange", scheduleActiveNavigationUpdate);
-    scheduleActiveNavigationUpdate();
   </script>
 
   <script>

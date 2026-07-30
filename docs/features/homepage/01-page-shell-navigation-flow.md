@@ -24,8 +24,9 @@ Create the responsive structure that every homepage section will use.
 - Remove the homepage Services section and its obsolete styles, scripts, navigation entries, and tests.
 - Place GitHub, LinkedIn, Email, and `Colossians 3:23` in the desktop navigation and responsive panel.
 - Keep the homepage visible in continuous document flow beneath the responsive panel. Do not add accordions or collapsed homepage sections.
-- When a visitor selects `Home`, `Work`, `Stack`, or `Contact` from the responsive panel, close the panel and move to the selected homepage section.
-- Highlight the section currently visible in the homepage navigation.
+- Use the `J. ALLEKINE` brand as the sole Home control.
+- When a visitor selects `Work`, `Stack`, or `Contact` from the responsive panel, close the panel and navigate to `/work`, `/stack`, or `/contact`.
+- Do not change navigation state in response to scrolling through homepage sections.
 - Make the responsive navigation panel keyboard accessible, closeable, and safe across resize.
 - When the panel opens, move focus to its close control and keep keyboard focus within the panel. `Tab` from the last focusable item wraps to the first; `Shift+Tab` from the first wraps to the last.
 - Close the panel with its close control, a backdrop click, Escape, or a selected navigation link. Restore focus to the menu control when it remains available.
@@ -34,7 +35,7 @@ Create the responsive structure that every homepage section will use.
 
 ## Needs Info
 
-None. Primary navigation uses homepage anchors: Home, Work, Stack, and Contact. Use the shared destinations recorded in [00-shared-decisions.md](00-shared-decisions.md). The sidebar brand returns to `/`. Shell screenshot review uses `320`, `768`, `1279`, `1280`, and `1440` px widths.
+None. Primary navigation uses the page routes Work (`/work`), Stack (`/stack`), and Contact (`/contact`). The `J. ALLEKINE` brand is the Home control and returns to `/`. Shell screenshot review uses `320`, `768`, `1279`, `1280`, and `1440` px widths.
 
 ## GitHub tickets
 
@@ -46,7 +47,7 @@ All three tickets are implemented, validated, and closed. The final integrated r
 
 ## Ready for tickets when
 
-- Responsive navigation presentation, active-navigation behavior, and destinations are decided.
+- Responsive navigation presentation, page-route behavior, and destinations are decided.
 - Responsive navigation keyboard, focus containment and return, scroll lock, backdrop, Escape, and resize behavior are explicit.
 - The current implementation phase is scoped to `homepage-updated.html`; Astro migration is deferred.
 - The Services removal boundary includes its obsolete CSS, JavaScript, and tests.
