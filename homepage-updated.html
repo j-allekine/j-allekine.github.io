@@ -3867,6 +3867,22 @@
       }
     }
 
+    /* Approved adaptive How I Work description panel. */
+
+    #process .process-panel {
+      width: min(100%, 640px);
+      min-height: 0;
+      height: auto;
+      margin-inline: auto;
+      justify-content: flex-start;
+    }
+
+    @media (max-width: 719px) {
+      #process .process-panel {
+        width: 100%;
+      }
+    }
+
     /* Issue #15: approved responsive Featured Work carousel. */
 
     #work .work-carousel {
@@ -5266,6 +5282,11 @@
       if (!tabs.length || !panel || !title || !description) return;
 
       const selectStep = (tab, moveFocus = false) => {
+        const previousHeight = panel.getBoundingClientRect().height;
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        panel.getAnimations().forEach((animation) => animation.cancel());
+
         tabs.forEach((item) => {
           const selected = item === tab;
           item.setAttribute("aria-selected", String(selected));
@@ -5275,6 +5296,31 @@
         title.textContent = tab.dataset.title || "";
         description.textContent = tab.dataset.description || "";
         panel.setAttribute("aria-labelledby", tab.id);
+
+        if (!reduceMotion) {
+          panel.style.height = "auto";
+          const nextHeight = panel.getBoundingClientRect().height;
+          panel.style.height = `${previousHeight}px`;
+          panel.style.overflow = "hidden";
+
+          const animation = panel.animate(
+            [
+              { height: `${previousHeight}px` },
+              { height: `${nextHeight}px` },
+            ],
+            {
+              duration: 180,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "both",
+            },
+          );
+
+          const clearAnimatedHeight = () => {
+            panel.style.height = "";
+            panel.style.overflow = "";
+          };
+          animation.finished.then(clearAnimatedHeight, clearAnimatedHeight);
+        }
 
         if (moveFocus) tab.focus({ preventScroll: true });
       };
