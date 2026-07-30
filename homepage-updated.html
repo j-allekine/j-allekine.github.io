@@ -36,7 +36,7 @@
       --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       --ease: 180ms ease;
 
-      --reading-width: 920px;
+      --reading-width: 768px;
       --visual-width: 1120px;
 
       --display-size: clamp(4rem, 6vw, 4.75rem);
@@ -302,6 +302,14 @@
     }
 
     .nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav a.is-active {
+      color: #fff;
+    }
+
+    .nav a.is-active::after {
       transform: scaleX(1);
     }
 
@@ -1074,186 +1082,6 @@
       letter-spacing: 0;
     }
 
-    /* Services */
-
-    .services-section {
-      background: rgba(255, 255, 255, 0.006);
-    }
-
-    .services-carousel {
-      position: relative;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .services-carousel__control {
-      position: absolute;
-      z-index: 8;
-      top: 50%;
-      display: none;
-      width: 48px;
-      height: 48px;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 50%;
-      color: var(--text);
-      background: rgba(8, 8, 10, 0.92);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-      transition:
-        transform var(--ease),
-        border-color var(--ease),
-        background-color var(--ease);
-    }
-
-    .services-carousel__control svg {
-      width: 20px;
-      height: 20px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform var(--ease);
-    }
-
-    .services-carousel__control--prev {
-      left: 0;
-      transform: translate(-50%, -50%);
-    }
-
-    .services-carousel__control--next {
-      right: 0;
-      transform: translate(50%, -50%);
-    }
-
-    .services-carousel__control:hover {
-      border-color: rgba(255, 255, 255, 0.34);
-      background: rgba(22, 22, 26, 0.98);
-    }
-
-    .services-carousel__control--prev:hover svg {
-      transform: translateX(-2px);
-    }
-
-    .services-carousel__control--next:hover svg {
-      transform: translateX(2px);
-    }
-
-    .services-carousel__control--prev:active {
-      transform: translate(-50%, -50%) scale(0.95);
-    }
-
-    .services-carousel__control--next:active {
-      transform: translate(50%, -50%) scale(0.95);
-    }
-
-    .service-card {
-      display: flex;
-      min-height: 100%;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.025), transparent 42%),
-        var(--surface);
-      transition:
-        transform var(--ease),
-        border-color var(--ease),
-        background-color var(--ease);
-    }
-
-    .service-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255, 255, 255, 0.25);
-      background-color: #111114;
-    }
-
-    .service-card__visual {
-      display: grid;
-      min-height: 175px;
-      place-items: center;
-      overflow: hidden;
-      border-bottom: 1px solid var(--line);
-      background:
-        radial-gradient(circle at 50% 45%, rgba(255,255,255,0.05), transparent 8rem),
-        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        #08080a;
-      background-size: auto, 24px 24px, 24px 24px, auto;
-    }
-
-    .service-card__visual svg {
-      width: 92px;
-      height: 92px;
-      fill: none;
-      stroke: #d8d8de;
-      stroke-width: 1.15;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      opacity: 0.88;
-      transition: transform 320ms ease, opacity 320ms ease;
-    }
-
-    .service-card:hover .service-card__visual svg {
-      transform: translateY(-3px) scale(1.03);
-      opacity: 1;
-    }
-
-    .service-card__body {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      padding: 24px;
-    }
-
-    .service-card__body h3 {
-      margin: 0 0 10px;
-      font-size: var(--card-title-size);
-      font-weight: 600;
-      line-height: 1.12;
-      letter-spacing: -0.028em;
-    }
-
-    .service-card__body p {
-      margin: 0;
-      color: #96969f;
-      font-size: var(--support-size);
-      line-height: 1.58;
-    }
-
-    .service-card__meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: auto;
-      padding-top: 22px;
-    }
-
-    .service-card__meta span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 20px;
-      padding: 3px 6px;
-      border: 1px solid rgba(255, 255, 255, 0.065);
-      border-radius: 999px;
-      color: #777780;
-      background: rgba(255, 255, 255, 0.012);
-      font-family: var(--mono);
-      font-size: 0.5rem;
-      font-weight: 500;
-      letter-spacing: 0.035em;
-      line-height: 1;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
     /* Technologies & Tools */
 
     .stack-section {
@@ -1959,78 +1787,6 @@
       }
     }
 
-
-    @media (max-width: 1040px) {
-      .services-carousel {
-        width: min(calc(100% - 64px), 720px);
-        margin-inline: auto;
-      }
-
-      .services-grid {
-        display: flex;
-        width: 100%;
-        gap: 18px;
-        margin: 0;
-        overflow-x: auto;
-        overflow-y: hidden;
-        overscroll-behavior-inline: contain;
-        scroll-snap-type: x mandatory;
-        scroll-padding-inline: 0;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        padding-block: 10px 12px;
-        touch-action: pan-x pan-y;
-      }
-
-      .services-grid::-webkit-scrollbar {
-        display: none;
-      }
-
-      .service-card {
-        flex: 0 0 100%;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-      }
-
-      .services-carousel__control {
-        display: grid;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .services-carousel {
-        width: min(calc(100% - 56px), 380px);
-      }
-
-      .services-grid {
-        gap: 16px;
-      }
-
-      .services-carousel__control {
-        width: 46px;
-        height: 46px;
-      }
-
-      .service-card__visual {
-        min-height: 160px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .services-carousel {
-        width: min(calc(100% - 52px), 360px);
-      }
-
-      .services-carousel__control {
-        width: 44px;
-        height: 44px;
-      }
-
-      .service-card__body {
-        padding: 22px;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
@@ -2044,11 +1800,7 @@
       .work-card,
       .work-card:hover,
       .work-card .mock-window,
-      .work-card:hover .mock-window,
-      .service-card,
-      .service-card:hover,
-      .service-card__visual svg,
-      .service-card:hover .service-card__visual svg {
+      .work-card:hover .mock-window{
         opacity: 1 !important;
         transform: none !important;
       }
@@ -2119,41 +1871,20 @@
       aspect-ratio: 16 / 9;
     }
 
-    .work-card:hover,
-    .service-card:hover {
+    .work-card:hover{
       transform: none;
       border-color: rgba(255, 255, 255, 0.25);
       background-color: #111114;
     }
 
     .work-card .mock-window,
-    .work-card:hover .mock-window,
-    .service-card__visual svg,
-    .service-card:hover .service-card__visual svg {
+    .work-card:hover .mock-window{
       transform: none;
     }
 
-    .work-body,
-    .service-card__body {
+    .work-body{
       padding: 18px;
     }
-
-    .service-card__visual {
-      min-height: 96px;
-      height: 96px;
-    }
-
-    .service-card__visual svg {
-      width: 52px;
-      height: 52px;
-    }
-
-    .service-card__meta {
-      gap: 5px;
-      padding-top: 16px;
-    }
-
-    .service-card__meta span,
     .work-type span {
       min-height: 19px;
       padding: 3px 6px;
@@ -2191,8 +1922,7 @@
     }
 
     @media (min-width: 721px) and (max-width: 1040px) {
-      .work-grid,
-      .services-grid {
+      .work-grid{
         display: flex;
         gap: 18px;
         overflow-x: auto;
@@ -2203,20 +1933,17 @@
         overscroll-behavior-inline: contain;
       }
 
-      .work-grid::-webkit-scrollbar,
-      .services-grid::-webkit-scrollbar {
+      .work-grid::-webkit-scrollbar{
         display: none;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         flex: 0 0 calc((100% - 18px) / 2);
         scroll-snap-align: start;
         scroll-snap-stop: always;
       }
 
-      .work-carousel__control,
-      .services-carousel__control {
+      .work-carousel__control{
         display: grid;
       }
     }
@@ -2366,14 +2093,12 @@
         margin-top: 0;
       }
 
-      .work-carousel,
-      .services-carousel {
+      .work-carousel{
         width: 100%;
         margin-inline: 0;
       }
 
-      .work-grid,
-      .services-grid {
+      .work-grid{
         display: flex;
         width: 100%;
         gap: 14px;
@@ -2387,26 +2112,22 @@
         touch-action: pan-x pan-y;
       }
 
-      .work-grid::-webkit-scrollbar,
-      .services-grid::-webkit-scrollbar {
+      .work-grid::-webkit-scrollbar{
         display: none;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         flex: 0 0 min(82vw, 310px);
         min-width: 0;
         scroll-snap-align: start;
         scroll-snap-stop: always;
       }
 
-      .work-body,
-      .service-card__body {
+      .work-body{
         padding: 16px;
       }
 
-      .work-body p,
-      .service-card__body p {
+      .work-body p{
         display: -webkit-box;
         overflow: hidden;
         -webkit-box-orient: vertical;
@@ -2417,24 +2138,8 @@
         padding-top: 18px;
       }
 
-      .work-carousel__control,
-      .services-carousel__control {
+      .work-carousel__control{
         display: none;
-      }
-
-      .service-card__visual {
-        min-height: 92px;
-        height: 92px;
-      }
-
-      .service-card__visual svg {
-        width: 50px;
-        height: 50px;
-      }
-
-      .service-card__meta {
-        gap: 4px;
-        padding-top: 14px;
       }
 
       .stack-section {
@@ -2829,6 +2534,11 @@
         background: rgba(255, 255, 255, 0.06);
       }
 
+      .mobile-sidebar__nav a.is-active {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
       .mobile-sidebar :focus-visible {
         outline: 2px solid #fff;
         outline-offset: 3px;
@@ -2866,32 +2576,27 @@
       border-radius: 0;
     }
 
-    .work-grid,
-    .services-grid {
+    .work-grid{
       grid-auto-rows: 460px;
     }
 
-    .work-card,
-    .service-card {
+    .work-card{
       height: 460px;
       min-height: 0;
     }
 
-    .work-visual,
-    .service-card__visual {
+    .work-visual{
       height: 180px;
       min-height: 180px;
       aspect-ratio: auto;
     }
 
-    .work-body,
-    .service-card__body {
+    .work-body{
       min-height: 0;
       padding: 22px;
     }
 
-    .work-body p,
-    .service-card__body p {
+    .work-body p{
       display: -webkit-box;
       overflow: hidden;
       -webkit-box-orient: vertical;
@@ -2909,14 +2614,12 @@
       padding-top: 18px;
     }
 
-    .work-card:not(.is-active) .work-link,
-    .service-card:not(.is-active) a {
+    .work-card:not(.is-active) .work-link{
       pointer-events: none;
     }
 
     @media (min-width: 1041px) {
-      .work-card:not(.is-active) .work-link,
-      .service-card:not(.is-active) a {
+      .work-card:not(.is-active) .work-link{
         pointer-events: auto;
       }
     }
@@ -2942,15 +2645,13 @@
     }
 
     @media (min-width: 721px) and (max-width: 1040px) {
-      .work-carousel,
-      .services-carousel {
+      .work-carousel{
         width: min(calc(100% - 32px), 900px);
         margin-inline: auto;
         overflow: hidden;
       }
 
-      .work-grid,
-      .services-grid {
+      .work-grid{
         position: relative;
         display: block;
         height: 460px;
@@ -2960,8 +2661,7 @@
         touch-action: pan-y;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         position: absolute;
         top: 0;
         left: 50%;
@@ -2975,8 +2675,7 @@
         transition: transform 220ms ease, opacity 220ms ease, border-color var(--ease);
       }
 
-      .work-card.is-active,
-      .service-card.is-active {
+      .work-card.is-active{
         z-index: 3;
         opacity: 1;
         pointer-events: auto;
@@ -2984,37 +2683,30 @@
       }
 
       .work-card.is-prev,
-      .service-card.is-prev,
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         z-index: 2;
         opacity: 0.62;
         pointer-events: auto;
         cursor: pointer;
       }
 
-      .work-card.is-prev,
-      .service-card.is-prev {
+      .work-card.is-prev{
         transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
       }
 
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
       }
 
-      .work-carousel__control,
-      .services-carousel__control {
+      .work-carousel__control{
         display: grid;
       }
 
-      .work-carousel__control--prev,
-      .services-carousel__control--prev {
+      .work-carousel__control--prev{
         left: 28px;
       }
 
-      .work-carousel__control--next,
-      .services-carousel__control--next {
+      .work-carousel__control--next{
         right: 28px;
       }
     }
@@ -3032,15 +2724,13 @@
         padding-block: 26px 32px;
       }
 
-      .work-carousel,
-      .services-carousel {
+      .work-carousel{
         width: 100%;
         margin-inline: 0;
         overflow: hidden;
       }
 
-      .work-grid,
-      .services-grid {
+      .work-grid{
         position: relative;
         display: block;
         height: 414px;
@@ -3050,8 +2740,7 @@
         touch-action: pan-y;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         position: absolute;
         top: 0;
         left: 50%;
@@ -3065,8 +2754,7 @@
         transition: transform 220ms ease, opacity 220ms ease, border-color var(--ease);
       }
 
-      .work-card.is-active,
-      .service-card.is-active {
+      .work-card.is-active{
         z-index: 3;
         opacity: 1;
         pointer-events: auto;
@@ -3074,43 +2762,31 @@
       }
 
       .work-card.is-prev,
-      .service-card.is-prev,
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         z-index: 2;
         opacity: 0.58;
         pointer-events: auto;
         cursor: pointer;
       }
 
-      .work-card.is-prev,
-      .service-card.is-prev {
+      .work-card.is-prev{
         transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
       }
 
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
       }
 
-      .work-body,
-      .service-card__body {
+      .work-body{
         padding: 18px;
       }
 
-      .work-visual,
-      .service-card__visual {
+      .work-visual{
         height: 150px;
         min-height: 150px;
       }
 
-      .service-card__visual svg {
-        width: 58px;
-        height: 58px;
-      }
-
-      .work-carousel__control,
-      .services-carousel__control {
+      .work-carousel__control{
         display: none;
       }
 
@@ -3152,25 +2828,21 @@
     }
 
     @media (max-width: 360px) {
-      .work-grid,
-      .services-grid {
+      .work-grid{
         height: 404px;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         width: 84%;
         height: 404px;
       }
 
-      .work-visual,
-      .service-card__visual {
+      .work-visual{
         height: 142px;
         min-height: 142px;
       }
 
-      .work-body,
-      .service-card__body {
+      .work-body{
         padding: 16px;
       }
 
@@ -3193,13 +2865,11 @@
         padding-block: 52px;
       }
 
-      .work-grid,
-      .services-grid {
+      .work-grid{
         grid-auto-rows: auto;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         height: auto;
         min-height: 100%;
       }
@@ -3210,13 +2880,7 @@
         aspect-ratio: 16 / 9;
       }
 
-      .service-card__visual {
-        height: 96px;
-        min-height: 96px;
-      }
-
-      .work-body,
-      .service-card__body {
+      .work-body{
         padding: 18px;
       }
 
@@ -3232,47 +2896,40 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .work-card,
-      .service-card {
+      .work-card{
         transition-duration: 0.01ms;
       }
     }
 
     @media (prefers-reduced-motion: reduce) and (min-width: 721px) and (max-width: 1040px) {
-      .work-card.is-active,
-      .service-card.is-active {
+      .work-card.is-active{
         opacity: 1 !important;
         transform: translateX(-50%) scale(1) !important;
       }
 
-      .work-card.is-prev,
-      .service-card.is-prev {
+      .work-card.is-prev{
         opacity: 0.62 !important;
         transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92) !important;
       }
 
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         opacity: 0.62 !important;
         transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92) !important;
       }
     }
 
     @media (prefers-reduced-motion: reduce) and (max-width: 720px) {
-      .work-card.is-active,
-      .service-card.is-active {
+      .work-card.is-active{
         opacity: 1 !important;
         transform: translateX(-50%) scale(1) !important;
       }
 
-      .work-card.is-prev,
-      .service-card.is-prev {
+      .work-card.is-prev{
         opacity: 0.58 !important;
         transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92) !important;
       }
 
-      .work-card.is-next,
-      .service-card.is-next {
+      .work-card.is-next{
         opacity: 0.58 !important;
         transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92) !important;
       }
@@ -3743,265 +3400,6 @@
       }
     }
 
-    /* Ticket 04: Services spotlight deck */
-
-    .services-carousel {
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .services-grid {
-      position: relative;
-      display: block;
-      height: 350px;
-      padding: 0;
-      overflow: visible;
-      isolation: isolate;
-      outline: none;
-      touch-action: pan-y;
-    }
-
-    .services-grid:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 8px;
-    }
-
-    .service-card {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      display: flex;
-      width: 42%;
-      height: 350px;
-      min-height: 0;
-      margin: 0;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(-50%) scale(0.92);
-      transform-origin: center;
-      transition:
-        transform 250ms ease,
-        opacity 250ms ease,
-        border-color var(--ease),
-        background-color var(--ease);
-      will-change: transform, opacity;
-    }
-
-    .service-card.is-active {
-      z-index: 3;
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(-50%);
-    }
-
-    .service-card.is-prev,
-    .service-card.is-next {
-      z-index: 2;
-      opacity: 0.66;
-      pointer-events: auto;
-      cursor: pointer;
-    }
-
-    .service-card.is-prev {
-      transform: translateX(calc(-50% - 28%)) rotate(-7deg) scale(0.92);
-    }
-
-    .service-card.is-next {
-      transform: translateX(calc(-50% + 28%)) rotate(7deg) scale(0.92);
-    }
-
-    .service-card.is-hidden {
-      visibility: hidden;
-    }
-
-    .service-card.is-active:hover {
-      transform: translateX(-50%);
-    }
-
-    .service-card.is-prev:hover {
-      transform: translateX(calc(-50% - 28%)) rotate(-7deg) scale(0.92);
-    }
-
-    .service-card.is-next:hover {
-      transform: translateX(calc(-50% + 28%)) rotate(7deg) scale(0.92);
-    }
-
-    .service-card:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      background-color: #111114;
-    }
-
-    .service-card:not(.is-active):hover {
-      filter: brightness(1.12);
-    }
-
-    .service-card__body {
-      min-height: 0;
-      padding: 22px;
-    }
-
-    .service-card__heading {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-height: 48px;
-    }
-
-    .service-card__heading h3 {
-      margin: 0;
-    }
-
-    .service-card__icon {
-      display: grid;
-      flex: 0 0 44px;
-      width: 44px;
-      height: 44px;
-      min-height: 44px;
-      place-items: center;
-      border: 0;
-      background: transparent;
-    }
-
-    .service-card__icon svg,
-    .service-card:hover .service-card__icon svg {
-      width: 40px;
-      height: 40px;
-      fill: none;
-      stroke: #d8d8de;
-      stroke-width: 1.15;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transform: none;
-      opacity: 0.88;
-    }
-
-    .service-card__body p {
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-    }
-
-    .service-card__meta {
-      margin-top: auto;
-      padding-top: 18px;
-    }
-
-    .services-carousel .deck-dots {
-      display: none;
-      pointer-events: none;
-    }
-
-    .services-carousel .deck-dot {
-      display: block;
-      width: 6px;
-      height: 6px;
-      padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.44);
-      border-radius: 50%;
-      background: transparent;
-      cursor: default;
-    }
-
-    .services-carousel .deck-dot::before {
-      display: none;
-    }
-
-    .services-carousel .deck-dot[aria-current="true"] {
-      border-color: #fff;
-      background: #fff;
-      transform: scale(1.25);
-    }
-
-    @media (min-width: 721px) and (max-width: 1040px) {
-      .services-carousel {
-        width: 100%;
-        margin-inline: 0;
-      }
-
-      .services-grid {
-        height: 400px;
-      }
-
-      .service-card {
-        width: 57%;
-        height: 400px;
-      }
-
-      .service-card.is-prev {
-        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
-      }
-
-      .service-card.is-next {
-        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
-      }
-
-      .service-card.is-prev:hover {
-        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
-      }
-
-      .service-card.is-next:hover {
-        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
-      }
-    }
-
-    @media (max-width: 720px) {
-      .services-carousel {
-        width: 100%;
-        margin-inline: 0;
-      }
-
-      .services-grid {
-        height: 340px;
-      }
-
-      .service-card {
-        width: min(84%, 360px);
-        height: 340px;
-      }
-
-      .service-card.is-prev {
-        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
-      }
-
-      .service-card.is-next {
-        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
-      }
-
-      .service-card.is-prev:hover {
-        transform: translateX(calc(-50% - 86%)) rotate(-7deg) scale(0.92);
-      }
-
-      .service-card.is-next:hover {
-        transform: translateX(calc(-50% + 86%)) rotate(7deg) scale(0.92);
-      }
-
-      .services-carousel .deck-dots {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 18px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .services-grid {
-        height: 332px;
-      }
-
-      .service-card {
-        width: 84%;
-        height: 332px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .service-card {
-        transition-duration: 0.01ms;
-      }
-    }
-
     /* Ticket 06: evidence-to-contact spacing and heading rhythm */
 
     .section,
@@ -4025,16 +3423,12 @@
       border-top: 0;
     }
 
-    /* Issue 3: shared Featured Work and Services deck geometry */
-
-    .work-carousel,
-    .services-carousel {
+    .work-carousel{
       width: 100%;
       overflow: hidden;
     }
 
-    .work-grid,
-    .services-grid {
+    .work-grid{
       position: relative;
       display: block;
       padding: 0;
@@ -4043,8 +3437,7 @@
       touch-action: pan-y;
     }
 
-    .work-card,
-    .service-card {
+    .work-card{
       position: absolute;
       top: 0;
       left: 50%;
@@ -4063,8 +3456,7 @@
       will-change: transform, opacity;
     }
 
-    .work-card.is-active,
-    .service-card.is-active {
+    .work-card.is-active{
       z-index: 3;
       opacity: 1;
       pointer-events: auto;
@@ -4072,72 +3464,59 @@
     }
 
     .work-card.is-prev,
-    .work-card.is-next,
-    .service-card.is-prev,
-    .service-card.is-next {
+    .work-card.is-next{
       z-index: 2;
       opacity: 0.66;
       pointer-events: auto;
       cursor: pointer;
     }
 
-    .work-card.is-prev,
-    .service-card.is-prev {
+    .work-card.is-prev{
       transform: translateX(calc(-50% - var(--deck-side-offset))) rotate(-7deg);
     }
 
-    .work-card.is-next,
-    .service-card.is-next {
+    .work-card.is-next{
       transform: translateX(calc(-50% + var(--deck-side-offset))) rotate(7deg);
     }
 
-    .work-card.is-hidden,
-    .service-card.is-hidden {
+    .work-card.is-hidden{
       visibility: hidden;
     }
 
-    .work-card.is-active:hover,
-    .service-card.is-active:hover {
+    .work-card.is-active:hover{
       transform: translateX(-50%);
     }
 
-    .work-card.is-prev:hover,
-    .service-card.is-prev:hover {
+    .work-card.is-prev:hover{
       transform: translateX(calc(-50% - var(--deck-side-offset))) rotate(-7deg);
     }
 
-    .work-card.is-next:hover,
-    .service-card.is-next:hover {
+    .work-card.is-next:hover{
       transform: translateX(calc(-50% + var(--deck-side-offset))) rotate(7deg);
     }
 
     @media (min-width: 1041px) {
-      .work-grid,
-      .services-grid {
+      .work-grid{
         --deck-side-offset: 48%;
       }
     }
 
     @media (min-width: 721px) and (max-width: 1040px) {
-      .work-grid,
-      .services-grid {
+      .work-grid{
         --deck-side-offset: 32%;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         width: 57%;
       }
     }
 
     @media (max-width: 720px) {
-      .work-grid,
-      .services-grid {
+      .work-grid{
         --deck-side-offset: 1%;
       }
 
-      .work-card,
-      .service-card {
+      .work-card{
         width: 84%;
       }
     }
@@ -4346,6 +3725,15 @@
         margin-right: 8px;
       }
 
+      .desktop-sidebar__nav a.is-active {
+        color: #fff;
+      }
+
+      .desktop-sidebar__nav a.is-active::before {
+        width: 14px;
+        margin-right: 8px;
+      }
+
       .desktop-sidebar__bottom,
       .mobile-sidebar__bottom {
         display: grid;
@@ -4454,10 +3842,10 @@
     </a>
 
     <nav class="desktop-sidebar__nav" aria-label="Desktop primary">
-      <a href="#top">Home</a>
-      <a href="#work">Work</a>
-      <a href="#stack">Stack</a>
-      <a href="#contact">Contact</a>
+      <a href="#top" data-section-nav aria-current="location">Home</a>
+      <a href="#work" data-section-nav>Work</a>
+      <a href="#stack" data-section-nav>Stack</a>
+      <a href="#contact" data-section-nav>Contact</a>
     </nav>
 
     <div class="desktop-sidebar__bottom">
@@ -4492,10 +3880,10 @@
     </div>
 
     <nav class="mobile-sidebar__nav" aria-label="Mobile primary">
-      <a href="#top">Home</a>
-      <a href="#work">Work</a>
-      <a href="#stack">Stack</a>
-      <a href="#contact">Contact</a>
+      <a href="#top" data-section-nav aria-current="location">Home</a>
+      <a href="#work" data-section-nav>Work</a>
+      <a href="#stack" data-section-nav>Stack</a>
+      <a href="#contact" data-section-nav>Contact</a>
     </nav>
 
     <div class="mobile-sidebar__bottom">
@@ -4528,10 +3916,10 @@
         </button>
 
         <nav class="nav" id="primary-navigation" aria-label="Primary" data-navigation>
-          <a href="#top">Home</a>
-          <a href="#work">Work</a>
-          <a href="#stack">Stack</a>
-          <a href="#contact">Contact</a>
+          <a href="#top" data-section-nav aria-current="location">Home</a>
+          <a href="#work" data-section-nav>Work</a>
+          <a href="#stack" data-section-nav>Stack</a>
+          <a href="#contact" data-section-nav>Contact</a>
         </nav>
       </div>
     </header>
@@ -4761,7 +4149,7 @@
 
 
     <section class="stack-section" id="stack">
-      <div class="visual-shell">
+      <div class="reading-shell">
         <div class="section-heading stack-header">
           <div>
             <div class="section-label" role="heading" aria-level="2">Stack</div>
@@ -5035,7 +4423,7 @@
     </section>
 
     <section class="section" id="process">
-      <div class="visual-shell process-shell">
+      <div class="reading-shell process-shell">
         <div class="process-heading">
           <p class="section-label">How I work</p>
           <h2>My process.</h2>
@@ -5159,144 +4547,6 @@
       </div>
     </section>
 
-    <!-- Services remain removed from the homepage baseline.
-    <section class="section services-section" id="services-preview">
-      <div class="visual-shell">
-        <div class="section-heading">
-          <div>
-            <p class="section-label">Services</p>
-            <h2>What I build.</h2>
-          </div>
-
-          <a class="see-all" href="/services">
-            See all services <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <div
-          class="services-carousel"
-          data-services-carousel
-          role="region"
-          aria-roledescription="spotlight deck"
-          aria-label="Services spotlight deck"
-          aria-describedby="services-deck-status"
-        >
-          <div
-            class="services-grid"
-            data-services-track
-            tabindex="0"
-            role="group"
-            aria-label="Services cards. Use Left Arrow or Right Arrow to change the centered service."
-          >
-            <article
-              class="service-card is-active"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="1 of 3: Spreadsheet and Data Systems, selected"
-              aria-current="true"
-              aria-posinset="1"
-              aria-setsize="3"
-            >
-              <div class="service-card__body">
-                <div class="service-card__heading">
-                  <span class="service-card__icon" aria-hidden="true">
-                    <svg viewBox="0 0 120 120">
-                      <rect x="24" y="25" width="72" height="70" rx="7"></rect>
-                      <path d="M24 47h72M48 25v70M72 25v70"></path>
-                      <path d="M31 35h10M55 35h10M79 35h10"></path>
-                      <path d="M31 59h10M55 59h10M79 59h10M31 72h10M55 72h10M79 72h10"></path>
-                    </svg>
-                  </span>
-                  <h3>Spreadsheet &amp; Data Systems</h3>
-                </div>
-                <p>
-                  Turn operational spreadsheets into reliable systems for tracking, reporting, inventory, finance, and day-to-day data.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Tracking</span>
-                  <span>Reporting</span>
-                  <span>Dashboards</span>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="service-card is-next"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="2 of 3: Workflow Automation"
-            >
-              <div class="service-card__body">
-                <div class="service-card__heading">
-                  <span class="service-card__icon" aria-hidden="true">
-                    <svg viewBox="0 0 120 120">
-                      <rect x="18" y="48" width="26" height="24" rx="5"></rect>
-                      <rect x="76" y="24" width="26" height="24" rx="5"></rect>
-                      <rect x="76" y="72" width="26" height="24" rx="5"></rect>
-                      <circle cx="60" cy="60" r="10"></circle>
-                      <path d="M44 60h6M70 54l6-12M70 66l6 12"></path>
-                      <path d="M84 36h10M84 84h10"></path>
-                    </svg>
-                  </span>
-                  <h3>Workflow Automation</h3>
-                </div>
-                <p>
-                  Connect repetitive work across your tools, data, documents, and notifications so less time is spent moving things manually.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Data movement</span>
-                  <span>Documents</span>
-                  <span>Notifications</span>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="service-card is-prev"
-              role="group"
-              aria-roledescription="slide"
-              aria-label="3 of 3: Internal Tools and Web Apps"
-              aria-current="false"
-              aria-posinset="3"
-              aria-setsize="3"
-            >
-              <div class="service-card__body">
-                <div class="service-card__heading">
-                  <span class="service-card__icon" aria-hidden="true">
-                    <svg viewBox="0 0 120 120">
-                      <rect x="18" y="24" width="84" height="72" rx="8"></rect>
-                      <path d="M18 43h84"></path>
-                      <circle cx="29" cy="34" r="2"></circle>
-                      <circle cx="37" cy="34" r="2"></circle>
-                      <circle cx="45" cy="34" r="2"></circle>
-                      <path d="m45 60-10 9 10 9M75 60l10 9-10 9M65 55 55 83"></path>
-                    </svg>
-                  </span>
-                  <h3>Internal Tools &amp; Web Apps</h3>
-                </div>
-                <p>
-                  Build lightweight tools for workflows that need more structure, clearer roles, or a better interface than a spreadsheet can provide.
-                </p>
-                <div class="service-card__meta" aria-label="Common use cases">
-                  <span>Operations</span>
-                  <span>Data entry</span>
-                  <span>Internal apps</span>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="deck-dots" data-services-dots aria-label="Service position" aria-hidden="true">
-            <span class="deck-dot" data-deck-index="0" aria-current="true"></span>
-            <span class="deck-dot" data-deck-index="1" aria-current="false"></span>
-            <span class="deck-dot" data-deck-index="2" aria-current="false"></span>
-          </div>
-          <p class="deck-status" id="services-deck-status" data-deck-status role="status" aria-live="polite"></p>
-        </div>
-      </div>
-    </section>
-    -->
-
     <section class="section about-placeholder" id="about" aria-labelledby="about-title">
       <div class="reading-shell">
         <p class="section-label">About</p>
@@ -5306,7 +4556,7 @@
     </section>
 
     <section class="contact-cta" id="contact">
-      <div class="visual-shell">
+      <div class="reading-shell">
         <div class="cta-card">
           <div>
             <p class="section-label">Start a conversation</p>
@@ -5488,6 +4738,54 @@
         setMenuState(false, { restoreFocus: false });
       }
     });
+
+    const sectionNavigation = [...document.querySelectorAll("[data-section-nav]")];
+    const sectionNavigationTargets = new Map([
+      ["hero", "#top"],
+      ["work", "#work"],
+      ["stack", "#stack"],
+      ["process", "#stack"],
+      ["about", "#stack"],
+      ["contact", "#contact"],
+    ]);
+    let activeNavigationFrame = 0;
+
+    const setActiveNavigation = (target) => {
+      sectionNavigation.forEach((link) => {
+        const isActive = link.getAttribute("href") === target;
+        link.classList.toggle("is-active", isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const updateActiveNavigation = () => {
+      activeNavigationFrame = 0;
+      const marker = window.scrollY + Math.max(window.innerHeight * 0.5, 160);
+      let activeTarget = "#top";
+
+      document.querySelectorAll("main > section[id]").forEach((section) => {
+        const top = section.getBoundingClientRect().top + window.scrollY;
+        if (top <= marker) {
+          activeTarget = sectionNavigationTargets.get(section.id) || activeTarget;
+        }
+      });
+
+      setActiveNavigation(activeTarget);
+    };
+
+    const scheduleActiveNavigationUpdate = () => {
+      if (activeNavigationFrame) return;
+      activeNavigationFrame = requestAnimationFrame(updateActiveNavigation);
+    };
+
+    window.addEventListener("scroll", scheduleActiveNavigationUpdate, { passive: true });
+    window.addEventListener("resize", scheduleActiveNavigationUpdate);
+    window.addEventListener("hashchange", scheduleActiveNavigationUpdate);
+    scheduleActiveNavigationUpdate();
   </script>
 
   <script>

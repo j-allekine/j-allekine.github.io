@@ -6,7 +6,7 @@ Read `CONTEXT.md` before making implementation decisions.
 
 ## Issue tracker
 
-Issues and specifications are tracked as local Markdown under `.scratch/`.
+Issues and specifications are tracked in GitHub Issues for this repository.
 
 See `docs/agents/issue-tracker.md`.
 
@@ -56,3 +56,12 @@ astro dev --background
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
 For Astro-specific implementation guidance, see docs/agents/astro.md when relevant.
+
+## Constructive challenge
+
+Do not blindly follow a request when repository evidence or engineering judgment shows it would materially reduce quality.
+
+- Push back on conflicts with accepted decisions, incorrect assumptions, unnecessary complexity, or materially weaker engineering choices.
+- State the problem briefly and propose the smallest better alternative.
+- Do not challenge stylistic preferences or reversible low-risk choices.
+- After the trade-off is clear, follow the user's decision unless it conflicts with higher-priority authority or safety constraints.
