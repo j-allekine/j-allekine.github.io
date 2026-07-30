@@ -3642,6 +3642,39 @@
       grid-template-columns: 1fr auto;
     }
 
+    .desktop-sidebar__bottom,
+    .mobile-sidebar__bottom {
+      display: grid;
+      gap: 18px;
+      margin-top: auto;
+    }
+
+    .sidebar-socials {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-socials a {
+      width: fit-content;
+      color: #a7a7b0;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-socials a:hover,
+    .sidebar-socials a:focus-visible {
+      color: #fff;
+    }
+
+    .sidebar-verse {
+      color: #76767f;
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     @media (min-width: 1280px) {
       :root {
         --sidebar-width: 224px;
@@ -3697,39 +3730,6 @@
       .desktop-sidebar__nav a:hover,
       .desktop-sidebar__nav a:focus-visible {
         color: #f1f1f4;
-      }
-
-      .desktop-sidebar__bottom,
-      .mobile-sidebar__bottom {
-        display: grid;
-        gap: 18px;
-        margin-top: auto;
-      }
-
-      .sidebar-socials {
-        display: grid;
-        gap: 8px;
-      }
-
-      .sidebar-socials a {
-        width: fit-content;
-        color: #a7a7b0;
-        font-family: var(--mono);
-        font-size: 0.7rem;
-        letter-spacing: 0.02em;
-      }
-
-      .sidebar-socials a:hover,
-      .sidebar-socials a:focus-visible {
-        color: #fff;
-      }
-
-      .sidebar-verse {
-        color: #76767f;
-        font-family: var(--mono);
-        font-size: 0.64rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
       }
 
       .page-frame {
