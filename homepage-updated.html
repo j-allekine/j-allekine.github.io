@@ -3867,6 +3867,86 @@
       }
     }
 
+    /* Issue #20: compact, accessible Stack marquee. */
+
+    .stack-section {
+      padding-block: clamp(24px, 3vw, 36px);
+    }
+
+    .stack-header {
+      margin-bottom: 12px;
+    }
+
+    .stack-marquee {
+      overflow-x: hidden;
+      outline: none;
+    }
+
+    .stack-marquee:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 4px;
+    }
+
+    .stack-track {
+      gap: 0;
+      padding: 8px;
+      animation-duration: 34s;
+    }
+
+    .stack-sequence {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 12px;
+      padding-right: 12px;
+    }
+
+    .stack-item {
+      min-height: 36px;
+      padding-inline: 11px;
+    }
+
+    .stack-marquee:hover .stack-track,
+    .stack-marquee:focus-within .stack-track {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 720px) {
+      .stack-section {
+        padding-block: 24px 28px;
+      }
+
+      .stack-header {
+        margin-bottom: 10px;
+      }
+
+      .stack-sequence {
+        gap: 8px;
+        padding-right: 8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stack-marquee {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-color: rgba(255, 255, 255, 0.36) transparent;
+        scrollbar-width: thin;
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+
+      .stack-track {
+        animation: none;
+        transform: none;
+        will-change: auto;
+      }
+
+      .stack-sequence[aria-hidden="true"] {
+        display: none;
+      }
+    }
+
     @media (min-width: 1280px) {
       .hero {
         --hero-portrait-size: 288px;
@@ -4201,8 +4281,13 @@
           </a>
         </div>
 
-        <div class="stack-marquee" aria-label="Scrolling technology and tool list">
+        <div
+          class="stack-marquee"
+          aria-label="Stack tools"
+          tabindex="0"
+        >
           <div class="stack-track">
+            <div class="stack-sequence" role="group" aria-label="Tools">
             <div class="stack-item stack-item--excel">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg/500px-Microsoft_Office_Excel_%282025%E2%80%93present%29.svg.png"
@@ -4331,6 +4416,8 @@
               </svg>
               <span>Make</span>
             </div>
+            </div>
+            <div class="stack-sequence" aria-hidden="true">
             <div class="stack-item stack-item--excel">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg/500px-Microsoft_Office_Excel_%282025%E2%80%93present%29.svg.png"
@@ -4458,6 +4545,7 @@
                 <path d="M17.1 15.5 18.9 2.5H23l-1.8 13h-4.1Z" fill="url(#make-gradient-a)"/>
               </svg>
               <span>Make</span>
+            </div>
             </div>
           </div>
         </div>
