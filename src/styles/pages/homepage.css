@@ -638,7 +638,10 @@
     }
 
     .process-panel {
-      min-height: 148px;
+      width: min(100%, 640px);
+      min-height: 0;
+      height: auto;
+      margin-inline: auto;
       padding: clamp(20px, 2.4vw, 26px);
       border: 1px solid var(--line-strong);
       border-radius: 10px;

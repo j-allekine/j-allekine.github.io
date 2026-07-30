@@ -6,7 +6,7 @@
     </div>
 
     <div class="process-interactive" data-process>
-      <div class="process-nav" role="tablist" aria-label="Four-step working process">
+      <div class="process-nav" role="tablist" aria-label="Four-step working process" aria-orientation="horizontal">
         <button class="process-tab" type="button" role="tab" aria-selected="true" aria-controls="process-panel" id="process-tab-discovery" data-process-step="discovery" data-title="Discovery" data-description="We start with a focused call to understand your current process, pain points, tools involved, and the outcome you want to achieve.">
           <span class="process-tab__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg></span>
           <span class="process-tab__label">Discovery</span><span class="process-tab__dot" aria-hidden="true"></span>
@@ -25,8 +25,8 @@
         </button>
       </div>
 
-      <div class="process-panel" id="process-panel" role="tabpanel" aria-labelledby="process-tab-discovery" tabindex="0" aria-live="polite">
-        <p class="process-panel__eyebrow" data-process-title>Discovery</p>
+      <div class="process-panel" id="process-panel" role="tabpanel" aria-labelledby="process-tab-discovery" tabindex="0">
+        <p class="process-panel__eyebrow" data-process-title aria-hidden="true">Discovery</p>
         <p class="process-panel__description" data-process-description>We start with a focused call to understand your current process, pain points, tools involved, and the outcome you want to achieve.</p>
       </div>
     </div>
@@ -45,27 +45,66 @@
     if (!tabs.length || !panel || !title || !description) return;
 
     const selectStep = (tab, moveFocus = false) => {
+      const previousHeight = panel.getBoundingClientRect().height;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      panel.getAnimations().forEach((animation) => animation.cancel());
+
       tabs.forEach((item) => {
         const selected = item === tab;
         item.setAttribute("aria-selected", String(selected));
         item.tabIndex = selected ? 0 : -1;
       });
+
       title.textContent = tab.dataset.title || "";
       description.textContent = tab.dataset.description || "";
       panel.setAttribute("aria-labelledby", tab.id);
-      if (moveFocus) tab.focus();
+
+      if (!reduceMotion) {
+        panel.style.height = "auto";
+        const nextHeight = panel.getBoundingClientRect().height;
+        panel.style.height = `${previousHeight}px`;
+        panel.style.overflow = "hidden";
+
+        const animation = panel.animate(
+          [
+            { height: `${previousHeight}px` },
+            { height: `${nextHeight}px` },
+          ],
+          {
+            duration: 180,
+            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+            fill: "both",
+          },
+        );
+
+        const clearAnimatedHeight = () => {
+          panel.style.height = "";
+          panel.style.overflow = "";
+        };
+        animation.finished.then(clearAnimatedHeight, clearAnimatedHeight);
+      }
+
+      if (moveFocus) tab.focus({ preventScroll: true });
     };
 
     tabs.forEach((tab, index) => {
       tab.addEventListener("click", () => selectStep(tab));
-      tab.addEventListener("focus", () => selectStep(tab));
       tab.addEventListener("keydown", (event) => {
         let nextIndex = null;
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (index + 1) % tabs.length;
-        if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (index - 1 + tabs.length) % tabs.length;
-        if (event.key === "Home") nextIndex = 0;
-        if (event.key === "End") nextIndex = tabs.length - 1;
+
+        if (event.key === "ArrowRight") {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === "ArrowLeft") {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabs.length - 1;
+        }
+
         if (nextIndex === null) return;
+
         event.preventDefault();
         selectStep(tabs[nextIndex], true);
       });
