@@ -14,7 +14,7 @@ import { projects } from "../../data/projects";
       </button>
 
       <div class="work-grid" data-work-track tabindex="0">
-        {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} />)}
+        {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} showCaseStudyLink={false} />)}
       </div>
 
       <div class="deck-dots" data-work-dots aria-hidden="true">

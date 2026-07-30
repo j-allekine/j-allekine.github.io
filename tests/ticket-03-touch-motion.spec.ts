@@ -35,6 +35,8 @@ test.describe("Issue #15 Featured Work interaction", () => {
     await expect(page.locator("[data-work-carousel] [data-deck-status]")).toHaveText(
       "Featured project 3 of 3: LGU Inventory & Asset System"
     );
+    await expect(page.locator("[data-work-carousel] [data-deck-status]")).toHaveCSS("position", "absolute");
+    await expect(page.locator("[data-work-carousel] [data-deck-status]")).toHaveCSS("width", "1px");
 
     await page.keyboard.press("ArrowRight");
     await expect(selectedTitle(page)).toHaveText("Pharmacy Inventory System");
@@ -43,6 +45,9 @@ test.describe("Issue #15 Featured Work interaction", () => {
   test("horizontal swipes move one project and wrap", async ({ page }) => {
     await swipe(page, -72, 0);
     await expect(selectedTitle(page)).toHaveText("Hospital OCR Automation Pipeline");
+    await expect(page.locator("[data-work-carousel] [data-deck-status]")).toHaveText(
+      "Featured project 2 of 3: Hospital OCR Automation Pipeline"
+    );
     await swipe(page, -72, 0);
     await swipe(page, -72, 0);
     await expect(selectedTitle(page)).toHaveText("Pharmacy Inventory System");
@@ -64,9 +69,34 @@ test.describe("Issue #15 Featured Work interaction", () => {
     await page.setViewportSize({ width: 768, height: 900 });
     await page.locator("[data-work-prev]").click();
     await expect(selectedTitle(page)).toHaveText("LGU Inventory & Asset System");
+    await expect(page.locator("[data-work-carousel] [data-deck-status]")).toHaveText(
+      "Featured project 3 of 3: LGU Inventory & Asset System"
+    );
     await page.locator("[data-work-next]").click();
     await expect(selectedTitle(page)).toHaveText("Pharmacy Inventory System");
   });
+
+  for (const width of [768, 1279]) {
+    test(`${width}px supports keyboard and swipe selection`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.locator(track).focus();
+      await page.keyboard.press("ArrowRight");
+      await expect(selectedTitle(page)).toHaveText("Hospital OCR Automation Pipeline");
+      await swipe(page, -72, 0);
+      await expect(selectedTitle(page)).toHaveText("LGU Inventory & Asset System");
+    });
+  }
+
+  for (const width of [1280, 1440]) {
+    test(`${width}px exposes all projects without carousel navigation`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await expect(page.locator("[data-work-prev]")).toBeHidden();
+      await expect(page.locator(`${track} .work-card`)).toHaveCount(3);
+      await page.locator(track).focus();
+      await page.keyboard.press("ArrowRight");
+      await expect(selectedTitle(page)).toHaveText("Pharmacy Inventory System");
+    });
+  }
 
   test("selection persists across every responsive breakpoint", async ({ page }) => {
     await page.locator(track).focus();

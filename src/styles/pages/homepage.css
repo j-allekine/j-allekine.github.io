@@ -2623,10 +2623,17 @@
 
 #work .work-carousel__control--prev {
   left: 0;
+  transform: translate(0, -50%);
 }
 
 #work .work-carousel__control--next {
   right: 0;
+  transform: translate(0, -50%);
+}
+
+#work .work-carousel__control--prev:active,
+#work .work-carousel__control--next:active {
+  transform: translate(0, -50%) scale(0.95);
 }
 
 #work .deck-dots {
