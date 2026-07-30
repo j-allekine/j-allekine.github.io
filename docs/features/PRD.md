@@ -462,12 +462,12 @@ The Hero should preserve the current two-column idea from `homepage-updated.html
 ## Composition
 
 ```text
-[ text content ]     [ portrait / image ]
+[ portrait / image ]     [ text content ]
 ```
 
-Text on the left.
+Portrait/image on the left.
 
-Portrait/image on the right.
+Text on the right.
 
 The portrait/image is part of the approved design and must remain.
 
@@ -572,8 +572,8 @@ The approved mockup accidentally omitted it in one iteration; that omission is *
 
 ## Desktop
 
-- portrait/image sits to the right of the Hero text
-- vertical portrait proportion
+- portrait/image sits to the left of the Hero text
+- nearly square portrait proportion
 - dark framed treatment
 - restrained border
 - subtle depth
@@ -585,6 +585,8 @@ The approved mockup accidentally omitted it in one iteration; that omission is *
 Until a final real portrait is provided, use the existing intentional placeholder concept.
 
 The placeholder should look deliberately designed rather than like a broken image slot.
+
+Below `1280px`, the portrait-first treatment may become slightly taller than the desktop image.
 
 ---
 
@@ -1590,7 +1592,7 @@ No social links repeated at the bottom.
 ## Hero
 
 - preserve portrait/image
-- desktop: text left, portrait right
+- desktop: portrait left, text right
 - tablet/mobile: portrait first
 - no occupational eyebrow
 - name: `JIHM ALLEKINE / ALMEDILLA`

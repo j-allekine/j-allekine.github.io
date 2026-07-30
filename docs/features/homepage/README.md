@@ -25,7 +25,7 @@ This folder is a planning map, not a replacement design specification. Link exis
 | --- | --- |
 | [00-shared-decisions.md](00-shared-decisions.md) | `completed` |
 | [01-page-shell-navigation-flow.md](01-page-shell-navigation-flow.md) | `completed` |
-| [02-hero.md](02-hero.md) | `ready for tickets` |
+| [02-hero.md](02-hero.md) | `tickets created` |
 | [03-featured-work.md](03-featured-work.md) | `needs more info` |
 | [04-stack.md](04-stack.md) | `needs more info` |
 | [05-how-i-work.md](05-how-i-work.md) | `needs more info` |
@@ -75,7 +75,7 @@ This is the readiness tracker for the homepage feature. A chunk can be drafted i
 | --- | --- | --- | --- |
 | [00 Shared decisions](00-shared-decisions.md) | `completed` | None; this is the shared decision gate | Keep the decisions synchronized with `CONTEXT.md`, the root PRD, and dependent chunks |
 | [01 Page shell, navigation, and section flow](01-page-shell-navigation-flow.md) | `completed` | None; it was the implementation gate | Implement and validate `homepage-updated.html`; defer Astro migration |
-| [02 Hero](02-hero.md) | `needs more info` | 03–07 after 01 is ready | Hero copy, portrait state and alt text, and CTA destinations |
+| [02 Hero](02-hero.md) | `tickets created` | 03–07 after 01 is ready | Implement [#13](https://github.com/j-allekine/j-allekine.github.io/issues/13), then [#14](https://github.com/j-allekine/j-allekine.github.io/issues/14), under parent [#12](https://github.com/j-allekine/j-allekine.github.io/issues/12) |
 | [03 Featured Work](03-featured-work.md) | `needs more info` | 02, 04–07 after 01 is ready | Approved projects, media, copy, case-study behavior, heading wording, and deck keyboard behavior |
 | [04 Stack](04-stack.md) | `needs more info` | 02–03 and 05–07 after 01 is ready | Approved tool list/order, media sources, View All behavior, and reduced-motion outcome |
 | [05 How I Work](05-how-i-work.md) | `needs more info` | 02–04 and 06–07 after 01 is ready | Approved step copy/icons and pointer, keyboard, focus, panel-height, and reduced-motion behavior |
