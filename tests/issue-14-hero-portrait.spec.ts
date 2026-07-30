@@ -63,8 +63,9 @@ test.describe("issue #14 responsive Hero portrait composition", () => {
       expect(detailsBox!.y - (introBox!.y + introBox!.height)).toBeGreaterThanOrEqual(16);
       expect(Math.abs(portraitBox!.width / portraitBox!.height - 1)).toBeLessThanOrEqual(0.12);
       expect(portraitBox!.width).toBeGreaterThanOrEqual(250);
-      expect(portraitBox!.width).toBeLessThanOrEqual(320);
-      expect(heroBox!.width).toBeLessThanOrEqual(850);
+      expect(portraitBox!.width).toBeLessThanOrEqual(288);
+      expect(heroBox!.width).toBeLessThanOrEqual(760);
+      expect(heroBox!.height).toBeLessThanOrEqual(620);
       expect(primaryBox!.width).toBeLessThan(300);
       expect(secondaryBox!.width).toBeLessThan(300);
       expect(Math.abs(primaryBox!.y - secondaryBox!.y)).toBeLessThan(2);
