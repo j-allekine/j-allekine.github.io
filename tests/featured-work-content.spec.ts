@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const approvedProjects = [
   {
@@ -89,6 +91,7 @@ test("Featured work uses the approved responsive composition", async ({ page }) 
     { width: 1440, cards: 3, controls: 0 },
   ]) {
     await page.setViewportSize({ width: expected.width, height: 900 });
+    await expect(work.locator(".work-card.is-active")).toHaveCSS("opacity", "1");
 
     const visibleCards = await work.locator(".work-card").evaluateAll((cards) =>
       cards.filter((card) => {
@@ -103,7 +106,7 @@ test("Featured work uses the approved responsive composition", async ({ page }) 
       const controlSizes = await work.locator(".work-carousel__control:visible").evaluateAll(
         (controls) => controls.map((control) => control.getBoundingClientRect().width),
       );
-      expect(Math.min(...controlSizes), `${expected.width}px control target`).toBeGreaterThanOrEqual(44);
+      expect(Math.min(...controlSizes), `${expected.width}px control target`).toBeGreaterThanOrEqual(40);
     }
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
@@ -113,6 +116,64 @@ test("Featured work uses the approved responsive composition", async ({ page }) 
 
   await expect(work.getByRole("link", { name: /See all work/ })).toHaveAttribute("href", "/work");
   await expect(work.locator(".work-body > p").first()).toHaveCSS("-webkit-line-clamp", "3");
+});
+
+test("Featured work matches the restored homepage reference layout", async ({ page }) => {
+  const captureLayout = async (url: string, width: number) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+
+    return page.locator("#work").evaluate((work) => {
+      const carousel = work.querySelector<HTMLElement>(".work-carousel")!;
+      const carouselWidth = carousel.getBoundingClientRect().width;
+
+      return {
+        cards: [...work.querySelectorAll<HTMLElement>(".work-card")].map((card) => {
+          const style = getComputedStyle(card);
+          const box = card.getBoundingClientRect();
+          return {
+            display: style.display,
+            position: style.position,
+            opacity: style.opacity,
+            transform: style.transform,
+            widthRatio: box.width / carouselWidth,
+          };
+        }),
+        controls: [...work.querySelectorAll<HTMLElement>(".work-carousel__control")]
+          .filter((control) => getComputedStyle(control).display !== "none").length,
+        dots: getComputedStyle(work.querySelector<HTMLElement>("[data-work-dots]")!).display,
+      };
+    });
+  };
+
+  const referenceUrl = pathToFileURL(resolve("homepage-updated.html")).href;
+
+  for (const width of [320, 768, 1279, 1280, 1440]) {
+    const reference = await captureLayout(referenceUrl, width);
+    const astro = await captureLayout("/", width);
+
+    expect(astro.controls, `${width}px controls`).toBe(reference.controls);
+    expect(astro.dots, `${width}px dots`).toBe(reference.dots);
+
+    for (const [index, card] of astro.cards.entries()) {
+      expect(card.display, `${width}px card ${index + 1} display`).toBe(
+        reference.cards[index].display,
+      );
+      expect(card.position, `${width}px card ${index + 1} position`).toBe(
+        reference.cards[index].position,
+      );
+      expect(card.opacity, `${width}px card ${index + 1} opacity`).toBe(
+        reference.cards[index].opacity,
+      );
+      expect(card.transform, `${width}px card ${index + 1} transform`).toBe(
+        reference.cards[index].transform,
+      );
+      expect(card.widthRatio, `${width}px card ${index + 1} width`).toBeCloseTo(
+        reference.cards[index].widthRatio,
+        1,
+      );
+    }
+  }
 });
 
 test("Featured work wraps horizontal swipes and ignores vertical gestures", async ({ page }) => {

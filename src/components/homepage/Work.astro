@@ -10,12 +10,19 @@ const projects = await getFeaturedProjects();
   <div class="content-shell">
     <SectionHeader label="Featured projects" title="Selected work." href="/work" linkLabel="See all work" />
 
-    <div class="work-carousel" data-work-carousel role="region" aria-roledescription="carousel" aria-label="Featured Work carousel" aria-describedby="work-deck-status">
+    <div
+      class="work-carousel"
+      data-work-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured Work carousel"
+      aria-describedby="work-deck-status"
+    >
       <button class="work-carousel__control work-carousel__control--prev" type="button" aria-label="Show previous project" data-work-prev>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"></path></svg>
       </button>
 
-      <div class="work-grid" data-work-track tabindex="0" role="group" aria-label="Featured Work cards. Use Left Arrow or Right Arrow to change the selected case study.">
+      <div class="work-grid" data-work-track tabindex="0" role="group">
         {projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} />)}
       </div>
 
@@ -35,160 +42,207 @@ const projects = await getFeaturedProjects();
 
 <script is:inline>
   (() => {
-    const initDeck = ({ carouselSelector, trackSelector, cardSelector, prevSelector, nextSelector, dotsSelector, itemName }) => {
-      const carousel = document.querySelector(carouselSelector);
-      const track = carousel?.querySelector(trackSelector);
-      const prev = carousel?.querySelector(prevSelector);
-      const next = carousel?.querySelector(nextSelector);
-      const cards = track ? Array.from(track.querySelectorAll(cardSelector)) : [];
-      const dots = carousel ? Array.from(carousel.querySelectorAll(`${dotsSelector} [data-deck-index]`)) : [];
+    const carousel = document.querySelector("[data-work-carousel]");
+    const track = carousel?.querySelector("[data-work-track]");
+    const cards = track ? Array.from(track.querySelectorAll(".work-card")) : [];
+    const dots = carousel
+      ? Array.from(carousel.querySelectorAll("[data-work-dots] [data-deck-index]"))
+      : [];
+    const previousButton = carousel?.querySelector("[data-work-prev]");
+    const nextButton = carousel?.querySelector("[data-work-next]");
 
-      if (!carousel || !track || !prev || !next || cards.length < 2) return;
+    if (!carousel || !track || cards.length < 2) return;
 
-      let activeIndex = 0;
-      let pointerStart = null;
-      let pointerGesture = false;
+    const SWIPE_THRESHOLD = 48;
+    const AXIS_RATIO = 1.2;
+    const TAP_MOVEMENT_THRESHOLD = 8;
+    let activeIndex = 0;
+    let gesture = null;
+    let suppressClick = false;
 
-      const wrap = (index) => (index + cards.length) % cards.length;
-      const cardTitle = (card) => card.querySelector("h3")?.textContent.trim() || itemName;
-      const isDeckMode = () => true;
+    const wrap = (index) => (index + cards.length) % cards.length;
+    const cardTitle = (card) =>
+      card.querySelector("h3")?.textContent.trim() || "Featured work";
 
-      const setCardLinkState = (card, isActive) => {
-        const actionable = !isDeckMode() || isActive;
-        card.querySelectorAll("a").forEach((link) => {
-          link.tabIndex = actionable ? 0 : -1;
-          link.setAttribute("aria-disabled", String(!actionable));
-        });
-      };
-
-      const render = () => {
-        cards.forEach((card, index) => {
-          const offset = (index - activeIndex + cards.length) % cards.length;
-          const isActive = offset === 0;
-          const isPrevious = offset === cards.length - 1;
-          const isNext = offset === 1;
-
-          card.classList.toggle("is-active", isActive);
-          card.classList.toggle("is-prev", isPrevious);
-          card.classList.toggle("is-next", isNext);
-          card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
-          card.setAttribute("aria-label", `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`);
-          card.setAttribute("aria-current", String(isActive));
-          setCardLinkState(card, isActive);
-        });
-
-        dots.forEach((dot, index) => dot.setAttribute("aria-current", String(index === activeIndex)));
-        const status = carousel.querySelector("[data-deck-status]");
-        if (status) status.textContent = `${itemName} ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
-      };
-
-      const select = (index) => {
-        activeIndex = wrap(index);
-        render();
-      };
-
-      const completeSwipe = (endX, endY) => {
-        if (!pointerStart) return;
-
-        const deltaX = endX - pointerStart.x;
-        const deltaY = endY - pointerStart.y;
-        pointerStart = null;
-
-        if (Math.abs(deltaX) < 44 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.15) return;
-        select(activeIndex + (deltaX < 0 ? 1 : -1));
-      };
-
-      prev.addEventListener("click", () => select(activeIndex - 1));
-      next.addEventListener("click", () => select(activeIndex + 1));
-      dots.forEach((dot) => dot.addEventListener("click", () => select(Number(dot.dataset.deckIndex))));
+    const render = () => {
+      activeIndex = wrap(activeIndex);
 
       cards.forEach((card, index) => {
-        card.addEventListener("click", (event) => {
-          if (!isDeckMode()) return;
-          const link = event.target.closest("a");
-          if (link && index === activeIndex) return;
-          if (index !== activeIndex) {
-            event.preventDefault();
-            select(index);
-          }
+        const offset = (index - activeIndex + cards.length) % cards.length;
+        const isActive = offset === 0;
+        const isPrevious = offset === cards.length - 1;
+        const isNext = offset === 1;
+
+        card.classList.toggle("is-active", isActive);
+        card.classList.toggle("is-prev", isPrevious);
+        card.classList.toggle("is-next", isNext);
+        card.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
+        card.setAttribute(
+          "aria-label",
+          `${index + 1} of ${cards.length}: ${cardTitle(card)}${isActive ? ", selected" : ""}`,
+        );
+        card.setAttribute("aria-current", String(isActive));
+        card.setAttribute("aria-posinset", String(index + 1));
+        card.setAttribute("aria-setsize", String(cards.length));
+        card.querySelectorAll("a").forEach((link) => {
+          link.tabIndex = isActive ? 0 : -1;
+          link.setAttribute("aria-disabled", String(!isActive));
         });
       });
 
-      track.addEventListener("click", (event) => {
-        if (!isDeckMode()) return;
-
-        const target = event.target instanceof Element ? event.target : null;
-        if (target?.closest("a")) return;
-
-        const card = target?.closest(cardSelector)
-          || document.elementFromPoint(event.clientX, event.clientY)?.closest(cardSelector);
-        const index = card ? cards.indexOf(card) : -1;
-
-        if (index < 0 || index === activeIndex) return;
-        event.preventDefault();
-        select(index);
+      dots.forEach((dot, index) => {
+        dot.setAttribute("aria-current", String(index === activeIndex));
       });
 
-      track.addEventListener("keydown", (event) => {
-        if (!isDeckMode()) return;
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          select(activeIndex - 1);
-          track.focus();
-        } else if (event.key === "ArrowRight") {
-          event.preventDefault();
-          select(activeIndex + 1);
-          track.focus();
-        }
-      });
+      const status = carousel.querySelector("[data-deck-status]");
+      if (status) {
+        status.textContent = `Featured work ${activeIndex + 1} of ${cards.length}: ${cardTitle(cards[activeIndex])}`;
+      }
+    };
 
-      track.addEventListener("pointerdown", (event) => {
-        if (!isDeckMode() || !event.isPrimary) return;
-        pointerGesture = true;
-        pointerStart = { x: event.clientX, y: event.clientY };
-        track.setPointerCapture?.(event.pointerId);
-      });
+    const select = (index, moveFocus = false) => {
+      activeIndex = wrap(index);
+      render();
+      if (moveFocus) track.focus({ preventScroll: true });
+    };
 
-      track.addEventListener("pointerup", (event) => {
-        if (!isDeckMode()) return;
-        pointerGesture = false;
-        track.releasePointerCapture?.(event.pointerId);
-        completeSwipe(event.clientX, event.clientY);
-      });
+    const beginGesture = (startX, startY, pointerId = null) => {
+      suppressClick = false;
+      gesture = { startX, startY, pointerId };
+    };
 
-      track.addEventListener("pointercancel", () => {
-        pointerGesture = false;
-        pointerStart = null;
-      });
+    const completeGesture = (endX, endY) => {
+      if (!gesture) return;
 
-      if (!window.PointerEvent) {
-        track.addEventListener("touchstart", (event) => {
-          if (!isDeckMode() || pointerStart) return;
-          const touch = event.changedTouches[0];
-          pointerStart = { x: touch.clientX, y: touch.clientY };
-        }, { passive: true });
+      const { startX, startY } = gesture;
+      gesture = null;
+      const deltaX = endX - startX;
+      const deltaY = endY - startY;
+      const horizontalDistance = Math.abs(deltaX);
+      const verticalDistance = Math.abs(deltaY);
 
-        track.addEventListener("touchend", (event) => {
-          if (!isDeckMode() || pointerGesture) return;
-          const touch = event.changedTouches[0];
-          completeSwipe(touch.clientX, touch.clientY);
-        }, { passive: true });
+      if (Math.max(horizontalDistance, verticalDistance) < TAP_MOVEMENT_THRESHOLD) return;
 
-        track.addEventListener("touchcancel", () => { pointerStart = null; }, { passive: true });
+      suppressClick = true;
+      if (
+        horizontalDistance < SWIPE_THRESHOLD ||
+        horizontalDistance <= verticalDistance * AXIS_RATIO
+      ) {
+        return;
       }
 
-      window.addEventListener("resize", render);
+      select(activeIndex + (deltaX < 0 ? 1 : -1));
+    };
+
+    const releasePointer = (pointerId) => {
+      try {
+        if (track.hasPointerCapture?.(pointerId)) track.releasePointerCapture(pointerId);
+      } catch {
+        // Synthetic browser tests and cancelled native gestures may not own capture.
+      }
+    };
+
+    cards.forEach((card, index) => {
+      card.addEventListener("click", (event) => {
+        const target = event.target;
+        const link = target instanceof Element ? target.closest("a") : null;
+        if (link && index === activeIndex) return;
+        if (index !== activeIndex) {
+          event.preventDefault();
+          select(index, true);
+        }
+      });
+    });
+
+    track.addEventListener("click", (event) => {
+      if (suppressClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+        return;
+      }
+
+      const elements = document.elementsFromPoint(event.clientX, event.clientY);
+      const activeCard = elements.find((element) =>
+        element.closest(".work-card")?.classList.contains("is-active"),
+      );
+      if (activeCard) return;
+
+      const sideCard = elements
+        .map((element) => element.closest(".work-card"))
+        .find((card) => card && card !== cards[activeIndex]);
+      const sideIndex = sideCard ? cards.indexOf(sideCard) : -1;
+      if (sideIndex === -1) return;
+
+      event.preventDefault();
+      select(sideIndex, true);
+    }, true);
+
+    track.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        select(activeIndex - 1);
+        track.focus({ preventScroll: true });
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        select(activeIndex + 1);
+        track.focus({ preventScroll: true });
+      }
+    });
+
+    previousButton?.addEventListener("click", () => select(activeIndex - 1, true));
+    nextButton?.addEventListener("click", () => select(activeIndex + 1, true));
+
+    track.addEventListener("pointerdown", (event) => {
+      if (!event.isPrimary) return;
+      beginGesture(event.clientX, event.clientY, event.pointerId);
+      try {
+        track.setPointerCapture(event.pointerId);
+      } catch {
+        // Synthetic browser tests may dispatch an uncaptured pointer.
+      }
+    });
+
+    track.addEventListener("pointerup", (event) => {
+      if (!gesture || gesture.pointerId !== event.pointerId) return;
+      releasePointer(event.pointerId);
+      completeGesture(event.clientX, event.clientY);
+    });
+
+    track.addEventListener("pointercancel", () => {
+      gesture = null;
+      suppressClick = false;
+    });
+
+    if (!window.PointerEvent) {
+      track.addEventListener("touchstart", (event) => {
+        const touch = event.changedTouches[0];
+        if (touch) beginGesture(touch.clientX, touch.clientY);
+      }, { passive: true });
+
+      track.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        if (touch) completeGesture(touch.clientX, touch.clientY);
+      }, { passive: true });
+
+      track.addEventListener("touchcancel", () => {
+        gesture = null;
+        suppressClick = false;
+      }, { passive: true });
+    }
+
+    const preserveSelection = () => {
+      activeIndex = wrap(activeIndex);
       render();
     };
 
-    const initializeHomepageDecks = () => {
-      initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
-    };
+    window.addEventListener("resize", preserveSelection);
+    window.addEventListener("orientationchange", preserveSelection);
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializeHomepageDecks, { once: true });
-    } else {
-      initializeHomepageDecks();
-    }
+    track.setAttribute(
+      "aria-label",
+      "Featured work. Select a side card or use Left Arrow and Right Arrow to change the centered item.",
+    );
+    render();
   })();
 </script>
