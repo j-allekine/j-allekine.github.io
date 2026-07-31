@@ -38,6 +38,7 @@ test.describe("homepage Stack", () => {
     await expect(stack.locator(".section-label")).toHaveText("Stack");
     await expect(stack).not.toContainText("Technologies & Tools");
     await expect(stack.locator(".see-all")).toHaveAttribute("href", "/stack");
+    await expect(stack.locator(".see-all")).toHaveText("See full stack →");
     await expect(primarySequence.locator(".stack-item span:last-child")).toHaveText(approvedTools);
     await expect(loopSequence).toHaveCount(1);
     await expect(loopSequence.locator(".stack-item")).toHaveCount(approvedTools.length);

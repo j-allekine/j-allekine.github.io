@@ -127,8 +127,17 @@ test.describe("Astro shared site shell", () => {
     for (const route of existingRoutes) {
       await page.goto(route, { waitUntil: "domcontentloaded" });
       await expect(page.locator("[data-mobile-sidebar]")).toBeHidden();
-      await expect(page.locator("footer .footer-back")).toHaveAttribute("href", "#top");
+      const footerBack = page.locator("footer .footer-back");
+      await expect(footerBack).toHaveAttribute("href", "#top");
       await expect(page.locator("main#top")).toHaveCount(1);
+      const footerAlignment = await page.locator("footer .footer-inner").evaluate((footer) => {
+        const backLink = footer.querySelector(".footer-back")!;
+        const footerBox = footer.getBoundingClientRect();
+        const backLinkBox = backLink.getBoundingClientRect();
+
+        return footerBox.right - backLinkBox.right;
+      });
+      expect(footerAlignment, `${route} mobile back-to-top alignment`).toBeLessThanOrEqual(1);
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
         `${route} at 320px`,
