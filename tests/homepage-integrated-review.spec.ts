@@ -98,6 +98,8 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     const pageLeftBeforeOpen = await page.locator("[data-page-frame]").evaluate(
       (element) => element.getBoundingClientRect().left
     );
+    const contentShell = page.locator("main .content-shell").first();
+    const shellWidthBeforeOpen = await contentShell.evaluate((element) => element.getBoundingClientRect().width);
     const menuButton = await openNavigation(page);
     const navigationPanel = page.locator("[data-mobile-sidebar]");
     const pageFrame = page.locator("[data-page-frame]");
@@ -109,6 +111,8 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await expect.poll(
       () => pageFrame.evaluate((element) => element.getBoundingClientRect().left)
     ).toBe(pageLeftBeforeOpen);
+    const shellWidthAfterOpen = await contentShell.evaluate((element) => element.getBoundingClientRect().width);
+    expect(shellWidthAfterOpen).toBeCloseTo(shellWidthBeforeOpen, 0);
     await expect(navigationPanel.locator(".mobile-sidebar__brand")).toHaveAttribute("href", "/");
     await expect(navigationPanel.locator("[data-menu-close]")).toBeFocused();
 

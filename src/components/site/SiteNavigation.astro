@@ -132,18 +132,17 @@ const socialLinks = [
         bodyPosition: document.body.style.position,
         bodyTop: document.body.style.top,
         bodyWidth: document.body.style.width,
+        bodyLayoutWidth: document.body.getBoundingClientRect().width,
         bodyOverflow: document.body.style.overflow,
         bodyPaddingRight: document.body.style.paddingRight,
         scrollY: window.scrollY,
       };
 
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.documentElement.style.overflow = "hidden";
       document.body.style.position = "fixed";
       document.body.style.top = `-${savedScrollState.scrollY}px`;
-      document.body.style.width = "100%";
+      document.body.style.width = `${savedScrollState.bodyLayoutWidth}px`;
       document.body.style.overflow = "hidden";
-      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
     };
 
     const unlockBackgroundScroll = () => {
