@@ -1,10 +1,4 @@
 import { expect, test, type Page } from "@playwright/test";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
-
-const standaloneHomepageUrl = pathToFileURL(
-  resolve(process.cwd(), "homepage-updated.html")
-).href;
 
 const reviewViewports = [
   { name: "minimum-phone", width: 320, height: 568 },
@@ -25,9 +19,17 @@ const openNavigation = async (page: Page) => {
   return menuButton;
 };
 
+const waitForLayout = async (page: Page) => {
+  await page.evaluate(
+    () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+  );
+};
+
 test.describe("homepage integrated responsive and accessibility review", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(standaloneHomepageUrl, { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => document.fonts.ready);
+    await waitForLayout(page);
   });
 
   test("covers the approved shell widths without overflow or broken flow", async ({ page }, testInfo) => {
@@ -72,7 +74,7 @@ test.describe("homepage integrated responsive and accessibility review", () => {
   test("keeps editorial sections within the approved reading width", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
 
-    for (const selector of ["#stack > .reading-shell", "#process > .reading-shell", "#about > .reading-shell", "#contact > .reading-shell"]) {
+    for (const selector of ["#stack > .reading-shell", "#about > .reading-shell", "#contact > .reading-shell"]) {
       const width = await page.locator(selector).evaluate((element) => element.getBoundingClientRect().width);
       expect(width, selector).toBeLessThanOrEqual(768);
     }
@@ -193,5 +195,44 @@ test.describe("homepage integrated responsive and accessibility review", () => {
 
     await page.locator("[data-menu-button]").focus();
     await expect(page.locator("[data-menu-button]")).toBeFocused();
+  });
+
+  test("keeps every homepage section usable with reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+
+    for (const viewport of reviewViewports) {
+      await page.setViewportSize(viewport);
+      await waitForLayout(page);
+
+      const sectionState = await page.locator("main > section").evaluateAll((sections) =>
+        sections.map((section) => {
+          const rect = section.getBoundingClientRect();
+          return {
+            id: section.id,
+            hasContent: rect.height > 0,
+            contained: rect.right <= window.innerWidth + 1,
+          };
+        }),
+      );
+
+      expect(sectionState.every(({ hasContent, contained }) => hasContent && contained), viewport.name).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+    }
+
+    await expect(page.locator("#stack .stack-track")).toHaveCSS("animation-name", "none");
+
+    await page.setViewportSize({ width: 768, height: 900 });
+    await waitForLayout(page);
+    await page.locator("#work [data-work-next]").click();
+    await expect(page.locator("#work .work-card").nth(1)).toHaveAttribute("aria-current", "true");
+    expect(
+      await page.locator("#work .work-card").first().evaluate((card) =>
+        Number.parseFloat(getComputedStyle(card).transitionDuration),
+      ),
+    ).toBeLessThan(0.1);
+
+    await page.locator("#process [role='tab']").nth(1).click();
+    await expect(page.locator("#process [data-process-title]")).toHaveText("Plan");
+    await expect.poll(() => page.locator("#process [role='tabpanel']").evaluate((panel) => panel.getAnimations().length)).toBe(0);
   });
 });

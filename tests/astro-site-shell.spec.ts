@@ -13,12 +13,16 @@ const existingRoutes = [
   "/services",
   "/about",
   "/contact",
-  "/prototype/featured-work",
-  "/prototype/hero-actions",
-  "/prototype/hero-composition",
 ];
 
 test.describe("Astro shared site shell", () => {
+  test("Astro preview is available @unconfigured", async ({ page }) => {
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    expect(response?.ok()).toBe(true);
+    await expect(page.locator("main#top")).toHaveCount(1);
+  });
+
   test("renders the persistent desktop sidebar with approved destinations", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -131,7 +135,7 @@ test.describe("Astro shared site shell", () => {
       ).toBe(true);
     }
 
-    await page.goto("/prototype/featured-work", { waitUntil: "domcontentloaded" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.evaluate(() => {
       document.documentElement.style.scrollBehavior = "auto";
       window.scrollTo(0, document.body.scrollHeight);
