@@ -150,14 +150,17 @@ const socialLinks = [
       if (!savedScrollState) return;
 
       const { htmlOverflow, bodyPosition, bodyTop, bodyWidth, bodyOverflow, bodyPaddingRight, scrollY } = savedScrollState;
+      const scrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.overflow = htmlOverflow;
       document.body.style.position = bodyPosition;
       document.body.style.top = bodyTop;
       document.body.style.width = bodyWidth;
       document.body.style.overflow = bodyOverflow;
       document.body.style.paddingRight = bodyPaddingRight;
+      document.documentElement.style.scrollBehavior = "auto";
       savedScrollState = null;
       window.scrollTo(0, scrollY);
+      document.documentElement.style.scrollBehavior = scrollBehavior;
     };
 
     const setPageInert = (isInert) => {

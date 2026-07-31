@@ -138,8 +138,10 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     const backdrop = page.locator("[data-sidebar-backdrop]");
 
     await page.evaluate(() => {
+      const scrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = "auto";
       window.scrollTo(0, 900);
+      document.documentElement.style.scrollBehavior = scrollBehavior;
     });
     const scrollBeforeOpen = await page.evaluate(() => window.scrollY);
     await menuButton.click();
@@ -147,7 +149,7 @@ test.describe("homepage integrated responsive and accessibility review", () => {
     await backdrop.click({ position: { x: 300, y: 4 } });
     await expect(navigationPanel).toHaveAttribute("aria-hidden", "true");
     await expect(menuButton).toBeFocused();
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforeOpen);
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollBeforeOpen);
 
     await menuButton.click();
     const workLink = navigationPanel.getByRole("link", { name: "Work", exact: true });
