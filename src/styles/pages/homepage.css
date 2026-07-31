@@ -1668,6 +1668,48 @@
       font-size: 0.72rem;
     }
 
+    /* Approved About and Contact migration for issue #32. */
+
+    #about > .reading-shell,
+    #contact > .reading-shell {
+      width: min(calc(100% - var(--gutter) * 2), 768px);
+      margin-inline: auto;
+    }
+
+    .about-content h2 {
+      max-width: 18ch;
+      margin: 0 0 24px;
+      font-size: var(--section-size);
+      font-weight: 600;
+      line-height: 1.03;
+      letter-spacing: -0.043em;
+    }
+
+    .about-copy {
+      display: grid;
+      gap: 16px;
+      color: var(--muted);
+      font-size: var(--support-size);
+      line-height: 1.6;
+    }
+
+    .about-copy p {
+      max-width: 68ch;
+      margin: 0;
+    }
+
+    @media (min-width: 768px) {
+      .about-copy {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 28px;
+      }
+
+      .about-copy p:last-child {
+        grid-column: 1 / -1;
+        max-width: 68ch;
+      }
+    }
+
     .contact-cta {
       padding-block: 52px;
     }

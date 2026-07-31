@@ -35,18 +35,6 @@ const projects = await getFeaturedProjects();
 
 <script is:inline>
   (() => {
-    const moveSectionsIntoStoryOrder = () => {
-      const main = document.querySelector("main");
-      const stack = document.querySelector("#stack");
-      const process = document.querySelector("#process");
-      const services = document.querySelector("#services-preview");
-
-      if (!main || !stack || !process || !services) return;
-
-      main.insertBefore(stack, services);
-      main.insertBefore(process, services);
-    };
-
     const initDeck = ({ carouselSelector, trackSelector, cardSelector, prevSelector, nextSelector, dotsSelector, itemName }) => {
       const carousel = document.querySelector(carouselSelector);
       const track = carousel?.querySelector(trackSelector);
@@ -194,9 +182,7 @@ const projects = await getFeaturedProjects();
     };
 
     const initializeHomepageDecks = () => {
-      moveSectionsIntoStoryOrder();
       initDeck({ carouselSelector: "[data-work-carousel]", trackSelector: "[data-work-track]", cardSelector: ".work-card", prevSelector: "[data-work-prev]", nextSelector: "[data-work-next]", dotsSelector: "[data-work-dots]", itemName: "Featured project" });
-      initDeck({ carouselSelector: "[data-services-carousel]", trackSelector: "[data-services-track]", cardSelector: ".service-card", prevSelector: "[data-services-prev]", nextSelector: "[data-services-next]", dotsSelector: "[data-services-dots]", itemName: "Service" });
     };
 
     if (document.readyState === "loading") {
