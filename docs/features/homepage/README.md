@@ -27,7 +27,7 @@ This folder is a planning map, not a replacement design specification. Link exis
 | [01-page-shell-navigation-flow.md](01-page-shell-navigation-flow.md) | `completed` |
 | [02-hero.md](02-hero.md) | `tickets created` |
 | [03-featured-work.md](03-featured-work.md) | `needs more info` |
-| [04-stack.md](04-stack.md) | `needs more info` |
+| [04-stack.md](04-stack.md) | `ready for tickets` |
 | [05-how-i-work.md](05-how-i-work.md) | `needs more info` |
 | [06-about.md](06-about.md) | `needs more info` |
 | [07-contact-footer.md](07-contact-footer.md) | `needs more info` |
@@ -77,8 +77,8 @@ This is the readiness tracker for the homepage feature. A chunk can be drafted i
 | [01 Page shell, navigation, and section flow](01-page-shell-navigation-flow.md) | `completed` | None; it was the implementation gate | Implement and validate `homepage-updated.html`; defer Astro migration |
 | [02 Hero](02-hero.md) | `tickets created` | 03–07 after 01 is ready | Implement [#13](https://github.com/j-allekine/j-allekine.github.io/issues/13), then [#14](https://github.com/j-allekine/j-allekine.github.io/issues/14), under parent [#12](https://github.com/j-allekine/j-allekine.github.io/issues/12) |
 | [03 Featured Work](03-featured-work.md) | `needs more info` | 02, 04–07 after 01 is ready | Approved projects, media, copy, case-study behavior, heading wording, and deck keyboard behavior |
-| [04 Stack](04-stack.md) | `needs more info` | 02–03 and 05–07 after 01 is ready | Approved tool list/order, media sources, View All behavior, and reduced-motion outcome |
-| [05 How I Work](05-how-i-work.md) | `needs more info` | 02–04 and 06–07 after 01 is ready | Approved step copy/icons and pointer, keyboard, focus, panel-height, and reduced-motion behavior |
+| [04 Stack](04-stack.md) | `ready for tickets` | 02–03 and 05–07 after 01 is ready | Create focused implementation issues from the resolved decisions and ticket requirements |
+| [05 How I Work](05-how-i-work.md) | `ready for tickets` | 02–04 and 06–07 after 01 is ready | Create focused implementation issues from the resolved decisions and acceptance criteria |
 | [06 About](06-about.md) | `needs more info` | 02–05 and 07 after 01 is ready | Approved About copy/values, résumé decision, heading, and résumé action behavior |
 | [07 Contact and Footer](07-contact-footer.md) | `needs more info` | 02–06 after 01 is ready | Contact copy/action, real destination, footer-year behavior, and focus behavior |
 | [08 Integrated review](08-integrated-review.md) | `completed` | None; final integration gate for the current standalone shell | The current standalone shell, navigation, and review evidence are complete; later content chunks remain separately gated |

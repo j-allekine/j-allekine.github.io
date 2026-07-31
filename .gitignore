@@ -17,6 +17,7 @@ pnpm-debug.log*
 
 #workflow
 .scratch/
+src/pages/prototype/
 
 # environment variables
 .env
