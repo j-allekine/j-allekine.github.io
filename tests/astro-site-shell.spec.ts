@@ -135,9 +135,15 @@ test.describe("Astro shared site shell", () => {
         const footerBox = footer.getBoundingClientRect();
         const backLinkBox = backLink.getBoundingClientRect();
 
-        return footerBox.right - backLinkBox.right;
+        return {
+          columnCount: getComputedStyle(footer).gridTemplateColumns.split(" ").length,
+          rightGap: footerBox.right - backLinkBox.right,
+        };
       });
-      expect(footerAlignment, `${route} mobile back-to-top alignment`).toBeLessThanOrEqual(1);
+      expect(footerAlignment.columnCount, `${route} mobile footer columns`).toBe(2);
+      expect(footerAlignment.rightGap, `${route} mobile back-to-top alignment`).toBeLessThanOrEqual(
+        1,
+      );
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
         `${route} at 320px`,
